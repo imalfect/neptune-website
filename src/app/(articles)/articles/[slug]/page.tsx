@@ -1,11 +1,14 @@
 import { ArticleMetadata, ArticleType } from '@/app/(articles)/types';
 import FocusModeSwitch from '@/components/FocusModeSwitch';
-import { fetchArticleSlugs } from '@/lib/articleFetch';
+import { fetchArticleBySlug, fetchArticleSlugs } from '@/lib/articleFetch';
 import dayjs from 'dayjs';
+import 'highlight.js/styles/github-dark.css';
+import 'katex/dist/katex.min.css';
 import { LucideChevronLeft } from 'lucide-react';
 import { Metadata } from 'next';
 import { ThemeProvider } from 'next-themes';
 import Link from 'next/link';
+
 export const metadata: Metadata = {
 	title: 'Learn - Neptune'
 };
@@ -14,14 +17,13 @@ export async function generateStaticParams() {
 	const articlesStaticParams = articles.map((slug) => ({
 		slug: slug
 	}));
-
 	return articlesStaticParams;
 }
 // // IMPORTANT: theme provider is only used for articles, to accomodate the focus mode, the website (landing,subpages) itself should not support any theming!
 
 export default async function Article({ params }: { params: Promise<{ slug: string }> }) {
 	const { slug } = await params;
-	const article = await import(`@/articles/${slug}.mdx`);
+	const article = await fetchArticleBySlug(slug);
 	const MDXContent = article.default;
 	const metadata: ArticleMetadata = article.metadata;
 

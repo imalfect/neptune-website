@@ -1,3 +1,5 @@
+import { Metadata } from 'next';
+
 export interface ArticleMetadata {
 	title: string;
 	description: string;
@@ -8,6 +10,7 @@ export interface ArticleMetadata {
 		caption?: string;
 	};
 	type: ArticleType;
+	webMetadata?: Metadata;
 }
 
 export enum ArticleType {

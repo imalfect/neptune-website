@@ -58,6 +58,7 @@ button {
 }
 @layer utilities {
 .article {
+  @apply text-lg;
   h1 {
     @apply mb-4 text-5xl font-bold tracking-tight;
   }
@@ -97,7 +98,83 @@ button {
   a {
     @apply font-medium underline underline-offset-4;
   }
-  @apply text-lg;
+  code {
+    @apply rounded-3xl text-base
+  }
+  table {
+    @apply my-8 w-full border-collapse rounded-xl overflow-hidden shadow-2xl;
+    border-spacing: 0;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    @apply focus-mode:bg-white focus-mode:border-2 focus-mode:border-gray-300 focus-mode:shadow-lg focus-mode:backdrop-blur-none;
+  }
+  
+  table th, 
+  table td {
+    @apply px-4 py-3 text-left align-top border-0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    @apply focus-mode:border-r focus-mode:border-gray-200 focus-mode:border-b-gray-300;
+  }
+  
+  table th:last-child,
+  table td:last-child {
+    @apply focus-mode:border-r-0;
+  }
+  
+  table th {
+    @apply font-semibold tracking-wide text-lg uppercase relative;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fdfff5;
+    letter-spacing: 0.05em;
+    @apply focus-mode:bg-gray-100 focus-mode:text-gray-900 focus-mode:border-b-2 focus-mode:border-b-gray-300;
+  }
+  
+  table td {
+    @apply text-lg leading-7 transition-all duration-200;
+    color: rgba(253, 255, 245, 0.9);
+    @apply focus-mode:text-gray-700;
+  }
+  
+  table tbody tr {
+    @apply transition-all duration-200;
+  }
+  
+  table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.08);
+    @apply focus-mode:bg-gray-50;
+  }
+  
+  table tbody tr:hover td {
+    color: #fdfff5;
+    @apply focus-mode:text-gray-900;
+  }
+  
+  table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+    @apply focus-mode:bg-white;
+  }
+  
+  table tbody tr:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.05);
+    @apply focus-mode:bg-slate-50;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    table th, 
+    table td {
+      @apply px-3 py-2 text-sm;
+    }
+    
+    table th {
+      @apply text-base;
+    }
+    
+    table td {
+      @apply text-base leading-6;
+    }
+  }
 }
 }
 
