@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/* added here and not in articles.css because vscode turns dumb otherwise */
+@custom-variant focus-mode (&:where([data-theme=focus-mode], [data-theme=focus-mode] *));
+
+
+@theme {
+  --color-milk: #fdfff5;
+}
+
+html {
+  color: #fdfff5;
+  scroll-behavior: smooth;
+}
+
+button {
+  @apply cursor-pointer
+}
+
+.text-title {
+    @apply text-4xl md:text-7xl font-bold tracking-tight;
+}
+.text-hero-headline {
+      @apply text-5xl md:text-7xl font-bold tracking-tight;
+}
+.text-hero-subtitle {
+      @apply text-2xl md:text-3xl;
+}
+.text-big-content {
+   @apply md:text-2xl text-xl;
+}
+.text-content {
+    @apply text-xl;
+}
+.text-small-content {
+    @apply text-lg;
+}
+.text-section-title {
+    @apply text-5xl font-bold tracking-tight;
+}
+.text-section-description {
+    @apply text-2xl;
+}
+.text-card-title {
+  @apply text-2xl md:text-3xl font-semibold tracking-tight;
+}
+.text-number-card-title {
+ @apply text-2xl;
+}
+.text-number-card-data {
+  @apply text-5xl;
+}
+.text-page-title {
+  @apply text-6xl font-bold tracking-tight;
+}
+.text-page-subtitle {
+  @apply text-2xl;
+}
+@layer utilities {
+.article {
+  h1 {
+    @apply mb-4 text-5xl font-bold tracking-tight;
+  }
+  h2 {
+    @apply mt-10 mb-4 text-4xl font-semibold tracking-tight;
+  }
+  h3 {
+    @apply mt-8 mb-4 text-3xl font-semibold tracking-tight;
+  }
+  h4 {
+    @apply mt-6 mb-2 text-2xl font-semibold tracking-tight;
+  }
+  h5 {
+    @apply mt-4 mb-2 text-xl font-semibold tracking-tight;
+  } 
+  h6 {
+    @apply mt-2 mb-1 text-lg font-semibold tracking-tight;
+  }
+  p {
+    @apply mb-6 leading-7;
+    &:has(img) {
+      @apply mb-2;
+    }
+  }
+  ul {
+    @apply mb-6 pl-6 list-disc;
+    li {
+      @apply mb-2;
+    }
+  }
+  ol {
+    @apply mb-6 pl-6 list-decimal;
+    li {
+      @apply mb-2;
+    }
+  }
+  a {
+    @apply font-medium underline underline-offset-4;
+  }
+  @apply text-lg;
+}
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.3s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.3s ease-out;
+}
