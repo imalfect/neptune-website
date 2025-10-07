@@ -49,7 +49,7 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
 					<img
 						src={metadata.thumbnail.src}
 						alt={metadata.thumbnail.caption}
-						className="h-auto w-full rounded-lg object-cover"
+						className="aspect-video h-auto w-full rounded-3xl object-cover"
 					/>
 					<figcaption className="text-muted-foreground px-4 py-2 text-center text-base">
 						{metadata.thumbnail.caption}

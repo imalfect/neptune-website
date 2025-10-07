@@ -37,8 +37,10 @@
 		"recharts": "^2.15.4",
 		"rehype-highlight": "^7.0.2",
 		"rehype-katex": "^7.0.1",
+		"remark-frontmatter": "^5.0.0",
 		"remark-gfm": "^4.0.1",
 		"remark-math": "^6.0.0",
+		"remark-mdx-frontmatter": "^5.2.0",
 		"tailwind-merge": "^3.3.1",
 		"three": "^0.175.0",
 		"usehooks-ts": "^3.1.1"

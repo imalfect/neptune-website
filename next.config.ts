@@ -2,15 +2,22 @@ import createMDX from '@next/mdx';
 import type { NextConfig } from 'next';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeKatex from 'rehype-katex';
+import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 const nextConfig: NextConfig = {
 	/* config options here */
 	pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx']
 };
 const withMDX = createMDX({
 	options: {
-		remarkPlugins: [remarkMath, remarkGfm],
+		remarkPlugins: [
+			remarkMath,
+			remarkGfm,
+			[remarkFrontmatter, { type: 'toml', marker: '+' }],
+			[remarkMdxFrontmatter, { name: 'metadata' }]
+		],
 		rehypePlugins: [rehypeKatex, rehypeHighlight]
 	}
 	// Add markdown plugins here, as desired
