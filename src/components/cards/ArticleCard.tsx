@@ -14,20 +14,20 @@ export default function ArticleCard(props: { article: ArticleMetadata & { slug: 
 				width={600}
 				height={300}
 			/>
-			<div className="p-6">
+			<div className="flex flex-col p-6">
 				<h2 className="text-card-title mb-2 font-bold tracking-tight">{props.article.title}</h2>
 				<div className="text-small-content flex gap-3">
 					<p className="text-muted-foreground">{dayjs(props.article.date).format('MMMM D, YYYY')}</p>
 					<p className="text-muted-foreground">{props.article.author}</p>
 				</div>
 				<p className="text-content mt-4">{props.article.description}</p>
-				<Link href={`/articles/${props.article.slug}`}>
-					<Button variant={'primary'} className="mt-6 flex w-full" size="sm">
-						<LucideNewspaper />
-						<span className="mx-auto">Read Article</span>
-					</Button>
-				</Link>
 			</div>
+			<Link href={`/articles/${props.article.slug}`} className="mt-auto p-6">
+				<Button variant={'primary'} className="flex w-full" size="sm">
+					<LucideNewspaper />
+					<span className="mx-auto">Read Article</span>
+				</Button>
+			</Link>
 		</div>
 	);
 }
