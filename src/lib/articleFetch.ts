@@ -1,66 +1,64 @@
 import { ArticleMetadata, ArticleType } from '@/app/(articles)/types';
 import { glob } from 'glob';
 import 'server-only';
-export async function fetchArticleSlugs() {
-	const articles = await glob(`src/articles/**/*.mdx`);
-	return articles.map((path) => {
-		const parts = path.split('/');
-		const filename = parts[parts.length - 1];
-		return filename.replace('.mdx', '');
-	});
+
+function toSlug(fsPath: string): string {
+	return fsPath.split('/').pop()!.replace('.mdx', '');
 }
 
-export async function fetchArticlePaths() {
-	const articlePaths = await glob(`src/articles/**/*.mdx`);
-	return articlePaths.map((path) => {
-		const parts = path.split('/');
-		return parts[parts.length - 1].replace('.mdx', '');
-	});
+function toArticlePath(fsPath: string): string {
+	return fsPath.replace('src/articles/', '').replace('.mdx', '');
 }
 
-export async function findArticlePathBySlug(slug: string) {
-	const articles = await glob(`src/articles/**/*.mdx`);
-	const matchedArticle = articles.find((path) => {
-		return path.endsWith(`${slug}.mdx`);
-	});
-	return matchedArticle ? matchedArticle.split('/').pop()?.replace('.mdx', '') : undefined;
+async function getArticlePaths(): Promise<string[]> {
+	return await glob('src/articles/**/*.mdx');
 }
+
+async function findPathBySlug(slug: string): Promise<string | null> {
+	const paths = await getArticlePaths();
+	return paths.find((path) => path.endsWith(`${slug}.mdx`)) || null;
+}
+
+export async function fetchArticleSlugs(): Promise<string[]> {
+	const paths = await getArticlePaths();
+	return paths.map(toSlug);
+}
+
 export async function fetchArticlesMetadata(
 	type: ArticleType
 ): Promise<(ArticleMetadata & { slug: string })[]> {
-	const slugs = await fetchArticlePaths();
-	const metadataList = await Promise.all(
-		slugs.map(async (slug) => {
-			const post = await import(`@/articles/${slug}.mdx`);
-			return { ...(post.metadata as ArticleMetadata), slug };
+	const paths = await getArticlePaths();
+	const articles = await Promise.all(
+		paths.map(async (path) => {
+			const articlePath = toArticlePath(path);
+			const post = await import(`@/articles/${articlePath}.mdx`);
+			return {
+				...(post.metadata as ArticleMetadata),
+				slug: toSlug(path)
+			};
 		})
 	);
-	return metadataList.filter((meta) => meta.type === type);
-}
-
-export async function fetchArticleMetadataByPath(slug: string): Promise<ArticleMetadata> {
-	const post = await import(`@/articles/${slug}.mdx`);
-	return post.metadata;
+	return articles.filter((article) => article.type === type);
 }
 
 export async function fetchArticleMetadataBySlug(
 	slug: string
 ): Promise<(ArticleMetadata & { slug: string }) | null> {
-	const filename = await findArticlePathBySlug(slug);
-	if (!filename) {
-		return null;
-	}
-	const post = await import(`@/articles/${filename}.mdx`);
-	return { ...(post.metadata as ArticleMetadata), slug };
+	const path = await findPathBySlug(slug);
+	if (!path) return null;
+
+	const articlePath = toArticlePath(path);
+	const post = await import(`@/articles/${articlePath}.mdx`);
+	return {
+		...(post.metadata as ArticleMetadata),
+		slug
+	};
 }
 
 export async function fetchArticleBySlug(slug: string) {
-	console.log('Fetching article for slug:', slug);
-	const filename = await findArticlePathBySlug(slug);
-	console.log('Found filename:', filename);
-	if (!filename) {
-		return null;
-	}
-	const post = await import(`@/articles/${filename}.mdx`);
-	return post;
+	const path = await findPathBySlug(slug);
+	if (!path) return null;
+
+	const articlePath = toArticlePath(path);
+	return await import(`@/articles/${articlePath}.mdx`);
 }
