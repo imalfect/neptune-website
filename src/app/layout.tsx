@@ -1,6 +1,6 @@
 import AestheticFluidBackground from '@/components/AestheticFluidBackground';
 import Footer from '@/components/layout/Footer';
-import { NavbarDemo } from '@/components/layout/Navbar';
+import { WebsiteNavbar } from '@/components/layout/Navbar';
 import * as motion from 'motion/react-client';
 import { DM_Sans } from 'next/font/google';
 import React from 'react';
@@ -20,7 +20,7 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning className="focus-mode:bg-black bg-[#07122f]">
 			<body className={`${dmSans.className} circ min-h-[200vh] antialiased`}>
 				<div className={'relative w-full'}>
-					<NavbarDemo />
+					<WebsiteNavbar />
 				</div>
 				<motion.div
 					initial={{ opacity: 0 }}

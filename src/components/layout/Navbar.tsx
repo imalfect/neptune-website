@@ -13,7 +13,7 @@ import {
 import { LucideScroll } from 'lucide-react';
 import { useState } from 'react';
 
-export function NavbarDemo() {
+export function WebsiteNavbar() {
 	const navItems = [
 		{
 			name: 'Features',
