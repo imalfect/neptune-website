@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning className="focus-mode:bg-black bg-[#07122f]">
-			<body className={`${dmSans.className} circ min-h-[200vh] antialiased`}>
+			<body className={`${dmSans.className} circ antialiased`}>
 				<div className={'relative w-full'}>
 					<WebsiteNavbar />
 				</div>
