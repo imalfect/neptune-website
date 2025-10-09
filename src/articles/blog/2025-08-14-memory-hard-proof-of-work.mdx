@@ -1,0 +1,196 @@
++++
+title = "Memory-Hard Proof-of-Work"
+description = "Description and motivation for Neptune Cash's memory-hard proof-of-work puzzle."
+author = "Neptune Cash Developers"
+date = "2025-08-14"
+type = "blog"
+
+[thumbnail]
+src = "/article-images/blog/neptune-memory-card-game.jpg"
+caption = "Memory-Hard Proof-of-Work"
++++
+
+
+| ![Neptune Cash Memory Cards](/article-images/blog/neptune-memory-card-game.jpg) |
+| :-----------------: |
+| **Fig.1.**: Neptune memory-cards puzzle. A close match. |
+
+# Memory-Hard Proof-of-Work in Neptune Cash
+
+**Abstract.** With the launch of its rebooted network, Neptune Cash changed the proof-of-work puzzle. On the legacy network, this puzzle had consisted of a simple partial preimage search: the task is to find a nonce such that the hash of the block is less than a given target. On the rebooted network, the puzzle consists of finding not just a nonce but a Merkle root and authentication paths as well; and in addition to satisfying the hash inequality, the root and authentication paths must be valid. To efficiently guess solutions to this puzzle, guessers must possess at least 40 GB or RAM. This article motivates the change and explains in detail how the new proof-of-work mechanism works.
+
+## Memory-Hard Proof-of-Work
+
+Proof-of-work is how systems like Bitcoin and Neptune Cash ensure users have to do expensive work in order to contribute blocks to the blockchain, and consequently how such systems defend against spam and other malicious behavior. However, traditional proof-of-work measures pure hashing power. On this metric, custom hardware (ASICs) outperforms ordinary computers by many orders of magnitude, giving a lopsided advantage to players with easy access to custom hardware providers or with the industrial scale to justify their use.
+
+Memory-hard proof-of-work changes this dynamic by requiring large amounts of memory to even attempt to solve the proof-of-work puzzle. Memory is harder to optimize than pure computation, both in terms of algorithmic cleverness and in terms of hardware. Moreover, typical desktop and laptop users already have access to quantities of RAM that are economically infeasible for custom hardware to provide access to. Consequently, memory-hardness makes super-specialized chips less cost-effective, levels the playing field, and helps deter or at least delay industrial-scale, centralized mining.
+
+## Motivations
+
+The point of proof-of-work is not to make rewriting the blockchain hard – this objective is achieved much more effectively by fixing its value once and for all.
+
+Instead, the point of proof-of-work is to make the blockchain *extendable* while
+ - a) treating all peers as equals;
+ - b) generating consensus about the correct chain;
+ - c) disallowing malicious extensions.
+
+Proof-of-work achieves this set of properties by requiring the verifiable consumption of [objective physical resources](../proof-of-stake-is-not-objective) as a precondition to extending the chain. This process is called *mining*. No special keys nor government authority is recognized; users either mine, or decline to. Mining generates consensus because of its verifiabile relation to scarce physical resources: by verifying, disagreeing parties can reconcile their disagreements objectively and without recourse to the qualified opinions of others. And lastly, under the assumption that at least 50% of the mining resources are controlled by honest parties, malicious extensions[^1] are likely to be rejected soon, and certain to be rejected eventually.
+
+The salient feature about partial hash preimage search, the proof-of-work puzzle used in Bitcoin and until recently in Neptune Cash, is that it meets this description in the simplest and most straightforward way. If an argument for the security of this mechanism is convoluted, it must be because security is ill-defined in this context; not because the mechanism itself is difficult to understand or to capture in formal terms. The resource being consumed in the course of mining is energy[^2]. Its consumption can be proven succinctly through the provision of a hash pre-image; one hash evaluation suffices to gauge a metric for how much was consumed. If access to cheap energy is well distributed, then the 50% requirement is satisfied as a result.
+
+In light of the perfect simplicity of this mechanism, any alternative proposal has a high motivational bar to pass before it can be eligible for consideration or adoption. The following motivations may be rather specific to Neptune Cash's case, but they do relate to this generic context.
+
+### Not Decentralized in Practice
+
+We observed a lopsided distribution of mining power. A single entity was responsible for at least 90% of the blocks. Furthermore, whether their mining power was active, depended on the exchange rate. Whenever the price fell below a certain point, this miner would either turn his equipment off or direct them at other chains.
+
+This does not constitute malicious behavior. And to be fair, to the best of our knowledge, this miner never used their disproportionate mining power to deploy selfish mining or reorganization attacks, or anything that does constitute malicious behavior. However, the point is that they were capable of deploying such an attack. Proceeding in this regime means trusting that miner not to cave to temptation in the future.
+
+While aligning the distribution of mining power with the distribution of cheap energy might be a recipe for good decentralization in theory, practice bears out a different conclusion.
+
+### Egalitarianism
+
+The old proof-of-work puzzle aligned the distribution of mining power not purely with that of cheap energy, but to a mixture between that and access to special purpose hardware. This distribution favors industrial-scale mining at the expense of casual individuals. For security in the long run, industrial-scale mining is necessary and even desirable, but in order to get to the long run the project has to pass a bootstrapping phase where adoption is a key intermediate objective. And on this metric, a more egalitarian distribution helps: it is fun and empowering to mine your own blocks, and it transforms the casual miner into a evangelist; whereas the personal investment into an industrial-scale mining operation amounts to little more than a dispassionate profit-and-loss calculation.
+
+To achieve a more egalitarian distribution of mining power, the proof-of-work puzzle must certainly counteract the dynamic that favors specialized hardware and perhaps even at the expense of the dynamic that favors cheap energy. Instead, the proof-of-work puzzle must favor typical hardware that casual miners possess already. Memory-hardness achieves this feature: typical users, operating from their desktop or laptop machines, already have access to more RAM than is available on economically viable special-purpose hardware. While time-space tradeoffs always exist and can always reduce the required memory footprint of a computational task, the point of memory-hard functions is to make any such a tradeoff incur a disproportionate penalty in some other resource, such as time or energy. You *could* compute a memory-hard function on an ASIC with limited memory, but why bother if you can compute it faster on a CPU with access to enough RAM – or even slightly slower, but with dramatically less energy? This dynamic puts CPU mining on par with ASIC mining, or at least levels the playing field.
+
+### Distance to Proof-Production
+
+One of the phenomena observed on the legacy network was the disproportionate effort to optimize guessing versus proving. Even before the single centralized miner arrived on stage, the difficulty was exploding. Meanwhile, transactions were having a hard time being confirmed because not enough nodes on the network were capable of producing the proofs required to confirm it.
+
+Tying proof-of-work to proof-production directly is ill-advised[^3], but the proof-of-work mechanism can be made to resemble proof-production in meaningful ways. In particular, the 40 GB RAM requirement for efficient guessing means that any machine that is capable of guessing efficiently (*i.e.*, without paying the time-space tradeoff penalty) is also capable of producing the most expensive proof type that the network understands. As a result, there is a lower barrier for switching from guessing to proving as soon as network conditions make the second activity more profitable.
+
+### Objections
+
+*The 40GB requirement is an arbitrary number and reflects at best a passing snapshot in time; in the long run, ASICs with access to this amount of memory will be made and mining will become industrial again.* If this change in the proof-of-work puzzle, by offering producers an incentive, accelerates the advent of ASICs with enough memory for proving, then one of its important missions is accomplished. Moreover, even if the timeline for big-memory ASICs is not affected, and the transition to an industrial-scale mining economy inevitable, the argument from egalitarianism remains relevant in the bootstrapping phase.
+
+*By changing the proof-of-work puzzle we have set the precedent that we can arbitrarily pick winners and losers.* It is worth noting that this proof-of-work mechanism change was made in sync with a network reboot that was necessary for [other reasons](../inflation-bug-discovered). To the extent that precedents were set, they were set in the context that all bets are off anyway.
+
+*By making the business model of the one centralized miner impossible, there are no more cheap coins to buy.* Price movements are the result of individual choices that ultimately cannot be controlled. Accordingly, projections about prices contribute little to a debate about the technical merits of a proposal.
+
+## Constraints
+
+### Definitely Nakamoto Consensus
+
+A basic requirement for change in general is to not make things worse. In the context of proof-of-work, a change introducing memory-hardness could conceivably degrade the security of the consensus mechanism. Therefore, the objective is to find a puzzle that reduces to traditional partial hash-preimage search under the pessimistic assumption that memory is free.
+
+The new mechanism achieves this feature. Concretely, the guesser still has to find a partial preimage such that the block hash is smaller than the target. The only difference is that previously, this partial preimage was just the nonce; whereas now it is the nonce plus some other information, and, crucially, in order for the block to pass the proof-of-work validation, this other information must also satisfy a certain sparse relation.
+
+### Stateless Guessing
+
+Guessing must be stateless in order to effectively generate consensus.[^4] While true statelessness is impossible for any process that runs on a computer, the best we can hope for is for a single guess to be nearly instantaneous. However, a process spanning an instant in time cannot touch a meaningful number of memory cells. Therefore, in order for guessing to be memory-hard there must be a preprocessing phase that initializes memory. The preprocessing phase is allowed to be stateful because the conensus comes from the stateless online guessing phase, which comes after.
+
+### Efficient Verification
+
+Succinctness via recursive block validation is still very much on the roadmap. Consequently, at some future point we will have to implement the proof-of-work validation procedure in Triton-assembler, and prove the integral execution of this validator. Producing this proof should be at most a small task relative to the other tasks involved in recursive block validation. Concretely, this requirement means that:
+
+ - Tip5 must be the underlying hash function;
+ - Validating a solution must be near instantaneous.
+
+## Construction
+
+It its core, the proof-of-work mechanism revolves around a large Merkle tree. The hash of the root and the nonce determines leaf indices. The authentication paths for these leafs are put into the block header. This makes the block complete; the hash of the block can now be compared against the target. If it is larger, the guesser samples a new nonce and tries again.
+
+To prevent the guesser from dropping the leafs from memory and recomputing them on the fly whenever necessary, they are hard to compute. To prevent the guesser from dropping a fraction of the Merkle tree and ignoring those nonces where it is needed, *two* paths are required. As a result, the probability of sampling an index from the fraction of the tree that is being stored, is that fraction *squared*.
+
+More formally, define the following notions relative to a memory parameter $M$ which regulates the height of the Merkle tree. In practice, $M=29$. Moreover, the following definitions are relative to a generic hash function $\mathsf{H}$, whereas in practice Tip5 is used.
+
+The *proof-of-work data* (in the code it is called `Pow`) is a field in the block header, which itself consists of four fields:
+
+ - a *nonce*, which is a digest;
+ - a *Merkle root*, also a digest;
+ - two authentication paths, *path A* and *path B* consisting of $M$ digests each.
+
+Let $\mathit{commitment}$ denote the hash of the MAST authentication paths of the proof-of-work data within the block. It is a commitment to all the data in the block *except* the proof-of-work data.
+
+For $i \in [0, 2^M-1]$, the $i$-th *bud* is $\mathsf{H}(\mathit{commitment} \Vert i)$.
+
+For $i \in [0, 2^M-1]$, the $i$-th *leaf* is the root of the Merkle tree over buds $[i, i+2^L]$ where the interval wraps around modulo $2^M$ and where $L$ is a work parameter. In practice, $L=5$.
+
+The *guesser buffer* is a pair of lists of digests. The first is the *leafs*, and the second is the internal Merkle tree nodes for these leafs. The guesser buffer is expensive to store by design – $2^M$ digests, or 40 GB at deployed parameters. The design intention is that any strategy that involves storing only a fraction of the guesser buffer is disproportionately costly on other metrics.
+
+### Preprocessing
+
+The preprocessing phase is where the guesser buffer is produced. Two pitfalls tempt a naïve implementation of this step. First, a lot of intermediate values are used multiple times and they are expensive to compute once, let alone more than once. Second, they cannot be stored indefinitely: that memory is needed to store the final result. 
+
+The following strategy for computing the guesser buffer avoids these pitfalls with dynamic programming.
+
+ - Start with the initial layer of buds, by computing the $i$-th bud for all $i \in [0, 2^{M}-1]$. Denote by $A$ the memory where this layer is stored.
+ - Allocate memory for a second layer, and denote it by $B$.
+ - For $j \in [0; L-1]$ do:
+    - compute the $j$-th layer by setting element $i$ to $\mathsf{H}(A[i] \Vert A[i+2^j])$ and storing the result in $B[i]$, for all $i \in [0, 2^{M}-1]$;
+    - Swap $A$ and $B$.
+ - At this point, $A$ stores the leafs of the guesser buffer.
+ - Compute the Merkle tree over these leafs and store the internal nodes in $B$.
+ - The guesser buffer lives in $(A, B)$.
+ - The *Merkle root* of the guesser buffer can already be populated as this value lives in $B$.
+
+### Online Guessing
+
+The guess loop requires access to a guesser buffer. It works as follows.
+
+ - Sample a digest, the $\mathit{nonce}$, at random.
+ - Compute $\mathit{index}_A, \mathit{index}_B$ via $\mathsf{H}^{2^{L+1}-1}(\mathit{commitment} \Vert \mathit{nonce})$ and interpreting the resulting digest as two independent integers in $[0; 2^M-1]$. Here the superscript $2^{L+1}$ denotes the $2^{L+1}-1$-fold composition of $\mathsf{H}$ with itself.
+ - Read from the guesser buffer the Merkle authentication paths for leafs $\mathit{index}_A$ and $\mathit{index}_B$; call them $\mathit{path}_A$ and $\mathit{path}_B$.
+ - Complete the proof-of-work data with the new information: $(\mathit{nonce}, \mathit{path}_A, \mathit{path}_B)$.
+ - Compute the block hash and compare it against the target $T$ derived from the difficulty.
+ - If $\mathsf{H}(\mathit{block}) < T$ success!
+ - If $\mathsf{H}(\mathit{block}) \geq T$, reset the proof-of-work data and go back to the first step.
+
+### Validating
+
+Validating the proof-of-work data of a block consists of three tests. The first is comparing the block hash against the target $T$. The next two are Merkle path verifications. Specifically, the verifier must:
+
+ - Calculate $\mathit{index}_A, \mathit{index}_B$ from $\mathsf{H}^{2^{L+1}-1}(\mathit{commitment} \Vert \mathit{nonce})$.
+ - Compute *buds* $[\mathit{index}_A; \mathit{index}_A+2^L]$ and $[\mathit{index}_B; \mathit{index}_B+2^L]$.
+ - Compute *leafs* $\mathit{index}_A$ and $\mathit{index}_B$ from the computed buds.
+ - Verify $\mathit{path}_A$ against $(\mathit{root}, \mathit{index}_A, \mathit{leaf}_A)$ and analogously for $B$.
+
+ If either of these Merkle path validations fail, the block is rejected as invalid.
+
+ The number of hash evaluations involved in one verification is
+
+|                         |                     |
+|-------------------------|---------------------|
+| compute indices         | $2^{L+2}-2$         |
+| compute buds            | $2^{L+1}$           |
+| compute leafs from buds | $2^{L+1}-2$         |
+| traverse Merkle paths   | $2M$                |
+| total                   | $2^{L+3} + 2M - 4$. |
+
+At deployed parameters, this number is 310; and it takes less than a millisecond in concrete terms.
+
+## Tradeoffs
+
+Two natural strategies for trading off memory against time illustrate why using less memory degrades performance when measured in terms of the number of hash invocations. It should be noted that the phrase *time penalty* is inaccurate because it can be incurred in parallel, meaning that it could disappear at the cost of occupying more cores.
+
+In both cases, not the entire guesser buffer is stored, but only a fraction of it is. Moreover, the overhead of computing this buffer when not enough memory is available is ignored – only the online guessing phase is intended to be memory-hard.
+
+### Drop Bottom Layer
+
+The bottom layer of a Merkle tree contains the leafs, and if it is dropped then the memory cost is halved. In order to make one guess, the guesser must produce the sibling leafs of nodes $\mathit{index}_A$ and $\mathit{index}_B$, as these are part of the authentication paths. If the guesser is lucky then $\mathit{index}_A = \mathit{index}_B$ and he needs to compute only one leaf. Even so, this leaf itself is the Merkle root of a tree over $2^L$ buds. The cost of computing these buds is $2^L$ hashes, and is followed up by $2^L-1$ hashes for computing internal Merkle nodes.
+
+These $2^{L+1}-1$ hash evaluations then enable hashing the block to compare the resulting digest against the target. Hashing the block is obviously more expensive than one fixed-length hash invocation because, among other reasons, it involves several hash invocations as a Merkleized abstract syntax path is traversed. For the purpose of this analysis it suffices to assume that the cost of one block hash evaluation is less than $2^{L+1}-1$ fixed-length hash invocations. (In fact, $L$ was chosen for this to be true.)
+
+Under this assumption, it follows that a guesser who saves a fraction 0.5 of the memory cost by not storing the bottom layer of the Merkle tree pays through an at least 2 $\times$ larger hashing cost.
+
+### Drop Right Half
+
+Another strategy that suggests itself is to drop all leafs and internal nodes associated with the right half of the tree. Whenever the guesser samples indices that lie in the portion of the tree that is being stored, he can make the guess without incurring an extra hashing cost. If the indices are not suitable, the guesser just tries another nonce.
+
+Of course, the probability that both indices point into the stored part of the tree is small: 0.25. More generally, if the guesser stores only a fraction $f$ of the tree, then the probability of hitting suitable indices is $f^2$.
+
+The net effect is that the success probability per nonce drops by a factor 4. And so the guesser must compensate by sampling 4 $\times$ as many nonces and hashing them. The second step is the expensive one: the indices are derived from $\mathsf{H}^{2^{L+1}-1}(\mathit{commitment} \Vert \mathit{nonce})$, which involves $2^{L+1}-1$ fixed-length hash invocations. It follows that the guesser who saves a fraction 0.5 of the memory cost by storing the left half of the Merkle tree pays through a 4 $\times$ larger hashing cost.
+
+---
+
+[^1]: What even is a malicious extension to a blockchain? A strategy like selfish-mining comes to mind, but the more poignant position is that whatever it means, its opposite (honesty) must prevail eventually under the 50% of resources assumption.
+
+[^2]: Actually, the universe [conserves energy](https://en.wikipedia.org/wiki/Conservation_of_energy) locally and so all energy that enters into the mining process must also exit it. The thing being consumed is not energy *per se* but *usable energy* or [exergy](https://en.wikipedia.org/wiki/Exergy). An equivalent characterization of proof-of-work mining is that it requires the consumption of [negentropy](https://en.wikipedia.org/wiki/Negentropy).
+
+[^3]: Tying proof-of-work to proof-production is, in the abstract, an ideal. To gain an advantage in the proof-of-work game when it is tied to proof-production, you must do something that makes proving more feasible. Then the incentive for miners to contribute blocks translates into an incentive to accelerate proof-production, which in turn benefits transaction throughput and a host of other metrics of interest. Unfortunately, tying proof-production to proof-of-work is fraught with practical difficulties:
+
+ - Proof-production is stateful; there is always a percentage capturing the degree of completion. Relative to stateless proof-of-work puzzles, miners are less likely to throw away a proof that is 90% completed when a new block comes in on the off chance that they can win the block race if they plow ahead and complete their current work. As a result, the network has a greater incentive to delay propagation of proof-of-work solutions, and block races are more common.
+ - Proof-production is not a black box; it has an observable state that evolves across many discrete steps. There may be optimizations for singular steps that benefit proof-of-work but break regular proof-production. For example, in FRI-based proof systems, it is possible to record the prover state close to completion, modify one leaf in the Merkle tree, and generate a completely different proof that is still valid with high probability. Crucially, this leads to a strategy for generating $k$ proofs much faster than $k$ times the time to generate one proof. In STIR-based proof systems, it is even possible to avoid the large memory footprint that comes with this stategy.
+
+[^4]: Guessing must be stateless (memory-less) in order to effectively generate consensus. Otherwise guessers have the incentive to ignore incoming blocks that arrive in the course of a guess in order to complete it, and gamble on winning the block race in case it is valid. For sufficiently small guess times, this deficiency disappears in the noise of the law of large numbers of guesses and in the noise of network jitter as the block is disseminated.

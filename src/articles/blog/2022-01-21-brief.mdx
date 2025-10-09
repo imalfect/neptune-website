@@ -1,0 +1,67 @@
++++
+title = "A brief introduction"
+description = "Neptune is a new layer-one blockchain leveraging cutting-edge cryptography to offer privacy, scalability, and post-quantum security through recursive transparent SNARKs."
+author = "Alan Szepieniec, Thorkil Værge"
+date = "2022-01-21"
+type = "blog"
+imagegen = "A futuristic blockchain network with glowing blue cryptographic symbols and quantum-resistant shields, representing advanced privacy and security technology"
+
+[thumbnail]
+src = "/article-images/blog/ai/future-blockchain.png"
+caption = "A brief introduction"
++++
+
+
+## A brief introduction
+
+Bitcoin builds upon 20th century cryptography. Although multiple blockchains use more modern cryptography, none combine more than a handful of the mathematical inventions of the last 20 years. We believe that significant advances in the science of cryptography constitute a unique opportunity to build a financial infrastructure of the future.
+
+We are building **Neptune**, a new layer-one blockchain that leverages cutting edge cryptography to offer a set of features unique to any project in the space.
+
+{/*  more  */}
+
+- **irrevocability** -- proof-of-work ensures that the effort required to reorganize the ledger grows over time;
+- **privacy** -- the currency is fungible like cash;
+- **scalability** -- the workload of network participants is tiny and independent of the popularity of the payment system;
+- **smart** -- the blockchain supports contracts with arbitrary logic for the transfer of coins and tokens;
+- **post-quantum security** -- future quantum computers will not jeopardize the security of the network.
+
+## Technology
+
+One of the pivotal mathematical advances relevant to the financial infra-structure of the future is the development of **recursive, transparent, post-quantum SNARKs**.
+
+### SNARKs
+
+A SNARK is a piece of cryptographic data that authenticates the execution of a computer program, in the same sense that an apostille certifies the origin and integrity of a legal document, or signatures certify the parties' agreement to a contract.
+
+For example:
+
+- A SNARK certifies the validity of a transfer of value. It ensures that the proper owners agree and that no monetary inflation is taking place, while concealing the amount.
+- A SNARK certifies the correct interaction with a smart contract on the blockchain, meaning that the interaction satisfies the protocol's consensus rules as well as the smart contract specification.
+
+Concretely, SNARKs support arbitrary computations for **smart contracts**, like Ethereum. However, the state changes are concealed for all but the involved parties and offers **opt-in transparency**, just like Monero.
+
+### Transparent
+
+Other blockchains (such as ZCash and Mina) use SNARKs that come with trusted setup procedures that involve the use of secret data that must be securely deleted somehow, or else the blockchain is insecure. In contrast, the SNARKs in Neptune do not have a trusted setup procedure and hence no such toxic waste. Such SNARKs are called **transparent**.
+
+### Post-quantum
+
+A post-quantum cryptosystem is one that is resilient against attacks from future quantum computers but that can be deployed on today's computer infrastructure. Bitcoin, Ethereum, and Monero do not offer protection against quantum computers. Nevertheless, post-quantum security will become necessary for blockchains, as the mere theoretical threat of an attack on the core cryptographic primitives justifies discounting the value of the currency.
+
+### Recursive
+
+A recursive proof system is capable of verifying itself. Specifically, a recursive SNARK system is capable of proving the successful verification of another SNARK. This technology has many applications in the context of blockchains.
+
+- Transactions need only one proof or signature per transaction bundle, and not one per input like in Bitcoin or Ethereum. In other words, value can be transferred from any number of inputs to any number of outputs, with only one ``signature'' certifying the validity of the entire transfer.
+- Miners can bundle transactions too. As a result, every block contains one transaction, with many inputs and outputs. Miners replace the individual SNARKs of each user-submitted transaction with one ``master'' SNARK for the entire bundle.
+- Individual block SNARKs authenticate the accumulated proof-of-work of the entire chain, and not just the most recent block. Consequently, validating a block is the same as validating the entire chain. This makes synchronization practically instantaneous.
+
+## Team
+
+**Alan Szepieniec** is a researcher with Nervos Foundation and founder of Zug-based research lab AS Discrete Mathematics GmbH. He holds a PhD in post-quantum cryptography from the University of Leuven, Belgium, and is author of numerous scientific articles. Two of his contributions (with co-authors) in particular have gained traction in the blockchain community:
+
+- [DARK/Supersonic](https://eprint.iacr.org/2019/1229.pdf) builds SNARKs from class groups, a mathematical primitive that was not known to support SNARKs. The new mathematical foundation eliminates the trusted setup.
+- [Rescue and Rescue-Prime](https://eprint.iacr.org/2020/1143.pdf) are popular hash functions for use in combination with zero-knowledge proofs.
+
+**Thorkil Værge** holds a master in physics from the University of Copenhagen. He has worked with blockchain technology for the last seven years and has contributed to the specification of the Ethereum and the Bitcoin Lightning protocols. He has implemented core blockchain solutions for blockchain companies such as BitGo, Bitcoin Suisse, and Inacta. In his spare time he has invented and developed the [compiler for a programming language](https://github.com/Sword-Smith/Sword) for specifying financial contracts on the Ethereum blockchain. 

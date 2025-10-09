@@ -1,0 +1,77 @@
++++
+title = "Betanet Version 2"
+description = "Announcement for Betanet Version 2."
+author = "Neptune Cash Developers"
+date = "2025-01-31"
+type = "blog"
+
+[thumbnail]
+src = "/article-images/blog/rocket.jpg"
+caption = "Betanet Version 2"
++++
+
+
+|  ![β](/article-images/blog/beta.png)     |
+| :-----------------: |
+| **Fig.1.**: The second letter in the Greek alphabet. |
+
+# Betanet Version 2
+
+On January 31, 2025 we released version 0.11.0 of [`neptune-core`](https://github.com/Neptune-Crypto/neptune-core), codenamed **Betanet Version 2**. Moreover, as of now, this version of the protocol is up and running as a test net.
+
+Betanet Version 2 marks an important milestone because in terms of features, it is *on par* with mainnet, which will follow shortly after. In particular, we do not anticipate any consensus-related changes[^1], or any major changes really, between now and mainnet-launch. The remaining time will be spent on security reviews and fixing issues that the testnet exposes.
+
+## Features
+
+### Documentation
+
+While a far cry from comprehensive, [https://docs.neptune.cash/](https://docs.neptune.cash/) provides an overview of many key technical aspects.
+
+### Consensus
+
+Neptune Cash is the blockchain where zk-STARKs live on Layer-1. Where traditional blockchains require executiuon and re-execution, Neptune Cash requires proving and verification instead. The point is that verification is several orders of magnitude cheaper.
+
+Betanet Version 2 represents a blockchain where all relevant operations have supporting STARK proofs. In particular:
+ - The production of transactions.
+ - The merger and updating of transactions.
+ - The production of blocks.
+ - Time locks and the time-locking of half of all mining rewards.
+
+The full potential of STARK proofs will only be achieved with *recursive block validation*, whereby the correctness of *all of history* is established by one
+block proof. This feature will be developed and forked in at a later date.
+
+### Neptune-Core
+
+Besides consensus-level features, `neptune-core` boasts plenty of new application-level features, including and not limited to:
+
+ - multiple receiving addresses, with new ones being generated on the fly;
+ - off-chain notifications, for when you don't want donations to the same address to be linkable;
+ - multi-threaded guessing;
+ - out-of-process proving.
+
+
+### Explorer
+
+Every blockchain must have a [block explorer](https://github.com/Neptune-Crypto/neptune-explorer). Neptune Cash has one too! Check it out at [https://explorer.neptune.cash/](https://explorer.neptune.cash/).
+
+### Triton-VM
+
+Triton-VM, the STARK engine upon which Neptune Cash is built, is evolving into a mature application, complete with recursion and a library of snippets. At this point Triton-VM is a rather vanilla STARK system (meaning: DEEP-ALI with FRI), but after mainnet we plan to upgrade this with novel cryptography such as [DEEP Commitments](https://eprint.iacr.org/2024/1752).
+
+Oh, and by the way, we commissioned an audit of the most error-prone parts the code base. The [report](triton-vm-audit-hridam-basu.pdf) found a bunch of programming-related issues but no weaknesses or vulnerabilities.
+
+## Participate
+
+We welcome participation! To spin up a node, follow the instructions on the [README.md](https://github.com/Neptune-Crypto/neptune-core). Instead of installing from source, consider installing a package from the [release build](https://github.com/Neptune-Crypto/neptune-core/releases/tag/v0.0.11). When you have synced to the network, be sure to join the [Telegram](https://t.me/neptune_project) channel to receive updates and (if necessary) ask for technical support.
+
+## Bounties
+
+In the summer of 2023 we [announced](../blog/2023-08-08-contributing.md) a bounty allocation of 60 000 Neptune coins to be issued for work on compilers related to tasm and for work related to consensus. Some bounties have been awarded, but the majority of the fund remains up-for-grabs. Furthermore, we are extending the scope of this program to reward individuals who find any vulnerability that can cause peers' nodes to crash.
+
+However, the biggest bounties can be collected by finding soundness errors in the consensus mechanism, the logic that relates to a sound money supply and UTXO ownership. If you can find an exploit of this fundamental logic, we're ready to part with up to 10.000 coins.
+
+## Roadmap
+
+The big question at this point is of course, when is mainnet launch? Unfortunately, it's still too early to commit to a definitive date. But check out the [mainnet](https://github.com/Neptune-Crypto/neptune-core/issues?q=is%3Aissue+is%3Aopen+label%3Amainnet) on Github for an idea of which issues block progress on that front and watch them melt away.
+
+[^1]: Not counting populating the genesis block with the addresses of premine recipients.

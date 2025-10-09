@@ -1,0 +1,135 @@
++++
+title = "UTXO Redemption"
+description = "Details about the UTXO redemption procedure"
+author = "Alan Szepieniec"
+date = "2025-07-27"
+type = "blog"
+
+[thumbnail]
+src = "/article-images/blog/utxo-redemption-diagram.jpg"
+caption = "UTXO Redemption"
++++
+
+
+| ![Schematic diagram of a UTXO redeeming itself from another chain.](/article-images/blog/utxo-redemption-diagram.jpg) |
+| :-----------------: |
+| **Fig.1.**: Grok adamantly refusing to imagine an abstract cross-chain UTXO redemption protocol. |
+
+# UTXO Redemption
+
+On July 4 2025, Neptune-core developers discovered a [undetectable inflation bug](../inflation-bug-discovered). Following this discovery, the decision was made to reboot the blockchain with a new genesis block. It is not a pure reboot though, because there is a UTXO redemption claims process whereby owners of UTXOs on the old chain can reclaim their balance on the new chain.
+
+## The Claims Fund
+
+Specifically, the block subsidy schedule on the reboot chain is fast-forwarded by 21310 blocks, meaning that the first halving will occur 21310 blocks sooner. The skipped block subsidies are be allocated to a claims fund from which disbursements can be made to parties who can prove ownership of UTXOs at block 21310 on the old chain. In this way, the 42'000'000 coins limit remains.
+
+The claims fund will initially be custodied by the founders. After a while, when the infrastructure exists to support it, they may be moved to a smart contract that can validate the redemption claims and automatically make the disbursements when the claims are found valid. Alternatively, they will be burned. We have not decided yet.
+
+If the vulnerability was exploited before block 21310 (which marks the time the bug was discovered), then the exploiter will be able to produce a UTXO redemption claim that is indistinguishable from authentic. If they choose to exercise this claim, it is possible that the fund runs out before other, legitimate, users have had a chance to exercise their claims. In this case, the fund abides by the "first come, first serve" principle because serving all claimants would undermine the 42'000'000 limit and the only alternative is to pick winners and losers based on different information from which claims are legitimate and which are not.
+
+That said, it is worth stressing that we have no indication that the vulnerability was ever exploited. We just cannot guarantee that.
+
+Another limitation is worth mentioning. Due to the anyonymity mechanism, it is difficult to distinguish premine UTXOs from UTXOs created shortly after genesis. Premine UTXOs are ineligible for redemption because they will be present on the reboot chain as part of the genesis block. However, in order to reliably filter out all claims of premine coins there must be a nonzero false negative rate. Concretely, this means that UTXOs that were created shortly after genesis and never spent since might be unclaimable as well. According to our simulations, the probability that a UTXO is unclaimable drops to below 1% at around UTXO 280, or 70 blocks in.
+
+## Exercising Claims
+
+The tools needed to produce and verify a UTXO redemption claim live on branch [`redeem`](https://github.com/Neptune-Crypto/neptune-core/tree/redeem). You must be running this version of the software on a node that is synced to block 21310 (or beyond) on the legacy chain and in possession of unspent UTXOs. Lastly, the node must be running while you run the following commands in another terminal:
+
+ - Set the tip to 21310: `> neptune-cli set-tip ecfae777da1a6b5ad97d3d793cb64b0cb4262ac5e378d2f4e2a5049e731298e058b2000000000000`
+ - Produce the redemption claim: `> neptune-cli redeem-utxos`
+ - (Optional:) to verify the redemption claim: `> neptune-cli verify-redemption`
+
+By default, the `redeem-utxos` command will create a directory `redemption-claims/` and populate it with a file named something like `48955e77e4e2476eca858bbf9c3b2bc1e683b7426e7abe16538bc417b5e426878561d7b7453f39c8.redeem`. 
+
+Send this file to us. After validating it we will initiate a transaction to send the coins to the address listed in the claim.
+
+Speaking of which, every redemption claim is linked to a receiving address. Without it, the proofs will be invalid. By default, the receiving address is set to the node's 0th generation address, the same one as is produced by `neptune-cli premine-receiving-address`. To customize it, use the `--address` argument on `redeem-utxos`.
+
+### Synchronizing
+
+If your node is not already synchronized to the legacy network, you have two options.
+
+ 1. Synchronize through the regular peer-to-peer network.
+     - Start your node with `--peers 139.162.193.206:19798` (note the port number!) to connect to a node that is guaranteed to serve the right blocks.
+     - Block download and synchronization will start immediately.
+     - If there is only one node on the network, you might fall into the [sync timeout trap](https://github.com/Neptune-Crypto/neptune-core/issues/634). To get around this obstacle, restart your node every so often.
+ 2. Download the blocks via bittorrent.
+     - Download the [torrent file](neptune-cash-legacy-blocks20250728.torrent) and download the blocks from seeders. (Note that the blocks are located in `home/thv/.local/share/neptune/main/blocks/`.)
+     - Untar the archive with `tar -xf` (not the usual `tar -xzvf`).
+     - Delete the `databases/` and `blocks/` directory if these are present.
+     - Start the node with `--bootstrap-from-directory <path/to/blocks>`.
+
+## Redemptions
+
+In the interest of transparency, all UTXO redemption claims and their associated disbursements are logged below.
+
+|     address (abbrev.)     | amount (NPT)                              | disbursed   |  comment (optional)  | redeem file |
+|:-------------------------:|------------------------------------------:|:-----------:|:---------------------|:------------|
+| nolgam1tph26le...9vmphz6s |    450.0085550000000000000000000000000000 | genesis     | donation address[^1] | [download](48955e77e4e2476eca858bbf9c3b2bc1e683b7426e7abe16538bc417b5e426878561d7b7453f39c8.redeem) |
+| nolgam1autuvle...2xnx3e44 |    101.0900000000000000000000000000000000 | genesis     |                      | [download](a997922a5d826258816b38c7414bc00699f7bc3bf715734f942af0c337cd5eb.redeem) |
+| nolgam1drha3sp...vkpqmfqw |      9.8543000000000000000000000000000000 | genesis     |                      | [download](1f46a565fdde633075f0ddfe644a1eb54f18fe7386522093d6f793e4b305fda.redeem) |
+| nolgam1tr6ux9n...ay779hmg | 434962.9415060983029299817536415794922500 | genesis     | SafeTrade            | [download](2025-08-05-a.zip) |
+| nolgam1tr6ux9n...ay779hmg |      0.0399999999999999983324789473280000 | genesis     | SafeTrade            | [download](2025-08-05-a.zip) |
+| nolgam16p0urjd...duwpwt3u | 454949.9000000000000000000000000000000000 | genesis     | SafeTrade            | [download](2025-08-05-b.zip) |
+| nolgam1tc9reg0...6spazqzk |    569.5866325000000087264452033904642500 | genesis     | Phoebe               | [download](2025-08-05-c.zip) |
+| nolgam1tc9reg0...6spazqzk |   2430.0959325000000087264452033904640000 | genesis     |                      | [download](2025-08-05-c.zip) |
+| nolgam1qtqfy6n...3g0ad2ls |   4181.6804965567991310052849205903360000 | genesis     | yeah sure, it was a goal of mine :) just made it | [download](2025-08-05-d.zip) |
+| nolgam1qtqfy6n...3g0ad2ls |   4295.1215965567991310052849205903360000 | genesis     |                      | [download](2025-08-05-d.zip) |
+| nolgam12e9wmfw...dj8c00y4 |   2586.9907999999998122883048097710080000 | genesis     |                      | [download](2025-08-05-d.zip) |
+| nolgam12e9wmfw...dj8c00y4 |   2586.9907999999998122883048097710080000 | genesis     |                      | [download](2025-08-05-d.zip) |
+| nolgam15xk75as...3xg9syq0 |     24.4999999900000000000000000000000000 | genesis     |                      | [download](2025-08-05-d.zip) |
+| nolgam1jfzfp7g...suh7zhgk |      9.2000000000000000000000000000000000 | genesis     |                      | [download](4ebaf3bf1bd4a713747bd7c9decf7d1d79cf9a9c73ac921df74a0ac7ffbe7a7f4108a5fcb9236e3b.redeem) |
+| nolgam1r4rml2s...aspyf53j |  12853.4129593380500636918555308195840000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      | Minerlab             | [download](2025-08-06-a.tar.gz) |
+| nolgam1r4rml2s...aspyf53j | 176689.2704864789804841314795388928000000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      | Minerlab             | [download](2025-08-06-a.tar.gz) |
+| nolgam1yqpkezu...kxlz56nj |     64.0000000000000000000000000000000000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](2025-08-07-a.tar.tar) |
+| nolgam1yqpkezu...kxlz56nj |  31308.8304072400002434731044968529920000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](2025-08-07-a.tar.tar) |
+| nolgam1qtfe60t...gy4uupqu |     56.2702856866377999323154529320960000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      | MinerLab             | [download](bb7a5b7b645301e424531ba47d5026c565678401844d577354de4b36747ab8d24df0aa413f328210.redeem) |
+| nolgam1qtfe60t...gy4uupqu |   3803.7784541643094782088061377249280000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      | MinerLab             | [download](bb7a5b7b645301e424531ba47d5026c565678401844d577354de4b36747ab8d24df0aa413f328210.redeem) |
+| nolgam1mav4jjj...tgf7ef2h |   1789.0094119195000385935254654812160000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](d35b1a2f18f8be25a89b2967ff2502de4ac846b31e5c9e2a5cf8715eb3991bc6f10c76a96f3c3661.redeem) |
+| nolgam1mav4jjj...tgf7ef2h |  10337.0929999999999999991662394736640000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](d35b1a2f18f8be25a89b2967ff2502de4ac846b31e5c9e2a5cf8715eb3991bc6f10c76a96f3c3661.redeem) |
+| nolgam1m8umdar...0vam9ma4 |    535.9000000000000000000000000000000000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      | no comment           | [download](982c760a4799b34da53c528c32536d475c2522214f99aabf54c6c4805fb9d127386a9478e1af2f55.redeem) |
+| nolgam1hvszeed...lz63upq9 |   2004.1200000000000000000000000000000000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      | reclaim steps is a little complex,but community member are warm-hearted help me do that, dev respond quickly, everything goes. all good 😂 | [download](1d658a6372f6f2c067d06dd7024fc919aa21891e558da762d0a831b7095902e.redeem) |
+| nolgam1d3m2j7r...328vsju6 |  11674.2801230000000000000000000000000000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      | Thanks to community dev @KaffinPX for his help, and I wish NPT a bright future. | [download](cfc5d0891482e20bf6115c64edd319793f173670ab3e8c01f1bc8cc559fec75.redeem) |
+| nolgam1p3mnc8x...aykvz60c |    153.5999999999999945759029817507840000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](68f15daec1205690f3bd2271b9a0341a6f01ae8af2857c0b1d7b6f142a1794a6d83e62170609bfd5.redeem) |
+| nolgam1p3mnc8x...aykvz60c |    153.5999999999999945759029817507840000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](68f15daec1205690f3bd2271b9a0341a6f01ae8af2857c0b1d7b6f142a1794a6d83e62170609bfd5.redeem) |
+| nolgam19uwu7l7...uxmuyljx |    109.4399999999999971205336656773120000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](9af4eb867d92bc34a1ebdf7fa6d49687dbd9975fab63354610d6f37e5c3064a301c9362f311062c4.redeem) |
+| nolgam19uwu7l7...uxmuyljx |    109.4399999999999971205336656773120000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](9af4eb867d92bc34a1ebdf7fa6d49687dbd9975fab63354610d6f37e5c3064a301c9362f311062c4.redeem) |
+| nolgam1rjmn3qd...xwgrxrkg |    251.5199999999999892271740496117760000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](702e0da0c5ada13ab5c05137ae6aca69cff0b9c372053e733c9b663dee8ca06142791cc1027f9d41.redeem) |
+| nolgam1rjmn3qd...xwgrxrkg |    251.5199999999999892271740496117760000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](702e0da0c5ada13ab5c05137ae6aca69cff0b9c372053e733c9b663dee8ca06142791cc1027f9d41.redeem) |
+| nolgam16p2dhw5...nxg77jpf |     96.0000000000000006363079948369920000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](c9c62f15e88ecee4256a6931eee2d256d369f38fa0fb838c57418d457f261d16c998c12553feb742.redeem) |
+| nolgam16p2dhw5...nxg77jpf |     96.0000000000000006363079948369920000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](c9c62f15e88ecee4256a6931eee2d256d369f38fa0fb838c57418d457f261d16c998c12553feb742.redeem) |
+| nolgam133vyju2...r2e9sk66 |    547.1999999999999856026683283865600000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](4827ece2833b10de16f9c2a0229c486f52f00a3601ab78a30f608ee21140aa3c192b039994a76074.redeem) |
+| nolgam133vyju2...r2e9sk66 |    547.1999999999999856026683283865600000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](4827ece2833b10de16f9c2a0229c486f52f00a3601ab78a30f608ee21140aa3c192b039994a76074.redeem) |
+| nolgam1p7pg7xq...r6gjhuy4 |    463.9999999999999828906198192619520000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](7273ca99d916171f80b3295a43b81b6d3887383f048f36c2574d20790b8d7dd91673950b333c7383.redeem) |
+| nolgam1p7pg7xq...r6gjhuy4 |    463.9999999999999828906198192619520000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](7273ca99d916171f80b3295a43b81b6d3887383f048f36c2574d20790b8d7dd91673950b333c7383.redeem) |
+| nolgam1nehsae0...kz4nh6q6 |    108.7999999999999972879514908753920000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](331b480624922442e31e478540893f83780530fe45808cfd4d614777f5901295a500132bb41f1182.redeem) |
+| nolgam1nehsae0...kz4nh6q6 |    108.7999999999999972879514908753920000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](331b480624922442e31e478540893f83780530fe45808cfd4d614777f5901295a500132bb41f1182.redeem) |
+| nolgam18542fz8...yvm8w0av |    116.4799999999999975307374021836800000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](0c340497f53a487f91e5bff070e49ee69e6da4e9a66f24493fb92950b5c1ec79870ba618d5cb221a.redeem) |
+| nolgam18542fz8...yvm8w0av |    116.4799999999999975307374021836800000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](0c340497f53a487f91e5bff070e49ee69e6da4e9a66f24493fb92950b5c1ec79870ba618d5cb221a.redeem) |
+| nolgam1raf6kxa...u2ujhmdv |    256.0500000000000000000000000000000000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](4e7d2816193b7370c8cfce241b234e14210dbfdbff6a63bc29b847357fee993b683fc65aee6b2531.redeem) |
+| nolgam1raf6kxa...u2ujhmdv |    256.0500000000000000000000000000000000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](4e7d2816193b7370c8cfce241b234e14210dbfdbff6a63bc29b847357fee993b683fc65aee6b2531.redeem) |
+| nolgam1rn47u24...ek9v9nzf | 146745.2238432832294740677020814540800000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](2025-08-14-a.zip) |
+| nolgam1rn47u24...ek9v9nzf | 146476.8078432832294740677020814540800000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](2025-08-1a-a.zip) |
+| nolgam1jtkvlj2...t6y0ra5h |  59594.9400000000000003014723444408320000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](33e284a0e04c0af15acebe0107a2f39a7e63edcc2065c78d220a1e878db9d33db38dcfdf6d60e971.redeem) |
+| nolgam1jtkvlj2...t6y0ra5h |     33.2800000000000003014723444408320000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](33e284a0e04c0af15acebe0107a2f39a7e63edcc2065c78d220a1e878db9d33db38dcfdf6d60e971.redeem) |
+| nolgam1vgmj6y5...v60yypdl |    408.7675476950199999990634674913280000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](2025-08-20-a.tar.gz) |
+| nolgam1vgmj6y5...v60yypdl |  60257.8895150569193642431168548700160000 | [2627/14](https://explorer.neptune.cash/announcement/digest/f023fe6b0a854c2864f059ffd3ee5b89868055ce07718108d7966cfae47b4ea91535450000000000/14)      |                      | [download](2025-08-20-a.tar.gz) |
+| nolgam14ww30eg...0savhxnh |   8724.0228781969502414830353949655040000 | [6264/5](https://explorer.neptune.cash/announcement/digest/48c1c8cd67b2f99d20bf9338b869adc8d63dc7364c99aa9f71774056a339b608ab3a5b0100000000/5)       |                      | [download](2025-08-25-a.zip)    |
+| nolgam14ww30eg...0savhxnh |  41641.5022162210502477937162065018880000 | [6264/5](https://explorer.neptune.cash/announcement/digest/48c1c8cd67b2f99d20bf9338b869adc8d63dc7364c99aa9f71774056a339b608ab3a5b0100000000/5)       |                      | [download](2025-08-25-a.zip)    |
+| nolgam1nurfm22...a7fqh2e4 |    196.5192491045784315991655716290560000 | [6264/5](https://explorer.neptune.cash/announcement/digest/48c1c8cd67b2f99d20bf9338b869adc8d63dc7364c99aa9f71774056a339b608ab3a5b0100000000/5)       |                      | [download](2025-08-29.tar.gz)   |
+| nolgam1nurfm22...a7fqh2e4 | 272528.5609142930285424298709955706880000 | [6264/5](https://explorer.neptune.cash/announcement/digest/48c1c8cd67b2f99d20bf9338b869adc8d63dc7364c99aa9f71774056a339b608ab3a5b0100000000/5)       |                      | [down](2025-08-31-a.tar.gz)[load](2025-09-10-a.tar.gz) |
+| nolgam1dkvqt69...hs5uw9kg |   5000.0000000000000000000000000000000000 | [6264/5](https://explorer.neptune.cash/announcement/digest/48c1c8cd67b2f99d20bf9338b869adc8d63dc7364c99aa9f71774056a339b608ab3a5b0100000000/5)       |                      | [download](da496182bc8b5b549f08e0db03e4050ea849221ac1abfaf8792967f32391c7bd657614501af670b0.redeem) |
+| nolgam1z5052q2...2cfrxjym |   7775.0000000000000000000000000000000000 | [6264/5](https://explorer.neptune.cash/announcement/digest/48c1c8cd67b2f99d20bf9338b869adc8d63dc7364c99aa9f71774056a339b608ab3a5b0100000000/5)       |                      | [download](6b7d8c646c20bd9d56dbd7db0fd7202008911da1de7e8638355d58d6cf0ab48.redeem) |
+| nolgam1dk90nz8...0kag8cd3 |  13677.0584600181393461737843636305920000 | [6264/5](https://explorer.neptune.cash/announcement/digest/48c1c8cd67b2f99d20bf9338b869adc8d63dc7364c99aa9f71774056a339b608ab3a5b0100000000/5)       |                      | [download](2025-09-16.tar.gz) |
+| nolgam1dk90nz8...0kag8cd3 |  17986.8959400181492830594036945387520000 | [6264/5](https://explorer.neptune.cash/announcement/digest/48c1c8cd67b2f99d20bf9338b869adc8d63dc7364c99aa9f71774056a339b608ab3a5b0100000000/5)       |                      | [download](2025-09-16.tar.gz) |
+| nolgam1v5xe5v7...cyxwllpq |    100.0000000000000000000000000000000000 | future | | [download](0003ea5c688dce56bebca59578ede4e260483b02bd6230da7226296410d622a.redeem) |
+| nolgam1nrwcq32...9wma28q2 |    556.8000000000000000000000000000000000 | future | | [download](5160a7fd3127e22019a19835daf820f7985aa6d3b6979bfcaf3d93c146b8216.redeem) |
+| nolgam1hv39jf7...puxhn06r |   1384.0600000000000000000000000000000000 | future | | [download](5d7b51779a4b0f8191a5e4debe5f9e992f27eb7161f87b2a2f95c3ca663e39a.redeem) |
+
+
+
+## Misc
+
+ - There is a [community tutorial](../../learn/utxo-redemption-tutorial/) on the process, which might be useful in case you get stuck.
+
+[^1]: https://docs.neptune.cash/contributing/donating.html

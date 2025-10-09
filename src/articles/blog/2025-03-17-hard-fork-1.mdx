@@ -1,0 +1,100 @@
++++
+title = "Hard Fork 1 and Hard Fork Policy"
+description = "We propose a hard fork to increase transaction throughput. From a size limit of 2 MB per block to one of 8 MB per block. The hard fork is planned for block height 6.000, around 6pm UTC on Saturday March 22, 2025."
+author = "Thorkil Schmidiger"
+date = "2025-03-17"
+type = "blog"
+
+[thumbnail]
+src = "/article-images/blog/trident-and-fork.png"
+caption = "Hard Fork 1 and Hard Fork Policy"
++++
+
+
+**TL;DR**: We propose a hard fork to increase transaction throughput. From a size limit of 2 MB per block to one of 8 MB per block. The hard fork is planned for block height 6.000, around 6pm UTC on Saturday March 22, 2025.
+
+![](/article-images/blog/trident-and-fork.png)
+
+**EDIT**: Hard Fork 1 is happening. [Version 0.2.0](https://github.com/Neptune-Crypto/neptune-core/releases/tag/v0.2.0) has been released. Be sure to upgrade your node before ~~Saturday~~ Sunday, March 23.
+
+# Hard Fork 1
+
+In many aspects, the launch on February 11, 2025 has gone well: the difficulty has increased far beyond our imagination, Neptune was [listed](https://safetrade.com/exchange/NPT-USDT)[^1] on an exchange a mere three weeks after launch, an external team built a [better looking block explorer](https://neptune.vxb.ai/) than the one we developed, another team built a [mining pool](https://github.com/KaffinPX/Cassini), and there are probably more ongoing developments that we are not even aware of. We also haven't spotted any bugs in our consensus mechanism, giving us increased confidence in the soundness of not just Neptune's cryptography but blockchain architecture, too.
+
+Before patting ourselved too much on the back though, we did make one fairly serious oversight: When we defined the maximum size of a block to be 2 megabytes[^2], we hadn't properly understood how much space the transaction inputs take up. To make a long story short, each transaction input is up to 40kB, depending of the age of the inputs, leaving only room for ~30 inputs per block which is obviously too little for a block time of 10 minutes[^3] [^4]. We have two ways of addressing this problem: an immediate fix and a structural change implemented at a later date. The immediate fix is simply to increase the allowed block size from 2 MB to 8 MB which will increase the maximum number of inputs per block to around 200. The later structural change is to represent these inputs sparsely[^5].
+
+We advocate to deploy this hard fork sooner rather than later, based on the following arguments:
+ - Neptune Cash is on a positive momentum trajectory, making a solution urgent if the objective is to avoid losing that momentum.
+ - The community is still relatively small, meaning that the likelihood of a network split is less relative to a later point when it is larger.
+ - The project is still rather young and the present users are all early adopters who can be expected to tolerate fixes and version updates, more so than users of well-established software.
+ - We are already bumping into the current block size limit, so we stand to disenfranchize users by inaction.
+ - We never intended to set the de-facto limit on the number of inputs so low.
+
+The exact changes can be read and scrutinized in [this pull request](https://github.com/Neptune-Crypto/neptune-core/pull/502). We are eager for pros, cons, and reviews from all stakeholders. In summary, the new version behaves identical to the current version until a target block height (6.000) is reached, after which the new block size limit is enforced and the old one ignored.
+
+That covers the specifics of the proposed hard fork. The rest of the article offers an insight into the philosophy guiding our work.
+
+## The Good, the Bad, and the Ugly
+
+There are three relevant definitions when considering changes to a blockchain: soft forks, hard forks, and rollbacks.
+- A **soft fork** is a change to the rules where old versions of the software still consider the new blocks valid. If we for example were to make a rule that all block hashes had to start with the hexadecimal character "a", that would be a soft fork, as the old neptune-core versions would still consider the new blocks valid.
+- A **hard fork** is a change to the rules such that new blocks will be considered invalid by the old software. An increase in the maximum allowed block size is a good example of this, as blocks mined under the new rules will be rejected by old software. An increase in the inflation rate would also be a hard fork.
+- A **rollback** is the revision of history by some authority: where the blockchain is rolled back to an earlier state thus deleting some transactions from history, and typically (but not necessarily) rollbacks are followed up by a soft or hard fork. Rollbacks are usually deployed because some transaction showed unwanted behavior, for example unrestricted inflation because of a software error.
+
+In an idealized world, the rules of a blockchain would never change, so neither soft forks, hard forks, nor rollbacks would be needed. But since development takes time and we all need feedback from the real world, not all changes can be considered equally bad. In terms of badness, we consider soft forks the least bad, hard forks somewhat worse, and rollbacks the most problematic.[^6].
+
+Hard forks are more problematic[^7] than soft forks because:
+1. They risk splitting the network thus creating confusion about the true state of the blockchain
+2. They introduce an element of arbitrary rule which is antithetical to the ethos of blockchain: money without rulers.
+3. They risk splitting the community between proponents and opponents, which is fine for provoking argument and debate, but might ultimately lead to two competing chains.
+
+To provide users with an idea of what to expect and to restrict the arbitrary power of current and future Neptune developers, the following list shows which hard forks we foresee:
+1. Increase in block size limit from 2 MB to 8 MB.
+2. Better (sparse) representation of transaction inputs, increasing transaction throughput by at least 10x.
+3. New version of Triton VM and integration of its capabilities into consensus programs.
+4. Added support for lock-free UTXOs, to provide better smart contract functionality.
+5. Added support for transaction-chaining, to allow the spending of unconfirmed UTXOs.
+
+This list can obviously change but it is intended to restrict the arbitrary power of protocol developers. We expect that some of the changes can be combined to reduce the number of future hard forks. It's also worth noting that some changes, such as the ability to sync by downloading only one block, a feature we call succintness, will be achievable through a soft fork.
+
+Caution against hard forks, soft forks, and rollbacks need to take a backseat to soundness though. If the blockchain displays unplanned behavior from the perspective of the supply schedule or the security of funds, these would be problems that should be fixed sooner rather than later.
+
+## Questions, Answers, and Comments
+
+We have received both questions and comments about these proposed changes. They are worth reproducing here.
+
+>  What happens if you put even more, to have for example max 500 inputs? How do you plan to scale this?
+
+We would have to change the representation of transaction inputs to handle this. Specifically, we would want to implement some version of the algorithm outlined [here](../learn/authentication-structure-authentication.md).
+
+This "aggregation" of MMR authentication paths could take place on the block level, leaving it up to the composer to provide the node of the MMR and the proof that these digests are correct.
+
+> what about also decreasing block time?
+
+Current block target interval is 588 seconds. The fastest composer on the network takes about 185 seconds for a block composition. Guessers should be allowed to hash at least 50 % of the target block interval. Anything less reduces the security against reorganizations and will also lead to more orphaned blocks, as two guessers are more likely to find a solution close enough in time that both blocks are broadcast.
+
+The author is (personally) open to a reduction in block time once we have good enough GPU composers that composition is faster than one minute though. But that's a discussion to be had then and there.
+
+> So if it were maxxed out, which is unlikely right away, 1 GB/day...  365 GB / Year...     That's really not a problem ... Nice straightforward fix, and like you say in your blog, long-term you've got [Fast Authentication Structure Authentication](../learn/authentication-structure-authentication.md), possibly L2, lots of options.
+>
+> — <cite>Anonymous</cite>
+
+##### Acknowledgements
+
+The author owes gratitude to Jan Ferdinand Sauer and Alan Szepieniec for valuable feedback about this announcement and how to communicate this proposed change. And to the users who supplied comments and questions as well as to "The AllFather", the user who was the first to bump into this limit and report it to us.
+
+[^1]: This link does not constitute an endorsement. We have no relation with safetrade.com and recommend users to do their own research before interacting with this, or any, exchange. We also recommend heeding the advice: "Not your keys, not your coins".
+
+[^2]: The old size limit was 250.000 B-field elements to be precise. It's being changed to 1.000.000. B-field elements are the words that the [Triton VM](https://triton-vm.org/) uses. Triton VM is how the Neptune protocol gets its ZK-STARK proofs.
+
+[^3]: To make a short story long, Neptune is based on the UTXO model that Bitcoin also uses, and in the UTXO model you have to reference all inputs to your transactions. Unlike in Bitcoin though, the inputs to a transaction cannot easily be linked to the outputs of previous transaction, as the connection between the two are hidden behind a zero-knowledge cryptographic proof. To prove that a particular input hasn't already been spent the transaction initiator provides authentication paths into an MMR which allows for a sparse representation of a [(sliding window) Bloom filter](../mutator-sets/). It's the size of these MMR authentication paths that was not sufficiently analyzed prior to main net launch. When an input is spent, 45 new elements are added to the Bloom filter. When these inputs are old, authentication paths for each Bloom filter element has to be provided in the transaction. So the size of an input is 45 times the height of the authentication paths, which grows with its age. So while the limit on the number of inputs is higher when those inputs are new, it is much lower when they are old — and in practice, people want to initiate transactions spending plenty of old inputs all the time.
+
+The block size limit is currently 2 MB, or 250.000 B-field elements. The block proof is always around 1 MB, and the mutator set accumulator is upper-bounded in size by 374 KB. Assume for simplicity that there are no outputs or that they take up no space. That leaves 626 KB for inputs. Assuming the authentication paths have a height of 20, corresponding to the spending of old inputs from a set of 8.000.000 UTXOs, the size of each input is 20 × 45 × 5 × 8 + 45 × 16 = 36.720 bytes. With the current size limit, blocks can only contain approximately 626 / 37 = 17 of them. With the proposed size limit of 8 MB, blocks can contain approximately 7626 / 37 = 208 inputs.
+
+[^4]: Each block contains only one transaction, as all transactions included in a block is merged into one before being mined.
+
+[^5]: We're discussing three proposals to reduce the size of transaction inputs, all of them making use of ["Fast Authentication Structure Authentication"](../learn/authentication-structure-authentication.md). The least efficient of these suggestions decreases the size of transaction inputs by around 90 %.
+
+[^6]: It goes without saying that we intend and hope for exactly zero rollbacks.
+
+[^7]: This is not to say that soft forks are uncontroversial, but the point is that they suffer from these problems to a lesser degree.

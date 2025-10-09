@@ -1,0 +1,129 @@
++++
+title = "Mainnet Relaunch"
+description = "Mainnet Relaunch Announcement."
+author = "Neptune Cash Developers"
+date = "2025-08-07"
+type = "blog"
+
+[thumbnail]
+src = "/article-images/blog/reusable-rocket.jpg"
+caption = "Mainnet Relaunch"
++++
+
+
+| ![Mainnet Relaunch](/article-images/blog/reusable-rocket.jpg) |
+| :-----------------: |
+| **Fig.1.**: Neptune re-launching. |
+
+# Mainnet Relaunch
+
+On August 5 2025, at approximately 19:00 UTC, Neptune Cash successfully relaunched its mainnet. This relaunch took place one month after the [inflation bug](../inflation-bug-discovered) was discovered and announced, leading to network downtime. The relaunch marks the end of the downtime period.
+
+## The Inflation Bug
+
+While there is a [video](https://www.youtube.com/watch?v=aAonMmYgnVA) summarizing the inflation bug, there was until now no written documentation. So here it is.
+
+The context is the question, *what makes a transaction valid?* Ideally, we have a single proof certifying the transaction's validity. This single proof in turn implies that the (hidden) amounts are all positive and cancel exactly across input and output side, that the UTXOs that are being spent really do live in the UTXO set, that the owners of those UTXOs assent to that transaction, etc. And indeed, the protocol expects and understands such a `SingleProof` object. However, this rather large number of features can make the proof prohibitively expensive to produce. We do not want to exclude somewhat resource-constrained hardware from initiating transactions so instead of producing one unweildy proof they can produce a collection of many individual, manageable proofs of individual features; other nodes on the network can upgrade this `ProofCollection` into a `SingleProof` against a fee. The `ProofCollection` does not leak any sensitive information.
+
+There are three ways to generate a `SingleProof`.
+ 1. Raise: Upgrade a `ProofCollection`.
+ 2. Update: Send an outdated `SingleProof` to a `SingleProof` synced to a later mutator set hash.
+ 3. Merge: Send two `SingleProofs` to one `SingleProof`, which certifies the validity of the merger of the two orignal transaction kernels.
+
+More concretely, the `ProofCollection` consists of proofs of the following programs and supporting helper data:
+ - `RemovalRecordsIntegrity`: takes the transaction kernel MAST hash, divines in a transaction and verifies its MAST, reads divines in input UTXOs along with mutator set membership proofs, derives their `RemovalRecord`s, verifies that the `RemovalRecord`'s match with the inputs in the transaction, and finally outputs the salted hash of the input UTXOs.
+ - `KernelToOutputs`: takes the transaction kernel MAST hash, divines in a transaction and verifies its MAST hash, divines in output UTXOs along with commitment randomnesses, derives their `AdditionRecord`s, verifies that the `AdditionRecord`s match with the outputs in the transaction, and finally outputs the salted hash of the output UTXOs.
+ - `CollectLockScripts`: takes the salted hash of input UTXOs and return the hashes of all UTXOs' lock scripts.
+ - `CollectTypeScripts`: takes the salted hash of input UTOXs and the salted hash of output UTXOs, and returns all type script hashes of all coins in all UTXOs.
+ - `LockScript`: for every UTXO that is being spent, the lock script determines the spending policy. Typically this constitutes a hash preimage verification but in principle this could be a t-out-of-n signature verification quorum or something more complex still.
+ - `TypeScript`: for every coin in every UTXO, regardless of whether it is spent or generated, the type script determines how its state is allowed to evolve. In the general case, the coin states constitute amounts of Neptune Cash native currency and the type script, the *native currency* type script, checks that all amounts are positive, that there is no inflation even when accounting for the fee but except for the coinbase, etc. At the time of writing, the reference client is aware of one other type script, the *time-lock* type script, which governs when UTXOs can and cannot be spent. In general, type scripts can enforce arbitrary logic.
+
+The diagram below illustrates the interrelations.
+
+| ![Transaction validity diagram.](/article-images/blog/transaction-validity-diagram.png) |
+| :-----------------: |
+| **Fig.2.**: Interrelations between the programs in the proof collection, and their inputs and outputs. |
+
+Did you spot the error? We did not either, at least not at first. If you are in for a challenge, and do not know the answer already, this is where you stop reading until you find it. Yes, the right clues are there.
+
+We found the vulnerability by scrutinizing confusing behavior from test case generators. Turns out, there was a mismatch in how list of type scripts was being generated. In one case it was being hardcoded to what made sense for the specific test. In other case it was being computed from the UTXOs involved in the transaction. In terms of list lengths, we had a $0 \neq 1$ error. The native currency type script was absent because there were no inputs and no outputs. But as the transaction did have a nonzero fee, it was an inflationary transaction. The native currency type script would have caught this, but it did not because it was not being enforced, and it was not being enfored because none of the UTXOs being spent or generated had native currency coins.
+
+So far the situation is bad but manageable. The inflation would be visible in the transaction fee. We can observe the historical fees and determine that if this vulnerability was ever exploited, the attackers must have been extremely modest in their inflation so as to evade detection.
+
+Unfortunately, the problem is compounded by *fee-gobblers*, which are transactions whose fees are negative. While fee-gobblers cannot be confirmed outright, they can be merged with other transactions. As long as the resulting fee is positive, the resulting transaction can be confirmed. Transaction upgraders collect fees by merging their work with a fee-gobbler. The gobbled portion of a fee goes into a UTXO under the upgrader's control.
+
+So here's the attack scenario.
+
+ 1. Generate a zero-in / zero-out transaction with positive fee.
+ 2. Gobble the fee -- all of it.
+ 3. Merge in some other transaction.
+
+Now you have a transaction that is indistinguishable from authentic but that's giving the initiator an arbitrary amount of coins minted from thin air. Moreover, the inflation is undetectable.
+
+The solution is exceedingly simple: we modified `CollectTypeScripts` to ensure that the native currency type script hash is always present in the list of hashes it outputs. So in particular, even if the transaction has zero inputs and zero outputs, the native currency type script still enforces the no-inflation policy because the fee might be non-zero.
+
+## What Happened in the Out-Time
+
+If the solution is so simple, why did it take a month to relaunch? The answer is two-fold.
+
+First, we promised to build a UTXO redemption process so that owners of UTXOs on the old chain could redeem their UTXOs on the new chain. Relaunching without building it would put us on a collision path with the temptation to postpone it indefinitely. Maybe we are strong enough to resist that temptation, but this way we do not have to hope.
+
+Second, we wanted to make use of the opportunity – probably the only one ever – to deploy upgrades that would otherwise pose a massive engineering task. Blockchain protocols must preserve backwards-compatibility because without it, upgrades inevitably lead to peers rejecting each other's messages and ultimately disconnecting. The network has a tendency to split into two disconnected parts, each recognizing a different version. In this case, which network is the correct one?
+
+However, if the network is getting a reboot with a new genesis block anyway, then it is okay to break backwards compatibility: there is no existing network to avoid splitting. With an eye to making use of the opportunity to deploy backwards-incompatible upgrades, we implemented and integrated the folowing changes.
+
+0. Fix the Bug. No more undetectable inflation.
+
+1. Versioning. We do not expect this to be the only upgrade; only the only upgrade that is allowed to break backwards compatibility. In other words, future upgrades are *not* allowed to break it. To clear the path for future upgrades, we therefore need a versioning scheme, so that nodes know which rules to apply. Before the upgrade, one set of rules applies; after the upgrade, another set. Nodes must be aware of both in order for the network to survive the transition. The problem is compounded by Neptune Cash's reliance on proofs, which basically means that all affected programs now have two or more versions. Versioning is accomplished by the new struct `ConsensusRuleSet`, instantiations of which can be passed around to the functions that need it.
+
+2. Input Compression. One of the fields in `RemovalRecord` was represented rather redundantly, literally repeating the same information with high likelihood in several places. This redundancy is not without advantages: parsing a transaction and validating it faster this way. However, when confirmed in a block, this redundant data takes up a lot of space that prevents other transactions from being confirmed in the same block. To benefit on-chain throughput capacity, the new packing scheme is applied to transactions when they appear in blocks; but transactions living outside of the context of blocks are unaffected. The packing scheme therefore abides by the curious constraint that the format of a list of `RemovalRecord`s cannot change. Our simulations indicate that the new packing scheme saves around 90% of the size of typical block transactions. So in essence, the on-chain transaction throughput capacity has increased by $10 \times$.
+
+3. Guesser Receiver Data. *Cold guessing* means that the secret spending key capable of spending the guesser's reward lives in a vault deep underground and very away from any electronics. Previously, the guesser's digest was derived with every block from the master secret seed and the predecessor block hash, essentially requiring the master secret seed to be hot. While guessers could get around that by deviating from the default behavior and supplying a custom `guesser_digest`, that deviation also meant having to track the UTXO in a non-standard way. Moreover, previously, all guesser rewards were locked by a lock script of the same format, namely a proof-of-preimage-knowledge lock script, whose matching postimage coincides with the `receiver_digest`. As a result, the wallet database and `incoming_randomness.dat` file, which was supposed to store only information for managing UTXOs and not for spending them, did contain spending keys. The new code allows custom lock script hashes, and decouples the `receiver_digest` from the lock. So in the new version, the only file that contains spending key information is `wallet.dat`, and moreover it is possible to derive all guesser receiver data from a standard address. So conceivably the client may one day be extended with a CLI argument of the form `--guess-address` which instructs the guesser to send all rewards to the given address, whose corresponding spending key lies deep underground. This CLI argument does not exist yet, but the point is that the consensus-level changes that are necessary for it have been applied.
+
+4. Drop Time-Lock on Gobbled Fees. Previously, whenever a fee-gobbler gobbled fees, half of the gobbled fee would be time-locked for 3 years. It was a very straightforward way to enforce the 3-year time-lock on all mining rewards. In this way, composers who leave a large fee and then gobble it away cannot avoid the 3-year time-lock that is automatically being enforced on guesser rewards. Presently, they still cannot, but for a different reason. The new reason is that in every transaction merger, the special transaction, whether fee-gobbler or coinbase transaction, must be the left-hand-side. Consequently, it is impossible to merge a fee-gobbler transaction with a coinbase transaction. And so the only fees that can be gobbled are genuine transaction fees, not fees resulting from block subsidies. And as a result, there is no need to time-lock them.[^1] Composers can still allocate to themselves a portion of the block subsidy, but they have to do so within the coinbase transaction and when they produce that coinbase transaction they have to prove that half of the portion they allocate to themselves really is time-locked for 3 years or more.
+
+5. Hardening. Out of a healthy abundance of precaution, we had another careful look at all consensus programs that are being proven to see if we missed any vulnerabilities. We did not find any, but in the process we did a) factor out some snippets for general-purpose reuse; b) simplify and reduce instruction count where possible; and c) assert more assumptions about the state of memory and the stack for deep security.
+
+6. Memory-Hard Proof-of-Work. Probably the most controversial change is that the proof-of-work puzzle was changed. This topic deserves its own article, but the key takeaways are summarized below.
+
+    - Only guessing is affected. In particular, now there is a preprocessing phase to guessing and an online phase.
+    - The preprocessing takes a while to complete. In this phase, roughly 40 GB of memory is being initialized in preparation for the online phase.
+    - The online phase is progress-free, meaning that one guess is almost instantaneous.
+    - To guess efficiently, you must use roughly 40 GB of memory to store the entire buffer.
+    - Algorithms trading off space against time always exist, and they certainly do here as well, although we did not implement any. However, what the puzzle is intended to achieve is that any tradeoff algorithm that uses $\frac{1}{f} \times$ as much memory to solve the same puzzle, requires in expectation $f \times$ as many (or more) hash function evaluations.
+
+## Redemption Process
+
+The reason why we relaunched a brand new blockchain instead of patching the old one while hoping that no-one had the chance to exploit the vulnerability was because the second option does not give us the main benefit of blockchain money over fiat money: an auditable money supply. Nevertheless, we also wanted to avoid disenfranchizing all the earlyvangelists by canceling their holdings. So we came up with a compromise solution.
+
+ - The new blockchain's inflation schedule is identical to the old schedule except for a difference of 21310 blocks, matching the time the bug was discovered.
+ - The skipped block subsidies are allocated into a redemption claims fund.
+ - Holders of UTXOs on the legacy chain at block 21310 can redeem their UTXOs against this fund.
+ - If the vulnerability has been exploited, then all bets are off anyway and first-come = first-served. If the vulnerability has not been exploited, then every holder should be able to exercise a claim and make themselves whole.
+
+A UTXO redemption claim is essentially a transaction, or a set of transactions, that spend all the UTXOs in the wallet and consolidate them into one or two UTXOs. They furthermore include public announcements (incidentally, renamed to *announcements*) that contain the preimages to the transaction's outputs, which in particular include the UTXOs themselves. And besides this information, they are also bound to a receiving address, which is where the claimed funds will be disbursed to. The way we prevent double spending attacks is by verifying that the transactions are mutually compatible.
+
+To produce a UTXO claim, we refer to the [UTXO redemption](../utxo-redemption) page, the [tutorial](../../learn/utxo-redemption-tutorial), and the [neptune-legacy](https://github.com/Neptune-Crypto/neptune-legacy) repository.
+We keep a log of all exercised claims in the table at the bottom of [UTXO redemption](../utxo-redemption) page. To audit this state, boot a node running [neptune-legacy](https://github.com/Neptune-Crypto/neptune-legacy), synchronize it to block 21310 of the legacy network (or later), put all `.redeem` files from the table into the `redemption-claims/` directory, and run `neptune-cli verify-redemption --compressed --format readable`. The node will produce a file called `redemption_report.md` summarizing all the claims -- but only if they are all valid and mutually compatible. As of the time of writing, there have been 654 UTXO redemptions, to a dozen addresses or so.
+
+Recipients of the original premine are contractually guaranteed to receive their share, even in the case of network reboot. As a result, they cannot be required to redeem UTXOs because that would subject them to the risk of being frontrun by an attacker. So the integrity of their allotment is guaranteed on the new blockchain as well. However, that situation does pose a difficult challenge: when a UTXO redemption claim comes in, how do we know it is not a premine UTXO that is being claimed? The best solution that we came up with was to use the fuzzy timestamp that the mutator set puts on UTXOs. Based on this timestamp, we have a criterion for ruling out UTXOs as definitely not premine UTXOS. Unfortunately, there is a non-negligible false positive probability, meaning that some legit UTXOs cannot be redeemed.
+
+Some of the UTXO redemption claims have been disbursed in the genesis block. The wallets in question are already aware of these disbursements, but must wait to spend them until August 11, when all premine coins are released from their time-lock. The remainder of the redemption process fund goes to an address custodied by the project founders. Claimants can expect an incoming payment in the days following August 11.
+
+In the mean time we have a curious task to solve. We want the entire process to be auditable and transparent, including the disbursements from the redemption fund that take place after relaunch. However, it is a privacy-preserving cryptocurrency by default, meaning that amounts are hidden. While we get the auditability of the money supply from the cryptocurrency's soundness (at least unless there is another inflation bug), but not the auditability or transparency of the redemption fund. We intend to achieve these features with a new type of transaction, similar to redemption transactions. Specifically, transactions whose announcements (formerly *public announcements*) contain all UTXO data except spending keys. As long as every disbursement from the redemption fund is done through such a transaction, there will be an auditable trail.
+
+## Future Developments
+
+Back in the [original announcement of mainnet launch](../mainnet-launch) we announced the following list of future developments:
+
+ - *Transaction Chaining.* Transaction chaining refers to the ability to build transactions on top of other transactions that have not been confirmed yet. Presently, users can only initiate transactions that spend UTXOs that have been confirmed.
+ - *[Lock-Free UTXOs](../data-availability).* Presently, all UTXOs circulate with a lock script, even if that lock script stipulates that anyone can spend. The complication arises from having to maintain and broadcast *sender randomnesses* and *receiver preimages*, two pieces of data that are instrumental in keeping UTXOs private. However, keeping UTXOs private defeats the point of having an anyone-can-spend UTXO, which is how one would build smart contracts that anyone can interact with.
+ - *Succinctness.* Succinctness is the feature of a blockchain whose consensus requires negligible resources to verify. To this end, Neptune Cash will leverage [recursive validation](../habemus-verifier) for blocks, which will allow the entire blockchain history to be verified through a single block proof.
+ - *Prover upgrades.* Upgrades to the STARK engine, Triton-VM, are planned post-launch, including the integration of novel cryptographic techniques such as [DEEP Commitments](https://eprint.iacr.org/2024/1752).
+
+There is also a more recent [forum post](https://talk.neptune.cash/t/informal-roadmap/56) containing essentially the same points but with more elaboration. All these items are still very much on the roadmap. So far we have made very little progress on them. Instead, most of the intervening time was spent fixing bugs and usability issues and doing technical support. The smoothness with which we were able to relaunch testifies to the robustness with which these bugs and usability issues are being fixed. Therefore, expect us to start marching down the roadmap sooner rather than later.
+
+Or better yet – join us.
+
+
+[^1]: Indeed, an argument from security budget suggests that it is more prudent not to time-lock them in the long run.

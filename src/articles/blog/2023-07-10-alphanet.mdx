@@ -1,0 +1,50 @@
++++
+title = "Announcing Alphanet"
+description = "We have open-sourced the client for Neptune. While certainly an important milestone, alphanet is still very far from the final product. Please contribute! Blockchain-based money needs to be an effort driven by a grassroots community."
+author = "Alan Szepieniec"
+date = "2023-07-10"
+type = "blog"
+
+[thumbnail]
+src = "/article-images/blog/dashboard-view.png"
+caption = "Announcing Alphanet"
++++
+
+
+# Announcing Alphanet
+
+On Friday 2023-07-07 we open-sourced the client for Neptune, [neptune-core](https://github.com/Neptune-Crypto/neptune-core/). Simultaneously we set up two dedicated servers to run a node. At the time of writing, the network has been up for 3 days, and counting!
+
+## Alphanet
+While certainly an important milestone, alphanet is still very far from the final product. A lot of components are missing; we just haven't gotten round to implementing them yet. That said, it is minimally useful in the sense that you can mine, spend, and receive coins. Just don't expect those coins to hold value -- there are several attack vectors remaining.
+
+What alphanet does represent is the first complete and sound implementation of *mutator sets*, our secret-until-now sauce for achieving scalable privacy. We will explain more about this technology in upcoming articles but for now suffice it to say that mutator sets achieve the same thing as the nullifier set does in alternative privacy constructions, just without the linear blowup. If you are really curious, you can always have a look at the [source code](https://github.com/Neptune-Crypto/neptune-core/tree/master/src/util_types/mutator_set).
+
+About the name *alphanet* – as the picture of implemented components approaches the final architecture, we will release upgraded versions of the protocol: *betanet*, *gammanet*, *etc.*
+
+![](/article-images/blog/dashboard-view.png)
+<div className="text-center">Dashboard view of the Neptune Core client running alphanet</div><br />
+
+## Observations
+
+ - *Delays.* This milestone had been delayed several times, by several months in total. This goes to show that it is easy to underestimate the workload of remaining tasks. A confounding factor in this underestimation was the need to write low-level programs in Triton VM assembly, whereas our intuition about the workload of programming tasks had been calibrated by using the rust programming language, which operates on a much higher level.
+ - *Fork resolution.* How do you resolve forks? Even the longest-chain rule (which itself is only mostly accurate) is tricky because a node needs to figure out which coins live on the abandoned chain, which coins live on both, and discover new coins living on the new chain. But this task is especially tricky when the node also has to maintain membership proofs for these coins relative to an accumulator whose state updates with every block. The complexity of this task is the reason why there is so much code in the mutator sets directory, despite the underlying mechanics being so straightforward.
+ - *Proving cost.* After finishing the last piece for mutator sets, which was a zero-knowledge proof of a particular computation, we were finally able to answer a question that has long been standing: what are the time and memory requirements of the prover? At this point the prover needs 160 GB of RAM and 83 seconds on 64 cores. This sounds like a lot but it is literally the first benchmark of its kind. We are confident that these numbers can drop by a factor 10 just by optimizing the program whose integrity is proven, and with some improvements to Triton VM that are in the pipeline already. Also, it is worth noting that the user who does not wish to perform this task is welcome to outsource it; the outsourcee will be able to deanonymize the transaction inputs but not spend them in an alternate transaction. Run neptune-core with the flag `--privacy true` if you want to direct your node to produce these proofs when initiating transactions.
+ - *Network issues.* Most tests were run on a single machine, and transitioning to an actual network (as opposed to a simulated one) highlighted a bunch of issues. For instance, in order to support incoming connections, the daemon needs to tell the operating system which IP address it is listening to. Also, the firewall must open port number 9798 (♆). Also, not all servers have static IP addresses but instead have static DNS addresses.
+
+## Participate
+
+If you feel like participating, please do! At this point the only way to install the software is to compile it from [source](https://github.com/Neptune-Crypto/neptune-core). After installing, set up your node to connect to `51.15.139.238:9798` or `139.162.193.206:9798`. Ping us to get some tokens to play with if you want some before you can mine them. And please let us know of any issues you encounter, or if you need technical support. The [Telegram channel for developers](https://t.me/+YMfsmN2sXTtkZWQ0) is your friend.
+
+## Contribute
+
+Please contribute! Blockchain-based money needs to be an effort driven by a grassroots community. We developers do have some funding to spearhead architecture and development but at some point this funding will run out and our corporate entity will dissolve. At this point, volunteers need to take over.
+
+The single most important focus of our efforts is to foster this community. Further development of the code base is only instrumental to this end. So whether you want to contribute source code, documentation (possibly as a by-product of figuring out what's going on), research, discussions in the design phase, or even suggestions on how to move forward, please know that a) there is no minimum threshold for magnitude before a contribution is welcome, and b) we will prioritize supporting you. Also, the [Telegram channel for developers](https://t.me/+YMfsmN2sXTtkZWQ0) is your friend.
+
+## Roadmap
+
+So far we have declined to commit to a roadmap because the workload of software development tasks is notoriously difficult to estimate and many parts of the design and architecture were still relatively unclear up until now. But now with alphanet launched, it is safe to say that the architecture has crystallized quite dramatically. We have laid out a picture of the components in the [roadmap issue](https://github.com/Neptune-Crypto/neptune-core/issues/10), and will update this picture as more of the architecture crystallizes. This roadmap serves two purposes: 1) it highlights the components that remain to be implemented; and 2) it enables third parties to track our progress.
+
+
+
