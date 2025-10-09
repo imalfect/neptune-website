@@ -23,9 +23,9 @@ export default function Introduction() {
 						applications and the future of finance.
 					</p>
 					<p>
-						As a cherry on top, Neptune also supports arbitrary logic. Together with privacy, this makes
-						Neptune a private smart contract platform in addition to being the competitor for the
-						world&nbsp;s best possible money.
+						As a cherry on top, all cryptography used in the Neptune protocol, is post-quantum secure.
+						Meaning that it promises to resist attacks from future quantum computers. Together with
+						privacy and programmability this makes Neptune a competitor for the world&apos;s best money.
 					</p>
 				</div>
 			</div>
