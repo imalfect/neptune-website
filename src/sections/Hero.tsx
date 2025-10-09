@@ -29,8 +29,8 @@ export default function Hero() {
 				/>
 				<h1 className={'text-hero-headline'}>Anonymous, succinct.</h1>
 				<p className={'text-hero-subtitle mx-auto max-w-2xl px-6 text-pretty'}>
-					Meet Neptune, a Layer-1 peer-to-peer anonymous cash protocol featuring privacy, scalability,
-					and post-quantum security.
+					Meet Neptune, a Layer-1 peer-to-peer privacy-preserving cash protocol featuring scalability and
+					post-quantum security.
 				</p>
 			</div>
 			<div
