@@ -4,10 +4,10 @@ import FeatureElement from '@/components/cards/FeatureCard';
 export default function Features() {
 	return (
 		<section className={'flex flex-col items-center gap-6'} id="features">
-			<h1 className={'text-section-title text-center'}>What sets Neptune aside</h1>
+			<h1 className={'text-section-title text-center'}>What sets Neptune apart</h1>
 			<p className={'text-section-description max-w-2xl text-center'}>
-				Take a closer look at the technical foundations that make Neptune Cash unique in today&apos;s
-				blockchain landscape
+				Learn about the technical foundations that make Neptune Cash unique in today&apos;s blockchain
+				ecosystem
 			</p>
 			<div
 				className={
@@ -19,8 +19,8 @@ export default function Features() {
 					description={
 						<>
 							<p>
-								Client-side proving; miners aggregate into a single block proof. First L1 protocol with
-								zk-STARKs.
+								First L1 implementing zk-STARKs. Client-side proving. Every block contains only one big
+								transaction and one proof.
 							</p>
 						</>
 					}
@@ -30,9 +30,7 @@ export default function Features() {
 
 				<FeatureElement
 					title="Mutator Sets"
-					description={
-						<p>Novel privacy primitive enabling succinctness without compromising auditability.</p>
-					}
+					description={<p>Novel privacy primitive enabling privacy without sacrificing succinctness</p>}
 					imageSrc="/illustrations/quantum.svg"
 					className="lg:col-span-5"
 				/>

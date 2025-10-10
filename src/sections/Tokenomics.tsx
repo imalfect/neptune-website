@@ -46,7 +46,7 @@ export default function Tokenomics() {
 					/>
 					<NumberCard
 						label="Pre-mine"
-						value="831,600 NPT"
+						value="831,488 NPT"
 						onSelect={setChoice}
 						id={TokenomicsAspect.Premine}
 						selected={choice === TokenomicsAspect.Premine}

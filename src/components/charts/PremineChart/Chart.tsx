@@ -2,7 +2,7 @@
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { premineChartData } from './data';
 import { PremineChartTooltip } from './Tooltip';
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#7fd8be', '#ffffff'];
 
 export default function PremineChart() {
 	return (

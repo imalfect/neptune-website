@@ -20,8 +20,8 @@ export default function Contribute() {
 							contributions are invaluable.
 						</p>
 						<p>
-							Join us on GitHub to explore open issues, propose enhancements, or contribute code. Together,
-							we can shape the future of private, scalable, and secure digital cash.
+							Join our community to connect with others, propose enhancements, or contribute code.
+							Together, we can shape the future of privacy-preserving, scalable, and secure digital cash.
 						</p>
 					</div>
 
