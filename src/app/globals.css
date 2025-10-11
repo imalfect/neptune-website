@@ -16,7 +16,9 @@ html {
 button {
   @apply cursor-pointer
 }
-
+.home-section {
+  scroll-margin-top: 10rem;
+}
 .text-title {
     @apply text-4xl md:text-7xl font-bold tracking-tight;
 }
