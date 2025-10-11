@@ -103,6 +103,9 @@ button {
   code {
     @apply rounded-3xl text-base
   }
+  pre {
+    @apply break-all text-wrap
+  }
   table {
     @apply my-8 w-full border-collapse rounded-xl overflow-hidden shadow-2xl;
     border-spacing: 0;
