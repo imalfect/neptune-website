@@ -4,7 +4,7 @@ import { LucideCoins, LucideShield, LucideUsers } from 'lucide-react';
 // !!! finished !!!
 export default function Fundamentals() {
 	return (
-		<section className={'flex flex-col gap-12 px-4'} id="fundamentals">
+		<section className={'flex flex-col gap-12 px-4 home-section'} id="fundamentals">
 			<div className={'mx-auto max-w-3xl space-y-3 text-center text-pretty'}>
 				<h1 className={'text-section-title font-bold'}>The Fundamentals</h1>
 				<p className={'text-section-description'}>
