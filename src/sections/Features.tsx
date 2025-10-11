@@ -3,7 +3,7 @@ import FeatureElement from '@/components/cards/FeatureCard';
 // !!! nearly done, add images later !!!
 export default function Features() {
 	return (
-		<section className={'flex flex-col items-center gap-6'} id="features">
+		<section className={'home-section flex flex-col items-center gap-6'} id="features">
 			<h1 className={'text-section-title text-center'}>What sets Neptune apart</h1>
 			<p className={'text-section-description max-w-2xl text-center'}>
 				Learn about the technical foundations that make Neptune Cash unique in today&apos;s blockchain

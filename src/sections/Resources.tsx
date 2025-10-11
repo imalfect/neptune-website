@@ -11,7 +11,7 @@ import {
 // !!! ready fully !!!
 export default function Resources() {
 	return (
-		<section className={'flex flex-col items-center gap-6'} id="resources">
+		<section className={'home-section flex flex-col items-center gap-6'} id="resources">
 			<h1 className={'text-section-title text-center font-bold'}>Resources</h1>
 			<p className={'text-2xl'}>Want to dive deeper? We&apos;ve got you covered.</p>
 			<div

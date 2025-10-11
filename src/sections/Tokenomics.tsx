@@ -16,7 +16,7 @@ export enum TokenomicsAspect {
 export default function Tokenomics() {
 	const [choice, setChoice] = useState<TokenomicsAspect | null>(TokenomicsAspect.SupplyLimit);
 	return (
-		<section className={'flex flex-col items-center gap-6'} id="tokenomics">
+		<section className={'home-section flex flex-col items-center gap-6'} id="tokenomics">
 			<h1 className={'text-section-title font-bold'}>Tokenomics</h1>
 			<p className={'text-section-description text-center'}>
 				Click on the chevrons to learn more about each aspect of Neptune&apos;s tokenomics.

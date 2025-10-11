@@ -5,7 +5,7 @@ import { FaDiscord, FaGithub, FaTelegram, FaXTwitter } from 'react-icons/fa6';
 // !!! ready fully !!!
 export default function Contribute() {
 	return (
-		<section className={'flex flex-col items-center gap-6'} id="contribute">
+		<section className={'home-section flex flex-col items-center gap-6'} id="contribute">
 			<h1 className={'text-section-title text-center font-bold'}>Contribute</h1>
 			<p className={'text-section-description text-center'}>Help build the future of digital cash.</p>
 			<div className="text-big-content flex flex-col gap-16 lg:justify-between xl:flex-row xl:gap-32">

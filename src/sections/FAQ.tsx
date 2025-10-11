@@ -2,7 +2,7 @@ import { FAQAccordion, FAQItem } from '@/components/faq/FAQItem';
 
 export default function FAQ() {
 	return (
-		<section className={'flex flex-col items-center gap-6 px-4'} id='faq'>
+		<section className={'home-section flex flex-col items-center gap-6 px-4'} id="faq">
 			<h1 className={'text-section-title text-center font-bold'}>Frequently Asked Questions</h1>
 			<p className={'text-center text-2xl'}>Got questions? We&apos;ve got answers.</p>
 

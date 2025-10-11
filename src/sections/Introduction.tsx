@@ -6,7 +6,7 @@ export default function Introduction() {
 	return (
 		<div
 			className={
-				'flex flex-wrap gap-12 rounded-[40px] p-6 md:gap-52 lg:gap-72 lg:bg-white lg:p-12 lg:text-black 2xl:flex-nowrap'
+				'home-section flex flex-wrap gap-12 rounded-[40px] p-6 md:gap-52 lg:gap-72 lg:bg-white lg:p-12 lg:text-black 2xl:flex-nowrap'
 			}
 			id="introduction"
 		>
