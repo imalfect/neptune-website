@@ -2,11 +2,13 @@ import { cn } from '@/lib/utils';
 import { LucideChevronRight } from 'lucide-react';
 import * as motion from 'motion/react-client';
 import Image from 'next/image';
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 type FeatureElementProps = {
 	title: string;
 	description: ReactNode;
 	imageSrc: string;
+	href: string;
 	className?: string;
 };
 
@@ -46,15 +48,17 @@ export default function FeatureCard(props: FeatureElementProps) {
 						{props.description}
 					</div>
 				</div>
-				<motion.button
-					initial={false}
-					whileHover={{ rotate: 90 }}
-					whileTap={{ scale: 0.9 }}
-					transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-					className="bg-gray/10 rounded-full p-6"
-				>
-					<LucideChevronRight size={32} />
-				</motion.button>
+				<Link href={props.href}>
+					<motion.button
+						initial={false}
+						whileHover={{ rotate: 90 }}
+						whileTap={{ scale: 0.9 }}
+						transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+						className="bg-gray/10 rounded-full p-6"
+					>
+						<LucideChevronRight size={32} />
+					</motion.button>
+				</Link>
 			</div>
 		</motion.div>
 	);

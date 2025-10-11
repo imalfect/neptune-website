@@ -4,6 +4,7 @@ import BlockTimeCard from '@/components/tokenomics/BlockTimeCard';
 import HalvingCard from '@/components/tokenomics/HalvingCard';
 import PremineCard from '@/components/tokenomics/PremineCard';
 import SupplyLimitCard from '@/components/tokenomics/SupplyLimitCard';
+import Link from 'next/link';
 import { useState } from 'react';
 
 // !!! finished !!!
@@ -69,9 +70,9 @@ export default function Tokenomics() {
 			</div>
 			<p className="text-big-content text-center">
 				You can learn more about Neptune&apos;s tokenomics{' '}
-				<a href="#" className="underline">
+				<Link href="/articles/2023-09-25-mechanics-of-investing" className="underline">
 					in this blog post
-				</a>
+				</Link>
 				.
 			</p>
 		</section>
