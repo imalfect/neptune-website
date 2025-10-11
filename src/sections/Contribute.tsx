@@ -28,10 +28,26 @@ export default function Contribute() {
 					<div className="mt-auto flex w-full flex-col gap-6 rounded-3xl bg-neutral-950/25 p-6 backdrop-blur-3xl">
 						<p className="text-3xl font-bold">Join our community</p>
 						<div className="mx-auto grid grid-cols-4 gap-6 sm:gap-12">
-							<SocialLink icon={<FaDiscord size={48} />} href="#" label="Discord" />
-							<SocialLink icon={<FaTelegram size={48} />} href="#" label="Telegram" />
-							<SocialLink icon={<FaGithub size={48} />} href="#" label="GitHub" />
-							<SocialLink icon={<FaXTwitter size={48} />} href="#" label="Twitter" />
+							<SocialLink
+								icon={<FaDiscord size={48} />}
+								href="https://discord.gg/e8gtNffG8R"
+								label="Discord"
+							/>
+							<SocialLink
+								icon={<FaTelegram size={48} />}
+								href="https://t.me/neptune_project"
+								label="Telegram"
+							/>
+							<SocialLink
+								icon={<FaGithub size={48} />}
+								href="https://github.com/Neptune-Crypto"
+								label="GitHub"
+							/>
+							<SocialLink
+								icon={<FaXTwitter size={48} />}
+								href="https://x.com/NeptuneCash"
+								label="Twitter"
+							/>
 						</div>
 					</div>
 				</div>
