@@ -72,8 +72,8 @@ export default function SupplyChart() {
 					iconType="circle"
 					formatter={(value) => legendLabelMap[value as keyof typeof legendLabelMap] ?? value}
 				/>
-				<Line type="monotone" dataKey="liquid" stroke="#3acbe8" strokeWidth={3} dot={false} />
-				<Line type="monotone" dataKey="timelocked" stroke="#88a9c3" strokeWidth={3} dot={false} />
+				<Line type="monotone" dataKey="liquid" stroke="#9338fc" strokeWidth={3} dot={false} />
+				<Line type="monotone" dataKey="timelocked" stroke="#3ac29e" strokeWidth={3} dot={false} />
 				<Line type="monotone" dataKey="limit" stroke="#fffde7" strokeWidth={3} dot={false} />
 			</LineChart>
 		</ResponsiveContainer>
