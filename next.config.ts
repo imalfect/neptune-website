@@ -8,7 +8,15 @@ import remarkMath from 'remark-math';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 const nextConfig: NextConfig = {
 	/* config options here */
-	pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx']
+	pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+	async rewrites() {
+		return [
+			{
+				source: '/whitepaper',
+				destination: '/articles/whitepaper'
+			}
+		];
+	}
 };
 const withMDX = createMDX({
 	options: {
@@ -20,6 +28,7 @@ const withMDX = createMDX({
 		],
 		rehypePlugins: [rehypeKatex, rehypeHighlight]
 	}
+
 	// Add markdown plugins here, as desired
 });
 export default withMDX(nextConfig);
