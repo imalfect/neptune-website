@@ -1,17 +1,62 @@
 import { ArticleMetadata, ArticleType } from '@/app/(articles)/types';
 import FocusModeSwitch from '@/components/FocusModeSwitch';
-import { fetchArticleBySlug, fetchArticleSlugs } from '@/lib/articleFetch';
+import {
+	fetchArticleBySlug,
+	fetchArticleMetadataBySlug,
+	fetchArticleSlugs
+} from '@/lib/articleFetch';
 import dayjs from 'dayjs';
 import 'highlight.js/styles/github-dark.css';
 import 'katex/dist/katex.min.css';
 import { LucideChevronLeft } from 'lucide-react';
+import { MDXContent } from 'mdx/types';
 import { Metadata } from 'next';
 import { ThemeProvider } from 'next-themes';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+export async function generateMetadata({
+	params
+}: {
+	params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+	const { slug } = await params;
+	const articleMetadata = await fetchArticleMetadataBySlug(slug);
 
-export const metadata: Metadata = {
-	title: 'Learn - Neptune'
-};
+	if (!articleMetadata) {
+		return {
+			title: 'Article Not Found - Neptune',
+			description: 'The requested article could not be found.'
+		};
+	}
+
+	const metadata: ArticleMetadata = articleMetadata;
+
+	return {
+		title: `${metadata.title} - Neptune`,
+		description: metadata.description,
+		authors: [{ name: metadata.author }],
+		openGraph: {
+			title: metadata.title,
+			description: metadata.description,
+			type: 'article',
+			publishedTime: metadata.date,
+			authors: [metadata.author],
+			images: [
+				{
+					url: metadata.thumbnail.src,
+					alt: metadata.thumbnail.caption || metadata.title
+				}
+			]
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: metadata.title,
+			description: metadata.description,
+			images: [metadata.thumbnail.src]
+		}
+	};
+}
+
 export async function generateStaticParams() {
 	const articles = await fetchArticleSlugs();
 	const articlesStaticParams = articles.map((slug) => ({
@@ -19,14 +64,17 @@ export async function generateStaticParams() {
 	}));
 	return articlesStaticParams;
 }
-// // IMPORTANT: theme provider is only used for articles, to accomodate the focus mode, the website (landing,subpages) itself should not support any theming!
+
+// IMPORTANT: theme provider is only used for articles, to accomodate the focus mode, the website (landing,subpages) itself should not support any theming!
 
 export default async function Article({ params }: { params: Promise<{ slug: string }> }) {
 	const { slug } = await params;
 	const article = await fetchArticleBySlug(slug);
-	const MDXContent = article.default;
+	if (!article) {
+		notFound();
+	}
+	const MDXContent: MDXContent = article.default;
 	const metadata: ArticleMetadata = article.metadata;
-
 	return (
 		<ThemeProvider>
 			<article className="focus-mode:bg-milk focus-mode:text-black mx-auto mt-36 max-w-5xl space-y-6 rounded-3xl bg-neutral-950/60 p-10">
@@ -41,7 +89,10 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
 				<header>
 					<h1 className="mb-2 text-4xl font-bold tracking-tight">{metadata.title}</h1>
 					<p className="text-muted-foreground mb-2 text-xl">{metadata.author}</p>
-					<p className="text-muted-foreground text-lg">{dayjs(metadata.date).format('MMMM D, YYYY')}</p>
+					<div className="flex flex-wrap gap-4">
+						<p className="text-muted-foreground text-lg">{dayjs(metadata.date).format('MMMM D, YYYY')}</p>
+						<p className="text-muted-foreground text-lg">{article.readingTime.text}</p>
+					</div>
 				</header>
 
 				<figure className="bg-muted/30 overflow-hidden">
