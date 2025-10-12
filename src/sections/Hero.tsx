@@ -38,7 +38,7 @@ export default function Hero() {
 					'grid grid-flow-col grid-cols-1 grid-rows-2 gap-6 md:grid-cols-2 md:grid-rows-1 md:gap-12'
 				}
 			>
-				<Button variant={'primary'} href="/whitepaper" target="_blank">
+				<Button variant={'primary'} href="/whitepaper">
 					<LucideLink className={'left-0 mr-auto'} />
 					<span className={'mx-auto'}>Whitepaper</span>
 				</Button>
