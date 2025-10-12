@@ -53,13 +53,7 @@ export function WebsiteNavbar() {
 				<NavBody>
 					<NavbarLogo />
 					<NavItems items={navItems} />
-					<Button
-						variant={'primary'}
-						size={'sm'}
-						href={'/whitepaper.pdf'}
-						target={'_blank'}
-						className="z-10"
-					>
+					<Button variant={'primary'} size={'sm'} href={'/whitepaper'} className="z-10">
 						<LucideScroll className={'left-0 mr-auto'} />
 						<span className={'mx-auto'}>Whitepaper</span>
 					</Button>
