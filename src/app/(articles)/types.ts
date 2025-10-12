@@ -9,6 +9,8 @@ export interface ArticleMetadata {
 		src: string;
 		caption?: string;
 	};
+	weight?: number;
+	pinned?: boolean;
 	type: ArticleType;
 	webMetadata?: Metadata;
 }

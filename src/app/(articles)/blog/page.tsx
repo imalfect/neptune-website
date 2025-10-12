@@ -1,11 +1,10 @@
 import ArticleCard from '@/components/cards/ArticleCard';
 import { fetchArticlesMetadata } from '@/lib/articleFetch';
+import { sortArticles } from '@/lib/utils';
 import { ArticleType } from '../types';
 
 export default async function BlogPage() {
-	const articles = (await fetchArticlesMetadata(ArticleType.Blog)).sort(
-		(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-	);
+	const articles = sortArticles(await fetchArticlesMetadata(ArticleType.Blog));
 	return (
 		<div className="mx-auto mt-36 flex max-w-[96rem] flex-col">
 			<div className="space-y-1.5">
