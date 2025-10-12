@@ -95,11 +95,6 @@ export default function FAQ() {
 							</div>
 						}
 					/>
-					<FAQItem
-						value="transaction-speed"
-						question="How fast are Neptune transactions?"
-						answer="Neptune balances privacy with performance. While zero-knowledge proofs require computational overhead, we've optimized the Triton VM to process transactions efficiently. Block times are consistent, and transactions are confirmed within minutes."
-					/>
 				</FAQAccordion>
 			</div>
 		</section>
