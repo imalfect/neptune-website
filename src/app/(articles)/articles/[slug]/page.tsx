@@ -24,8 +24,7 @@ export async function generateMetadata({
 
 	if (!articleMetadata) {
 		return {
-			title: 'Article Not Found - Neptune',
-			description: 'The requested article could not be found.'
+			robots: 'noindex'
 		};
 	}
 
