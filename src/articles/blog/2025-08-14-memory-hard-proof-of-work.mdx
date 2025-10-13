@@ -11,12 +11,6 @@ caption = "Memory-Hard Proof-of-Work"
 +++
 
 
-| ![Neptune Cash Memory Cards](/article-images/blog/neptune-memory-card-game.jpg) |
-| :-----------------: |
-| **Fig.1.**: Neptune memory-cards puzzle. A close match. |
-
-# Memory-Hard Proof-of-Work in Neptune Cash
-
 **Abstract.** With the launch of its rebooted network, Neptune Cash changed the proof-of-work puzzle. On the legacy network, this puzzle had consisted of a simple partial preimage search: the task is to find a nonce such that the hash of the block is less than a given target. On the rebooted network, the puzzle consists of finding not just a nonce but a Merkle root and authentication paths as well; and in addition to satisfying the hash inequality, the root and authentication paths must be valid. To efficiently guess solutions to this puzzle, guessers must possess at least 40 GB or RAM. This article motivates the change and explains in detail how the new proof-of-work mechanism works.
 
 ## Memory-Hard Proof-of-Work

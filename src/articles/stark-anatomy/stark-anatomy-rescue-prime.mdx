@@ -23,13 +23,13 @@ This part of the tutorial puts the tools developed in the previous parts togethe
  5. MDS. The vector of state elements is multiplied by a matrix with special properties.
  6. Round constants. Pre-defined constants are added to every element of the state.
 
-![Rescue-XLIX round function](/article-images/learn/rescue-prime-round.svg)
+{<ArticleImage src="/article-images/learn/rescue-prime-round.svg" type="table" centered={true} alt="Rescue-XLIX round function" />}
 
 The rounds are *almost* identical but not quite because constants are different in every rounds. While the Backward S-box step seems like a high degree operation, as we shall see, all six steps of the Rescue-XLIX round function can be captured by non-deterministic transition constraints of degree $\alpha$. 
 
 Once the Rescue-XLIX permutation is defined, one obtains Rescue-Prime by instantiating a sponge function with it. In this construction, input field elements are absorbed into the top $r$ elements of the state in between permutations. After one final permutation, the top $r$ elements are read out. The Rescue-Prime hash digest consists of these $r$ elements.
 
-![Rescue-Prime sponge construction](/article-images/learn/rescue-prime-sponge.svg)
+{<ArticleImage src="/article-images/learn/rescue-prime-sponge.svg" type="table" centered={true} alt="Rescue-Prime sponge construction" />}
 
 For the present STARK proof the following parameters are used:
  - prime field of $p = 407 \cdot 2^{119} + 1$ elements

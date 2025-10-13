@@ -11,9 +11,6 @@ src = "/article-images/learn/ai/reed-solomon.jpeg"
 caption = "Anatomy of a STARK"
 +++
 
-
-# FRI
-
 FRI is a protocol that establishes that a committed polynomial has a bounded degree. The acronym FRI stands for *Fast Reed-Solomon IOP of Proximity*, where IOP stands for *interactive oracle proof*. FRI is presented in the language of codewords: the prover sends codewords to the verifier who does not read them whole but who makes oracle-queries to read them in select locations. The codewords in this protocol are *Reed-Solomon codewords*, meaning that their values correspond to the evaluation of some low-degree polynomial in a list of points called the domain $D$. The length of this list is larger than the number of possibly nonzero coefficients in the polynomial by a factor called the *expansion factor* (also *blowup factor*), which is the reciprocal of the code's *rate* $\rho$.
 
 Since the codewords represent low-degree polynomials, and since the codewords are hidden behind Merkle trees in any real-world deployment, it is arguably more natural to present FRI from the point of view of a polynomial commitment scheme, with some caveats. There is scientific merit in separating the type of codewords from the IOP, and those two from the Merkle tree that simulates the oracles. However, from an accessibility point of view, it is beneficial to consider them as three components of one basic primitive that relates to polynomial commitment schemes. For the remainder of this tutorial, we will use the term FRI in this sense.
@@ -78,7 +75,7 @@ By setting $x = \alpha$ we get exactly the y-coordinate of $C$.
 
 This description covers one round, at the end of which the prover and verifier are in the same position as they were at the start. The prover wishes to establish that a given Merkle root decommits to a codeword whose defining polynomial has a bounded degree. There is one important difference though: as a result of running one round of FRI, the length of the codeword as well as the number of possibly nonzero coefficients of the polynomial have halved. Prover and verifier can set $f = f^\star$, $D = d^\star$, and repeat the process. After running $\lceil \log_2 (d+1) \rceil - 1$ rounds of FRI, where $d$ is the degree of the original polynomial, prover and verifier end up with a constant polynomial whose codeword is also constant. At this point, the prover sends this constant[^3] instead of the codeword's Merkle root, making it abundantly clear that it corresponds to a polynomial of degree $0$.
 
-![FRI overview](/article-images/learn/fri-overview.svg)
+{<ArticleImage src="/article-images/learn/fri-overview.svg" type="table" centered={true} alt="FRI overview" />}
 
 In production systems the length of the codeword is often reduced not by a factor 2 but a small power of 2. This optimization reduces the proof size and might even generate running time improvements. However, this tutorial optimizes for simplicity and any further discussion about higher folding factors is out of scope.
 
@@ -88,7 +85,7 @@ The above description glosses over a counter-intuitive but highly subtle point: 
 
 The reason why sampling the indices independently in each round is less secure, is because it is likely to fail to catch hybrid codewords, as the next picture shows.
 
-![Sampling indices in FRI. Left: less secure; right: more secure.](/article-images/learn/fri-attack.svg)
+{<ArticleImage src="/article-images/learn/fri-attack.svg" type="table" centered={true} alt="Sampling indices in FRI - less secure vs more secure" caption="Sampling indices in FRI. Left: less secure; right: more secure." />}
 
 The blue codeword is far from any codeword that matches with a low degree polynomial, whereas the green codeword does correspond to a low degree polynomial. In order to switch from blue to green, the malicious prover uses a hybrid codeword in the second round. This hybrid codeword is obtained by selecting the values from the one codeword or the other based on a randomly chosen partition. The malicious prover succeeds when all colinearity checks involve points of the same color.
 

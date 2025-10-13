@@ -12,7 +12,7 @@ caption = "Anatomy of a STARK"
 +++
 
 
-# STARK Overview
+## STARK Overview
 
 STARKs are a class of interactive proof systems, but for the purpose of this tutorial it's good to think of them as a special case of SNARKs in which
  - hash functions are the only cryptographic ingredient,
@@ -44,7 +44,7 @@ The acronym STARK stands for Scalable Transparent ARgument of Knowledge. *Scalab
 
 The particular qualities of this construction are best illustrated in the context of the compilation pipeline. Depending on the level of granularity, one might opt to subdivide this process into more or fewer steps. For the purpose of introducing STARKs, the compilation pipeline is divided into four stages and three transformations. Later on in this tutorial there will be a much more fine-grained pipeline and diagram.
 
-![The compilation pipeline is divisible into three transformation and four stages.](/article-images/learn/pipeline.svg "Overview of the compilation pipeline for SNARKs")
+{<ArticleImage src="/article-images/learn/pipeline.svg" type="table" centered={true} alt="Overview of the compilation pipeline for SNARKs" caption="The compilation pipeline is divisible into three transformation and four stages." />}
 
 ### Computation
 The input to the entire pipeline is a *computation*, which you can think of as a program, an input, and an output. All three are provided in a machine-friendly format, such as a list of bytes. In general, the program consists of instructions that determine how a machine manipulates its resources. If the right list of instructions can simulate an arbitrary Turing machine, then the machine architecture is Turing-complete.
@@ -83,7 +83,7 @@ There is a minor issue the above description does not capture: how does the veri
 
 At this point the Polynomial IOP has been compiled into an interactive concrete proof system. In principle, the protocol could be executed. However, it pays to do one more step of cryptographic compilation: replace the verifier's random coins (AKA. *randomness*) by something pseudorandom -- but deterministic. This is exactly the Fiat-Shamir transform, and the result is the non-interactive proof known as the STARK.
 
-![The STARK proof system revolves around the transformation of low-degree polynomials into new polynomials whose degree boundedness matches with the integrity of the computation.](/article-images/learn/stark-overview.svg "Overview of the compilation pipeline for STARKs")
+{<ArticleImage src="/article-images/learn/stark-overview.svg" type="table" centered={true} alt="Overview of the compilation pipeline for STARKs" caption="The STARK proof system revolves around the transformation of low-degree polynomials into new polynomials whose degree boundedness matches with the integrity of the computation." />}
 
 This description glosses over many details. The remainder of this tutorial will explain the construction in more concrete and tangible terms, and will insert more fine-grained components into the diagram.
 

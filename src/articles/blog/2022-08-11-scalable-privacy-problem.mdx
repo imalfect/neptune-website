@@ -11,8 +11,6 @@ caption = "The Problem of Scalable Privacy"
 +++
 
 
-# The Problem of Scalable Privacy
-
 Existing privacycoins do not scale. Neptune does. This note explains why.
 
 ## Introduction
@@ -31,9 +29,7 @@ To understand why privacy technologies in cryptocurrencies might be deleterious 
 
 To validate a newly published transaction, a network node needs to verify that the coins that are being spent by it, exist in the UTXO set – because if they don't, then the transaction is either trying to spend new coins into existence, or else trying to double-spend already spent coins. Once the transaction is confirmed, the UTXO set is updated: some coins are removed and new ones are added. In this sense the UTXO set is a snapshot in time of the set of spendable coins. The size of the UTXO set is largely independent of the number of previous transactions.
 
-![](/article-images/blog/graph-utxo-tx.svg)
-
-**Diagram 1**: The UTXO set in action: to verify that a new transaction (colored blue) spends valid coins, it is not necessary to parse the entire history (colored gray and black) but instead to test the membership of the spent coins to the UTXO set (colored red).
+{<ArticleImage src="/article-images/blog/graph-utxo-tx.svg" type="table" centered={true} alt="UTXO set in action" caption={<><strong>Diagram 1</strong>: The UTXO set in action: to verify that a new transaction (colored blue) spends valid coins, it is not necessary to parse the entire history (colored gray and black) but instead to test the membership of the spent coins to the UTXO set (colored red).</>} />}
 
 Absent any infrastructure for stateless validation, a full node must store the entire UTXO set in order to perform this membership test. If the UTXO set keeps growing, then so does the cost of participation, and eventually this cost puts downward pressure on the number of active nodes.
 
@@ -50,9 +46,7 @@ In summary, the UTXO set is the set of dangling outbound edges in the transactio
 
 A cryptocurrency's *lack* of privacy comes from the public visibility of the transaction graph. On the one hand, this transaction graph is needed for auditability, but on the other hand, it is also what enables tracing funds and correlating expenditures. The task of engineering privacy amounts to obfuscating the transaction graph while preserving the auditability through zero-knowledge proofs.
 
-![](/article-images/blog/graph-amounts.svg)
-
-**Diagram 2**: A transaction graph leaks the movements of money throughout history.
+{<ArticleImage src="/article-images/blog/graph-amounts.svg" type="table" centered={true} alt="Transaction graph showing money movements" caption={<><strong>Diagram 2</strong>: A transaction graph leaks the movements of money throughout history.</>} />}
 
 ### Confidential Transactions
 
@@ -62,17 +56,13 @@ Confidential Transactions is perfectly compatible with a prunable UTXO set. Inst
 
 However, as far as obfuscating the transaction graph is concerned, Confidential Transactions is a half-solution at best. It does not hide the connections of the transaction graph and so it still enables analysts to correlate expenditures if they have side-channel information to help identify or bound transaction amounts. A stronger obfuscation of the transaction graph is needed, in addition to Confidential Transactions.
 
-![](/article-images/blog/graph-ct.svg)
-
-**Diagram 3**: Confidential Transactions hides the amounts of transaction inputs and outputs. Since the arrows are no longer associated with amounts, the arrows are no longer weighted.
+{<ArticleImage src="/article-images/blog/graph-ct.svg" type="table" centered={true} alt="Confidential Transactions hiding amounts" caption={<><strong>Diagram 3</strong>: Confidential Transactions hides the amounts of transaction inputs and outputs. Since the arrows are no longer associated with amounts, the arrows are no longer weighted.</>} />}
 
 ### Decoys
 
 The obfuscation of the transaction graph achieved by Zerocoin, Zcash[^1], and Monero are variations to a common theme that might be called the *decoy approach*. In this construction, every transaction determines a list of possible inputs along with explicit decoys. A separate zero-knowledge proof establishes that *some* inputs are being spent, without leaking which ones.
 
-![](/article-images/blog/graph-decoys.svg)
-
-**Diagram 4**: With decoys, every transaction determines a list of plausible inputs. Only a subset of plausible inputs are true inputs; the remaining ones are decoys put there to obfuscate the transaction graph.
+{<ArticleImage src="/article-images/blog/graph-decoys.svg" type="table" centered={true} alt="Transaction graph with decoys" caption={<><strong>Diagram 4</strong>: With decoys, every transaction determines a list of plausible inputs. Only a subset of plausible inputs are true inputs; the remaining ones are decoys put there to obfuscate the transaction graph.</>} />}
 
 The decoys must be plausible origins of the money, and so they must be historical UTXOs. In order to prevent double-spending, the decoy approach requires the maintenance of a *nullifier set*. Every UTXO commits to a unique code called the *nullifier*, which remains hidden until the UTXO is spent. When it is spent, the nullifiers produced by the transaction are added to the list of nullifiers. A double-spend can be caught because it generates a duplicate entry in this list. And so in particular, transactions are invalid if they generate a duplicate entry.
 
@@ -94,9 +84,7 @@ In either case, the decoy-approach is not conducive to network scalability.
 
 Glossing over some details[^3], the long story short is that it is possible to merge transactions and hide the fact that before the merger there were two separate transactions. Moreover, if some UTXOs are generated by the one transaction and consumed by the other, these UTXOs can be omitted from the merged transaction altogether. These operations are known as *coinjoin* and *cut-through* respectively. Their effect on the transaction graph is to merge nodes. In the extremal case, every block contains only one transaction but thousands of inputs and outputs.
 
-![](/article-images/blog/graph-mergers.svg)
-
-**Diagram 5**: Merging transactions results in a transaction graph with fewer edges and fewer nodes.
+{<ArticleImage src="/article-images/blog/graph-mergers.svg" type="table" centered={true} alt="Merged transaction graph" caption={<><strong>Diagram 5</strong>: Merging transactions results in a transaction graph with fewer edges and fewer nodes.</>} />}
 
 Merger-based privacycoins are compatible with a prunable UTXO set, and as a result of this compatibility they are conducive to network scalability. It is likely that this promise of greater network scalability fueled the interest in the Grin and Beam projects, both instantiations of the Mimblewimble technology. The apparent loss of interest is likely related to the need to be online and interact with the counterparty in order to send or receive money.
 
@@ -106,9 +94,7 @@ Nevertheless, this interactivity requirement is not an inherent property in merg
 
 Another strategy for obfuscating the transaction graph charges miners with mixing the UTXO set. UTXOs are still commitments in this constructions, but *re-randomizable* commitments – meaning that anyone can derive a new commitment that is unlinkable but decommits to the same payload. In every block, miners apply this operation to a subset of UTXOs, shuffle them, and include a zero-knowledge proof of correct mixing.
 
-![](/article-images/blog/graph-mixnet.svg)
-
-**Diagram 6**: Transaction graph when every block mixes the UTXO set.
+{<ArticleImage src="/article-images/blog/graph-mixnet.svg" type="table" centered={true} alt="Transaction graph with miner mixing" caption={<><strong>Diagram 6</strong>: Transaction graph when every block mixes the UTXO set.</>} />}
 
 This strategy is compatible with a prunable UTXO set and therefore conducive to network scalability. It does not generate a workload that scales linearly with the history or time in between receiving and sending money. However, it does increase the workload in some narrow respects:
  - UTXO owners must scan through all outputs of the mixing operation to locate the UTXOs they own.
@@ -129,9 +115,7 @@ The lightning network consists of nodes and channels between them. Hash time loc
 
 The only trace that lightning transactions leave on the blockchain is the transactions that open channels, close them, and, unless Confidential Transactions hides amounts, the net difference over the channel's lifetime. The effect on the transaction graph is profound: the part of the transaction graph that is recorded by the blockchain is incapable of bringing into view movements of money on the lightning network. Since lightning transactions do not compete with each other for scarce blockchain space, the lightning part of the transaction graph might be more significant than the on-chain part relative to any meaningful metric.
 
-![](/article-images/blog/graph-lightning.svg)
-
-**Diagram 7**: Visualization of the transaction graph in the presence of a lightning network. The lightning network is an overlay network, with users (light blue squares) as nodes and channels (light blue circles) as edges. The topology of this overlay network varies from time to time. While a channel exists (full blue line) its balance can be updated (blue circle). By cascading channel updates atomically, participants in the network can make transactions as long as there is a liquid path between them. The only trace of lightning transactions left on the blockchain is the jointly owned UTXOs (colored purple), the transaction that create them, and the transactions that destroy them – all three of which can plausibly be indistinguishable from regular on-chain traffic.
+{<ArticleImage src="/article-images/blog/graph-lightning.svg" type="table" centered={true} alt="Transaction graph with Lightning network" caption={<><strong>Diagram 7</strong>: Visualization of the transaction graph in the presence of a lightning network. The lightning network is an overlay network, with users (light blue squares) as nodes and channels (light blue circles) as edges. The topology of this overlay network varies from time to time. While a channel exists (full blue line) its balance can be updated (blue circle). By cascading channel updates atomically, participants in the network can make transactions as long as there is a liquid path between them. The only trace of lightning transactions left on the blockchain is the jointly owned UTXOs (colored purple), the transaction that create them, and the transactions that destroy them – all three of which can plausibly be indistinguishable from regular on-chain traffic.</>} />}
 
 Lightning can work with the account-based model of transactions but is particularly powerful in combination with Confidential Transactions, which works only for UTXOs. In either case, the blockchain must support scripts. Specifically, it must be possible to encode spending conditions that make a transaction invalid a) before a certain time, or b) unless a preimage to a one-way function is provided. The two most popular privacycoins by market cap, Monero and Zcash, do not have this feature.
 

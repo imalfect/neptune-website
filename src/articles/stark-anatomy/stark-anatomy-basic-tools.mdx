@@ -484,7 +484,7 @@ Next up is evaluation. The argument to this method needs to be a tuple of scalar
 
 In an interactive public coin protocol, the verifier's messages are pure randomness sampled from a distribution that *anyone* can sample from. The objective is to obtain a non-interactive protocol that proves the same thing, without sacrificing security. The Fiat-Shamir transform achieves this.
 
-![Interactive proof, before Fiat-Shamir transform](/article-images/learn/interactive-proof.svg)
+{<ArticleImage src="/article-images/learn/interactive-proof.svg" type="table" centered={true} alt="Interactive proof before Fiat-Shamir transform" />}
 
 It turns out that for generating security against malicious provers, generating the verifier's messages randomly as the interactive protocol stipulates, is overkill. It is sufficient that the verifier's messages be difficult to predict by the prover. Hash functions are deterministic but still satisfy this property of outputs being difficult to predict. So intuitively, the protocol remains secure if the verifier's authentic randomness is replaced a hash function's pseudorandom output. It is necessary to restrict the prover's control over what input goes into the hash function, because otherwise he can grind until he finds a suitable output. It suffices to set the input to the transcript of the protocol up until the point where the verifier's message is needed.
 
@@ -494,7 +494,7 @@ The Fiat-Shamir transform presents the first engineering challenge. The interact
 
 A *proof stream* is a useful concept to simulate this channel. The difference with respect to regular streams in programming is that there is no actual transmission to another process or computer taking place, and nor do sender and receiver need to operate simultaneously. It is not a simple queue either because the prover and the verifier have access to a function that computes pseudorandomness by hashing their view of the channel. For the prover, this view is the entire list of all messages *sent* so far. For the verifier, this view is the sublist of messages *read* so far. The verifier's messages are not added to the list because they can be deterministically computed from them. Given the list of prover's messages, serialization is straightforward. The non-interactive proof is exactly this serialization.
 
-![Non-interactive proof, after Fiat-Shamir transform](/article-images/learn/proof-stream.svg)
+{<ArticleImage src="/article-images/learn/proof-stream.svg" type="table" centered={true} alt="Non-interactive proof after Fiat-Shamir transform" />}
 
 In terms of implementation, what is needed is a class `ProofStream` that supports 3 functionalities.
  1. Pushing and pulling objects to and from a queue. The queue is simulated by a list with a read index. Whenever an item is pushed, it is appended. Whenever an item is pulled, the read index is incremented by one.
@@ -542,7 +542,7 @@ A [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree) is a vector commitmen
 
 Specifically, every leaf of the binary tree represents the hash of a data element. Every non-leaf node represents the hash of the concatenation of its two children. The root of the tree is the commitment. A membership proof consists of all siblings of nodes on a path from the indicated leaf to the root. This list of siblings is called an *authentication path*, and provides the verifier with $N$ complete preimages to the hash function at every step of the path, leading to a final test in the root node.
 
-![Merkle tree](/article-images/learn/merkle-tree.svg)
+{<ArticleImage src="/article-images/learn/merkle-tree.svg" type="table" centered={true} alt="Merkle tree" />}
 
 An implementation of this construct needs to provide three functionalities:
  1. $\mathsf{commit}$ -- computes the Merkle root of a given array.

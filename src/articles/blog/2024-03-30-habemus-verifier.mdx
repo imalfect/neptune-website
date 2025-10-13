@@ -10,7 +10,7 @@ src = "/article-images/blog/fri-inner-loop.png"
 caption = "Habemus Verifier"
 +++
 
-# Habemus Verifier
+
 > I heard you like verifying proofs, so I took your proof of verification and made a proof of its verification,
 > so you can verify while you verify.
 
@@ -76,18 +76,14 @@ of $2^{21}$ which would allow recursive proof generation to be handled on hardwa
 possession, without having to use swap for extra RAM[^prover-resource-consumption]. Assuming that
 clock cycle count is the dominating factor in the padded height, that is.
 
-|        ![Clock Cycle Count Beginnig](/article-images/blog/clock-cycle-count-1.png)         |
-| :-------------------------------------------------------------------: |
-| Fig.1: Early status of the clock cycle count vs. inner padded height. |
+{<ArticleImage src="/article-images/blog/clock-cycle-count-1.png" type="table" centered={true} alt="Clock Cycle Count Beginning" caption="Fig.1: Early status of the clock cycle count vs. inner padded height." />}
 
 There are many knobs you can turn to bring down the clock cycle count of the verifier, but some of
 them come with tradeoffs like bigger proofs, more RAM consumption in the prover, slower prover etc.
 An approach that doesn't have any tradeoffs but is a pure win is to hand-optimize the code, so I
 thought I would spend a few days trying to get reach the goal just by writing more efficient TASM.
 
-|                                                                                                                                       ![FRI verifier inner loop](/article-images/blog/fri-inner-loop.png)                                                                                                                                       |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| Fig.2: [Triton VM assembly code from the inner loop of the FRI verifier](https://github.com/TritonVM/tasm-lib/blob/df6396f6cca3092c649eaf1b391051d0b9a6410e/tasm-lib/src/recufier/fri_verify.rs#L491). This is my life now. Triton VM's instruction set can be found [here](https://triton-vm.org/spec/instructions.html). |
+{<ArticleImage src="/article-images/blog/fri-inner-loop.png" type="table" centered={true} alt="FRI verifier inner loop" caption={<>Fig.2: <a href="https://github.com/TritonVM/tasm-lib/blob/df6396f6cca3092c649eaf1b391051d0b9a6410e/tasm-lib/src/recufier/fri_verify.rs#L491">Triton VM assembly code from the inner loop of the FRI verifier</a>. This is my life now. Triton VM's instruction set can be found <a href="https://triton-vm.org/spec/instructions.html">here</a>.</>} />}
 
 My first target was the higher-order function `map` which is used extensively in the verifier. By
 switching from index arithmetic to pointer arithmetic, we gained around 60.000 clock cycles towards
@@ -97,9 +93,7 @@ pre-calculating some values outside of the loop, and reducing the number of swap
 words on the stack. The efforts on FRI finally got us across the finish-line. I spent two-three
 days just looking at the assembler of the FRI verifier, so this was a very nice reward[^link-to-various-speedups].
 
-|                        ![Clock Cycle Count Better](/article-images/blog/clock-cycle-count-2.png)                        |
-| :------------------------------------------------------------------------------------------------: |
-| Fig.3: Big improvements in the clock cycle count, mainly due to optimizations in the FRI verifier. |
+{<ArticleImage src="/article-images/blog/clock-cycle-count-2.png" type="table" centered={true} alt="Clock Cycle Count Better" caption="Fig.3: Big improvements in the clock cycle count, mainly due to optimizations in the FRI verifier." />}
 
 
 ## Barking up the wrong tree
@@ -123,9 +117,7 @@ As long as the opstack table dominates the padded height, `swap` instructions ar
 point of view of the prover. Removing `swap` instructions from the verifier is basically what I spent
 the last three days doing...
 
-| ![Opstack Table Height Dominates](/article-images/blog/opstack-table-height-1.png) |
-| :-----------------------------------------------------------: |
-|      Fig.4: Measuring the relevant numbers is important!      |
+{<ArticleImage src="/article-images/blog/opstack-table-height-1.png" type="table" centered={true} alt="Opstack Table Height Dominates" caption="Fig.4: Measuring the relevant numbers is important!" />}
 
 ## A way forward towards $2^{21}$
 So far we have only been benchmarking clock cycle count, the u32 table, and hash table, not the
@@ -165,9 +157,7 @@ Sauer. That enabled me to find the discrepancy between the two versions[^hand-wr
 
 Here's the final result:
 
-|                   ![After hand-optimizing the entire verifier](/article-images/blog/opstack-table-height-2.png)                   |
-| :----------------------------------------------------------------------------------------------------------: |
-| Fig.5: Still not under the threshold, but a max table height that's 200.000 less than the compiled verifier. |
+{<ArticleImage src="/article-images/blog/opstack-table-height-2.png" type="table" centered={true} alt="After hand-optimizing the entire verifier" caption="Fig.5: Still not under the threshold, but a max table height that's 200.000 less than the compiled verifier." />}
 
 
 [^running-times-starks]: Verifying such a proof has a $O(log(N)^2)$ as opposed to a $N$ time of

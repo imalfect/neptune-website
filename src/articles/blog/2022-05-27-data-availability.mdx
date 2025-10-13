@@ -5,6 +5,7 @@ author = "Alan Szepieniec"
 date = "2022-05-27"
 type = "blog"
 imagegen = "Two types of UTXOs represented as locked and unlocked boxes with blockchain data streams, illustrating privacy versus public accessibility"
+status = "check-links"
 
 [thumbnail]
 src = "/article-images/blog/ai/utxo-boxes.jpeg"
@@ -12,15 +13,13 @@ caption = "UTXO Types and the Data Availability Problem"
 +++
 
 
-# UTXO Types and the Data Availability Problem
-
 Scalability and smart contracts are fundamentally at odds with each other. This note explores the problem and articulates the tradeoffs informing Neptune's architecture.
 
 ## Introduction
 
 Off-chain payment channel networks such as Lighting promise not only to scale the transaction throughput of cryptocurrencies, but to reinforce privacy as well. The standard approach to make smart contracts private, first championed by [Zexe](https://eprint.iacr.org/2018/962.pdf), is to offchain them as well: the user evaluates the smart contract locally, and generates a non-interactive zero-knowledge proof of correct execution. If the smart contract has a state, then this state is hidden behind a cryptographic commitment and the zero-knowledge proof must demonstrate that it is updated in accordance with the smart contract's logic. In fact, there is no reason not to extend this cryptographic concealment to the smart contract logic itself, also.
 
-![](/article-images/blog/zexe-style.svg)
+{<ArticleImage src="/article-images/blog/zexe-style.svg" type="table" centered={true} alt="Zexe-style off-chain smart contracts" />}
 
 Scalability generally refers to one of two notions:
  a) The evolution of workload and hardware requirements for participating nodes as a function of the age or popularity of the protocol. How easy is it to join the network? This refinement might be called *network scalability*.
@@ -30,7 +29,7 @@ This Zexe-approach does a good job in protecting the users' privacy. It might su
 
 However, Zexe-style offchaining is detrimental to throughput scalability. The reason is that *smart contracts are iterative computations*[^1]. Each invocation of a smart contract updates a state. Concealing smart contract states behind cryptographic commitments generates race conditions: updates to this state interfere with each other. The first transaction will make the second invalid because it assumes the old state commitment. The initiator of the second transaction must first obtain the full state that the second transaction outputted. If this information is selectively available then some users have an unfair advantage over others; and if it is lost then the smart contract becomes permanently unusable.
 
-![](/article-images/blog/iterative-functions.svg)
+{<ArticleImage src="/article-images/blog/iterative-functions.svg" type="table" centered={true} alt="Iterative smart contract functions" />}
 
 This, in a nutshell, is the *data availability problem*: the validity of a smart contract may be proved relative to commitments to its state, but its *usability* depends on the dissemination of that state. Pushing state dissemination to a second layer in order to avoid polluting scarce blockchain space is tempting, but this strategy ignores the secondary function of the layer-one consensus mechanism. Consensus does not only validate authenticity; it also replicates data. As such, the consensus mechanism is a robust solution to the data availability problem.
 
@@ -54,7 +53,7 @@ Note that this solution does not sacrifice the ability of light nodes to succinc
 
 What *is* compromised is privacy -- or specifically, the *confidentiality* of transactions involving lock-free UTXOs. But that tradeoff is intuitively valid: if you want to rely on the robustness of the consensus mechanism to broadcast, then you should be prepared to sacrifice some privacy. Alternatively, you can participate in a private, off-chain protocol to operate a lockable UTXO with the same type script; but in this case the overlay protocol stipulates how to make the data available to all participants -- or indeed, which subset of participants to make which data available to, or even whether to guarantee availability at all.
 
-![](/article-images/blog/public-lock-free.svg)
+{<ArticleImage src="/article-images/blog/public-lock-free.svg" type="table" centered={true} alt="Public lock-free UTXOs" />}
 
 ## Summary
 

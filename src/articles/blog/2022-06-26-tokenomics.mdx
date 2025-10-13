@@ -4,6 +4,7 @@ description = "The token economics of Neptune are similar to those of Bitcoin, b
 author = "Alan Szepieniec"
 date = "2022-06-26"
 type = "blog"
+status = "check-links"
 
 [thumbnail]
 src = "/article-images/blog/premine-pie-chart.png"
@@ -11,7 +12,6 @@ caption = "Neptune Tokenomics"
 +++
 
 
-# Neptune Tokenomics
 
 The token economics (*tokenomics*) of Neptune are similar to those of Bitcoin, but there are some important differences. This note clarifies them.
 
@@ -30,17 +30,17 @@ The difficulty is automatically adjusted to target an expected block time of 9.8
 
 These parameters define a money supply evolution similar to that of Bitcoin. Specifically, the slope halves in every epoch.
 
-![](/article-images/blog/money-supply.svg)
+{<ArticleImage src="/article-images/blog/money-supply.svg" type="table" centered={true} alt="Money supply evolution over time" />}
 
 ## Premine
 
 In order to reach 42 million tokens in the limit, the token supply needs to start at 831 600. These tokens are created by the genesis block, and distributed to the investors who provided the funds needed to develop Neptune. This premine is 1.98% of the asymptotical limit of the token supply.
 
-![](/article-images/blog/premine-pie-chart.svg)
+{<ArticleImage src="/article-images/blog/premine-pie-chart.svg" type="table" centered={true} alt="Premine distribution pie chart" />}
 
 Of course, the distribution depicted by the pie chart will only be reached in the limit. A more informative visualization is given by the evolution of the fraction of the token supply that was premined as a function of time. The next graph provides this image.
 
-![](/article-images/blog/premine-over-time.svg)
+{<ArticleImage src="/article-images/blog/premine-over-time.svg" type="table" centered={true} alt="Premine percentage over time" />}
 
 ## Stock-to-Flow
 
@@ -48,16 +48,17 @@ The [stock-to-flow](https://planbtc.com/) model has garnered a lot of attention 
 
 Specifically, the stock-to-flow ratio is defined as the number of years it takes for the current issuance schedule to generate an amount equal to the total current supply. If it takes seven years to double the supply without changes to the issuance schedule, then the stock-to-flow ratio is seven. In graphical form, it pays to take the natural logarithm of the stock-to-flow ratio; this gives rise to the familiar staircase pattern.
 
-![](/article-images/blog/stock-to-flow.svg)
+{<ArticleImage src="/article-images/blog/stock-to-flow.svg" type="table" centered={true} alt="Stock-to-flow ratio over time" />}
 
 According to this extrapolation, Neptune's stock-to-flow ratio will overtake that of Bitcoin by 2068. Of course, there is more to hard money than the relation between new and existing supply
 
 ## No Tail Emission
 
 Some cryptocurrencies feature a [tail emission](https://www.getmonero.org/resources/moneropedia/tail-emission.html), which is a nonzero lower bound on the issuance rate. It guarantees that there will always be a block reward, even if the transaction fees do not reward the miner for his energy expenditure. Some bitcoiners also avocate for this policy.
+<div className="image-card center">
 
 ![](/article-images/blog/todd-nuts.png)
-
+</div>
 The argument goes something like this:
  - A cryptocurrency security against reorganization comes from the incentive for miners, which is proportional to the value of the fees and block reward.
  - In the long run, the cryptocurrencies with tail emission allocate a larger proportion of the token supply to miners, compared to cryptocurrencies without.

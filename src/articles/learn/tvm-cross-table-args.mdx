@@ -31,7 +31,7 @@ In other words, the tables have to be linked together somehow.
 
 |                                                           |                                                     |
 |:----------------------------------------------------------|:----------------------------------------------------|
-| ![](/learn/tvm-cross-table-args/disconnect_processor.png) | ![](/learn/tvm-cross-table-args/disconnect_ram.png) |
+| {<ArticleImage src="/learn/tvm-cross-table-args/disconnect_processor.png" type="table" centered={true} alt="Disconnected Processor Table" />} | {<ArticleImage src="/learn/tvm-cross-table-args/disconnect_ram.png" type="table" centered={true} alt="Disconnected RAM Table" />} |
 
 **Figure 1** _Two tables as used in [Triton VM](https://triton-vm.org/). Without an argument linking the tables, the Processor Table on the left is completely disconnected from the RAM Table on the right._
 
@@ -90,11 +90,7 @@ For example:
 
 Another example of a (subset) Permutation Argument can be found between Triton VM's [U32 Table](https://triton-vm.org/spec/u32-table.html#extension-columns) and [Processor Table](https://triton-vm.org/spec/processor-table.html#extension-colums).
 
-|    |
-|:---|
-|![](/learn/tvm-cross-table-args/connect.png)|
-
-**Figure 2** _A Permutation Argument establishes that the rows of the Processor Table were correctly copied to the RAM Table._
+{<ArticleImage src="/learn/tvm-cross-table-args/connect.png" type="table" centered={true} alt="Connected tables with Permutation Argument" caption="Figure 2: A Permutation Argument establishes that the rows of the Processor Table were correctly copied to the RAM Table." />}
 
 ## Evaluation Argument
 

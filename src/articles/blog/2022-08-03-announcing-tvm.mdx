@@ -11,7 +11,6 @@ caption = "Announcing Triton VM"
 +++
 
 
-# Announcing Triton VM
 
 The source code for [Triton Virtual Machine is now open source](https://github.com/TritonVM/triton-vm). 🎉
 
@@ -31,11 +30,11 @@ Here are some example statements you can prove – in zero knowledge, and quickl
 Normally, when executing a machine – virtual or not – the flow of information can be regarded as follows.
 The tuple of (`input`, `program`) is given to the machine, which takes the `program`, evaluates it on the `input`, and produces some `output`.
 
-![](/article-images/blog/recursive-1.svg)
+{<ArticleImage src="/article-images/blog/recursive-1.svg" type="table" centered={true} alt="Normal machine execution flow" />}
 
 If the – now almost definitely virtual – machine also has an associated STARK engine, one additional output is a `proof` of computational integrity.
 
-![](/article-images/blog/recursive-2.svg)
+{<ArticleImage src="/article-images/blog/recursive-2.svg" type="table" centered={true} alt="Machine execution with STARK proof generation" />}
 
 Only if `input`, `program`, and `output` correspond to one another, i.e., if `output` is indeed the result of evaluating the `program` on the `input` according to the rules defined by the virtual machine, then producing such a `proof` is easy.
 Otherwise, producing a `proof` is next to impossible.
@@ -43,11 +42,11 @@ Otherwise, producing a `proof` is next to impossible.
 The routine that checks whether or not a `proof` is, in fact, a valid one, is called the Verifier.
 It takes as input a 4-tuple (`input`, `program`, `output`, `proof`) and evaluates to `true` if and only if that 4-tuple is consistent with the rules of the virtual machine.
 
-![](/article-images/blog/recursive-3.svg)
+{<ArticleImage src="/article-images/blog/recursive-3.svg" type="table" centered={true} alt="Verifier checking proof validity" />}
 
 Since the Verifier is a program taking some input and producing some output, the original virtual machine can be used to perform the computation.
 
-![](/article-images/blog/recursive-4.svg)
+{<ArticleImage src="/article-images/blog/recursive-4.svg" type="table" centered={true} alt="Recursive STARK verification" />}
 
 The associated STARK engine will then produce a proof of computational integrity of _verifying_ some other proof of computational integrity – recursion!
 Of course, the Verifier can be a subroutine in a larger program.

@@ -7,18 +7,11 @@ type = "blog"
 
 [thumbnail]
 src = "/article-images/blog/mutator-set-midjourney-medium.png"
-caption = "Mutator Sets"
+caption = "Mutator Sets, as imagined by Midjourney"
 +++
 
 
-# Mutator Sets
-
 A mutator set is a cryptographically authenticated data structure used to effect privacy in a scalable way. For a comprehensive presentation, have a look at the [paper](https://eprint.iacr.org/2023/1208.pdf) which is online as of today. This article is a less formal overview of mutator sets.
-
-
-| ![A mutator set using MMRs](/article-images/blog/mutator-set-midjourney-medium.png) |
-|:-----------------------------------------------------------------------------------:|
-|                **Fig. 1: a mutator set, as imagined by Midjourney.**                |
 
 ## The Problem: Scalable Privacy
 
@@ -76,9 +69,7 @@ The SWBF keeps track of which items are removed from the mutator set by setting 
 
 The zero-knowledge proof establishes that the announced indices are derived correctly from some item that was already added to the mutator set. Specifically: the bits were determined by hashing $t, l, r$; where the addition record $\mathsf{H}(t \Vert r)$ has a valid membership proof in the AOCL MMR. The information involved in this proof is shown in light blue.
 
-| ![A mutator set using MMRs](/article-images/blog/mutator-set.svg) |
-|:--:|
-| **Fig. 2: Construction of a mutator set using MMRs.** |
+{<ArticleImage src="/article-images/blog/mutator-set.svg" type="table" centered={true} alt="A mutator set using MMRs" caption="Fig. 2: Construction of a mutator set using MMRs." />}
 
 The malicious user who attempts to remove an item twice gets caught because the second time all the bits in the SWBF are already set. The malicious user who attempts to remove an item that was never added to the mutator set cannot successfully produce the zero-knowledge proof. The malicious observer who wants to link removals to additions is blocked by the hash functions and the zero-knowledge proof, which hide the information that would enable him to draw the link.
 
@@ -88,13 +79,9 @@ Moreover, the parameters of the Bloom filter are such that while it is *possible
 
 At this point, the use of mutator sets for anonymous cryptocurrencies suggests itself. Just replace the UTXO set with the mutator set. The blockchain tip defines only the accumulator value. Every block has a list of transactions. These transactions are valid if (in addition to standard transaction validity requirements like no inflation) all the inputs are valid removal records. The transactions' outputs are addition records, and the mutator set is updated with them in every block.
 
-| ![Transparent ledger fragment](/article-images/blog/transparent-ledger.svg) |
-|:--:|
-| **Fig. 3: Fragment of a transparent ledger.** |
+{<ArticleImage src="/article-images/blog/transparent-ledger.svg" type="table" centered={true} alt="Transparent ledger fragment" caption="Fig. 3: Fragment of a transparent ledger." />}
 
-| ![Opage ledger fragment](/article-images/blog/opaque-ledger.svg) |
-|:--:|
-| **Fig. 4: Fragment of a ledger that uses a mutator set for privacy.** |
+{<ArticleImage src="/article-images/blog/opaque-ledger.svg" type="table" centered={true} alt="Opaque ledger fragment" caption="Fig. 4: Fragment of a ledger that uses a mutator set for privacy." />}
 
 Privacy comes from the fact that the addition and removal records are *hiding* commitments and from their unlinkability. But where does scalability come from?
 

@@ -82,7 +82,7 @@ There is another layer of redundancy, but it is only apparent after the evaluati
 
 The redundancy comes from the fact that the trace polynomials relate to both quotients. It can therefore be eliminated by merging the equations they are involved in. The next diagram illustrates this elimination in the context of the STARK Polynomial IOP workflow. The green box indicates that the polynomials are committed to through the familiar evaluation and Merkle root procedure and are provided as input to FRI.
 
-![Overview of the STARK workflow](/article-images/learn/stark-workflow.svg)
+{<ArticleImage src="/article-images/learn/stark-workflow.svg" type="table" centered={true} alt="Overview of the STARK workflow" />}
 
 At the top of this diagram in red are the objects associated with the arithmetic constraint system, with the constraints written in small caps font to indicate that they are known to the verifier. The prover interpolates the execution trace to obtain the trace polynomials, but it is not necessary to commit to these polynomials. Instead, the prover interpolates the boundary points and subtracts the resulting interpolants from the trace polynomials. This procedure produces the *dense trace polynomials*, for lack of a better name. To obtain the boundary quotients from the dense trace polynomials, the prover divides out the zerofier. Note that the boundary quotients and trace polynomials are equivalent in the following sense: if the verifier knows a value in a given point of one, he can compute the matching value of the other using only public information.
 
@@ -131,7 +131,7 @@ Such a generalized AIR constraint is given by two polynomials.
 
 Treating boundary constraints and transition constraints as subclasses of generalized AIR constraints, leads to a simpler workflow diagram. Now, the prover commits to the raw trace polynomials, but these polynomials are not input to the FRI subprotocol. Instead, they are used to only verify that the leafs of the first Merkle tree of FRI were computed correctly.
 
-![STARK workflow for generalized AIR constraints](/article-images/learn/generalized-air-workflow.svg)
+{<ArticleImage src="/article-images/learn/generalized-air-workflow.svg" type="table" centered={true} alt="STARK workflow for generalized AIR constraints" />}
 
 The implementation of this tutorial follows the earlier workflow, which separates boundary constraints from transition constraints, rather than the workflow informed by a generalized notion of AIR constraints.
 

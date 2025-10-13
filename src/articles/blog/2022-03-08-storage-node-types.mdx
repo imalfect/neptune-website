@@ -5,14 +5,13 @@ author = "Alan Szepieniec"
 date = "2022-03-08"
 type = "blog"
 imagegen = "Different types of network nodes represented as servers with varying storage sizes, connected in a blockchain network diagram"
-
+status = "check-links"
 [thumbnail]
 src = "/article-images/blog/ai/storage-node-types.jpeg"
 caption = "Storage Requirements and Node Types in the Neptune Protocol"
 +++
 
 
-# Storage Requirements and Node Types in the Neptune Protocol
 
 The [Neptune White Paper](/whitepaper) makes, among many others, two statements of interest:
 
@@ -43,7 +42,7 @@ These categories are not mutually exclusive. Nothing prevents a node from managi
 
 Another, rather more continuous, dimension for classifying nodes is by their storage requirements. In this regard, the distinguishing feature of full nodes and support nodes on the one hand, and archival nodes on the other, is that the former saves on storage cost by pruning obsolete data. How aggressively to judge data as obsolete (in order to prune it) is the subject of a trade-off. Historical blockchain data *might* be needed to resynchronize in the event of a blockchain reorganization. Nodes trade off reduced storage requirements against increased intolerance for reorganizations. Archival nodes merely occupy the extremal point of this spectrum.
 
-![](/article-images/blog/node-types-plot.svg)
+{<ArticleImage src="/article-images/blog/node-types-plot.svg" type="table" centered={true} alt="Node types plot" />}
 
 To illustrate, let's explore how these nodes behave in the event of a reorganization.
 
@@ -55,19 +54,19 @@ Regardless of the blockchain protocol, a node that is presented with a new chain
 
 What's not negligible is the cost of recalculating an up-to-date UTXO set. This workload is already significant for Bitcoin but on Neptune it is compounded by the accumulator data structure: not only does the UTXO set change but so too do the commitment and the membership proofs. This task is obviously not relevant for spectator nodes and light nodes: they can just switch to the new tip after validating the block.
 
-![](/article-images/blog/reorganization-light.svg)
+{<ArticleImage src="/article-images/blog/reorganization-light.svg" type="table" centered={true} alt="Light node reorganization" />}
 
 The task of recomputing the UTXO set (as well as the commitment and the membership proofs) is relatively straightforward for archival nodes. Since the archival node stores all history, it can simply revert to the state of the UTXO set at the block where the histories start to diverge. At this point, the archival node synchronizes with the longest chain by updating his UTXO set (and commitment and membership proofs) accordingly.
 
-![](/article-images/blog/reorganization-archival.svg)
+{<ArticleImage src="/article-images/blog/reorganization-archival.svg" type="table" centered={true} alt="Archival node reorganization" />}
 
 For full nodes and support nodes on Neptune, this task is rather more complicated. They have to undo updates that were induced by now-obsolete blocks, before they can apply the updates induced by the now-canonical chain. However, in order to walk back changes and to determine how far to walk them back, nodes need to store historical blocks. They can get away with storing, say, the 10 most recent blocks -- but only if they assume that no reorganization will be deeper than 10 blocks.
 
-![](/article-images/blog/reorganization-full-success.svg)
+{<ArticleImage src="/article-images/blog/reorganization-full-success.svg" type="table" centered={true} alt="Full node reorganization success" />}
 
 If a deeper reorganization does occur, full and support nodes will be incapable of rolling back the changes far enough, let alone figuring out how far "far enough" is. In this event, full and support nodes rely on the information of archival nodes to resynchronize, or at least on the information of nodes whose block coverage is deeper than theirs.
 
-![](/article-images/blog/reorganization-full-failure.svg)
+{<ArticleImage src="/article-images/blog/reorganization-full-failure.svg" type="table" centered={true} alt="Full node reorganization failure" />}
 
 Only archival nodes can tolerate arbitrarily deep reorganizations. Full nodes and support nodes that reduce their historical block coverage to a handful of most recent blocks do so at the risk of being unable to tolerate reorganizations deeper than that. It may be a viable strategy, considering that deep reorganizations are not only unlikely but costly as well. However, the point is that *there is no such thing as obsolete blockchain information* in the same sense that *there is no such thing as a fully confirmed transaction*. Full nodes and support nodes trade off reducing the storage cost of historical blockchain information against increasing the likelihood of failing to independently resynchronize after reorganization.
 
