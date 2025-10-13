@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
 			{
 				source: '/whitepaper',
 				destination: '/articles/whitepaper'
+			},
+			{
+				source: '/about',
+				destination: '/company/about'
+			},
 			}
 		];
 	}
