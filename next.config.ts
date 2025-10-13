@@ -19,9 +19,8 @@ const nextConfig: NextConfig = {
 			},
 			{
 				source: '/about',
-				destination: '/company/about'
+				destination: '/articles/about'
 			},
-			}
 		];
 	}
 };
