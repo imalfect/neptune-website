@@ -106,12 +106,48 @@ button {
   pre {
     @apply break-all text-wrap
   }
+  
+  /* Table scroll wrapper for horizontal scrolling */
+  .table-scroll-wrapper {
+    @apply my-8;
+    overflow-x: auto;
+    border-radius: 0.75rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    /* Webkit scrollbar styling */
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0 0 12px 12px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Focus mode scrollbar */
+    @apply focus-mode:[&::-webkit-scrollbar-track]:bg-gray-100;
+    @apply focus-mode:[&::-webkit-scrollbar-thumb]:bg-gray-400;
+  }
+  
+  /* Table container */
   table {
-    @apply my-8 w-full border-collapse rounded-xl overflow-hidden shadow-2xl;
+    @apply w-full border-collapse rounded-xl;
+    margin: 0;
     border-spacing: 0;
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    table-layout: auto;
+    
     @apply focus-mode:bg-white focus-mode:border-2 focus-mode:border-gray-300 focus-mode:shadow-lg focus-mode:backdrop-blur-none;
   }
   
@@ -179,6 +215,15 @@ button {
     table td {
       @apply text-base leading-6;
     }
+  }
+  .image-card {
+    @apply rounded-2xl bg-white w-fit my-3 overflow-hidden;
+  }
+  .image-card-padded {
+    @apply rounded-2xl bg-white p-6 w-fit my-3  overflow-hidden;
+  }
+  .center {
+    @apply mx-auto flex flex-col items-center text-center;
   }
 }
 }
