@@ -5,7 +5,8 @@ import {
 	LucideGraduationCap,
 	LucideMessageCircle,
 	LucideNewspaper,
-	LucideTrendingUp
+	LucideTrendingUp,
+	LucideVenetianMask
 } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa6';
 // !!! ready fully !!!
@@ -46,7 +47,7 @@ export default function Resources() {
 				<ResourceCard
 					title="GitHub"
 					description="Explore Neptune's open-source codebase and contribute."
-					className="lg:col-span-4"
+					className="lg:col-span-3"
 					backgroundIcon={<FaGithub />}
 					link={{ href: 'https://github.com/Neptune-Crypto', target: '_blank' }}
 					button={{ content: 'View Code', icon: <FaGithub /> }}
@@ -55,7 +56,7 @@ export default function Resources() {
 				<ResourceCard
 					title="Blog"
 					description="Latest updates and insights about Neptune."
-					className="lg:col-span-4"
+					className="lg:col-span-5"
 					backgroundIcon={<LucideNewspaper />}
 					link={{ href: '/blog' }}
 					button={{ content: 'Read Blog', icon: <LucideNewspaper /> }}
@@ -63,7 +64,7 @@ export default function Resources() {
 				<ResourceCard
 					title="Neptune Talk"
 					description="Neptune's official forum for community discussions, questions, and announcements."
-					className="lg:col-span-5"
+					className="lg:col-span-4"
 					backgroundIcon={<LucideMessageCircle />}
 					link={{ href: 'https://talk.neptune.cash', target: '_blank' }}
 					button={{ content: 'Visit forum', icon: <LucideMessageCircle /> }}
@@ -71,10 +72,18 @@ export default function Resources() {
 				<ResourceCard
 					title="Learn"
 					description="Educational materials and tutorials to expand your knowledge on how Neptune works."
-					className="lg:col-span-7"
+					className="lg:col-span-4"
 					backgroundIcon={<LucideGraduationCap />}
 					link={{ href: '/learn' }}
 					button={{ content: 'Learn', icon: <LucideGraduationCap /> }}
+				/>
+				<ResourceCard
+					title="Mutator Sets"
+					description="Novel privacy primitive enabling privacy without sacrificing succinctness"
+					className="lg:col-span-4"
+					backgroundIcon={<LucideVenetianMask />}
+					link={{ href: '/articles/2023-08-10-mutator-sets' }}
+					button={{ content: 'Learn more', icon: <LucideVenetianMask /> }}
 				/>
 			</div>
 		</section>
