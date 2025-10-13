@@ -15,7 +15,7 @@ A mutator set is a cryptographically authenticated data structure used to effect
 
 ## The Problem: Scalable Privacy
 
-The [problem of scalable privacy](../scalable-privacy-problem) consists of marrying light clients with transaction graph obfuscation. Light clients shrink the set of unspent transaction outputs (UTXO set) down to a short cryptographic commitment and verify succinct updates to this commitment, but at the expense of having to produce and maintain membership proofs for UTXOs they themselves own – and continuously synchronize them as the UTXO set is updated. Existing architectures for effecting privacy on-chain impose large workloads on their users and ultimately undermine the point of having light clients to begin with.
+The [problem of scalable privacy](/articles/scalable-privacy-problem) consists of marrying light clients with transaction graph obfuscation. Light clients shrink the set of unspent transaction outputs (UTXO set) down to a short cryptographic commitment and verify succinct updates to this commitment, but at the expense of having to produce and maintain membership proofs for UTXOs they themselves own – and continuously synchronize them as the UTXO set is updated. Existing architectures for effecting privacy on-chain impose large workloads on their users and ultimately undermine the point of having light clients to begin with.
 
 To make this claim concrete, let's survey these privacy architectures and analyze their deficiencies. Privacy is a multi-faceted and varied feature and defies projection onto one dimension for the purpose of quantitative comparison. Nevertheless, we give it a try here – but note that a lot of nuance is lost.
 

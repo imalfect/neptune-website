@@ -38,7 +38,7 @@ Bitcoin's UTXO set seems to be growing in practice. Nevertheless, it is possible
 With an infrastructure for stateless validation such as [Utreexo](https://dci.mit.edu/utreexo), the cost of participation is trivial for both transaction validators and transaction initiators. The distinction is important:
 
  - Transaction validators merely validate the transactions initiated by other nodes. The workload of this task is trivial because the inputs' membership to the UTXO set are established by the supplementary witness data (*e.g.*, Merkle authentication path) that the transaction comes with.
- - Transaction initiators need to produce this supplementary witness data when they come into possession of spendable UTXOs, but they must also update this witness data prior to spending them. With an [MMR](../../learn/mmr) the complexity of of these tasks is independent of the prior history, and logarithmic in the number of transactions confirmed in the intervening time.
+ - Transaction initiators need to produce this supplementary witness data when they come into possession of spendable UTXOs, but they must also update this witness data prior to spending them. With an [MMR](/articles/mmr) the complexity of of these tasks is independent of the prior history, and logarithmic in the number of transactions confirmed in the intervening time.
 
 In summary, the UTXO set is the set of dangling outbound edges in the transaction graph; it is used as a tool for verifying the spendability of coins. All validating nodes need to verify spendability of coins, and so the cost of operating a UTXO set stands in direct relation to the cost of running a validating node. The UTXO set scales independently of the history or popularity of the network. Stateless validation shifts the burden of work from the validators to the initiators of transactions, who must now periodically update their UTXOs' supplementary witness data.
 
@@ -88,7 +88,7 @@ Glossing over some details[^3], the long story short is that it is possible to m
 
 Merger-based privacycoins are compatible with a prunable UTXO set, and as a result of this compatibility they are conducive to network scalability. It is likely that this promise of greater network scalability fueled the interest in the Grin and Beam projects, both instantiations of the Mimblewimble technology. The apparent loss of interest is likely related to the need to be online and interact with the counterparty in order to send or receive money.
 
-Nevertheless, this interactivity requirement is not an inherent property in merger-based privacycoins. Indeed, the [Neptune whitepaper](../../whitepaper) shows how the same merger can be achieved *non-interactively* with recursive STARKs.
+Nevertheless, this interactivity requirement is not an inherent property in merger-based privacycoins. Indeed, the [Neptune whitepaper](/whitepaper) shows how the same merger can be achieved *non-interactively* with recursive STARKs.
 
 ### Miner Mixing
 

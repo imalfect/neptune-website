@@ -18,12 +18,12 @@ On February 11, 2025, at approximately 21:00 UTC, Neptune Cash successfully laun
 Neptune Cash introduces several groundbreaking features:
 
  - Layer-1 zk-STARKs: Neptune Cash is the first blockchain to integrate zk-STARKs at the core protocol level, enabling efficient verification of complex computations.
- - [Mutator Sets](../mutator-sets): This novel approach achieves anonymity without compromising on succinctness, a crucial advancement for scalable, private transactions.
- - [Post-Quantum Security](../post-quantum-security-at-genesis): All cryptographic elements are designed to withstand potential attacks from quantum computers, future-proofing the network.
+ - [Mutator Sets](/articles/mutator-sets): This novel approach achieves anonymity without compromising on succinctness, a crucial advancement for scalable, private transactions.
+ - [Post-Quantum Security](/articles/post-quantum-security-at-genesis): All cryptographic elements are designed to withstand potential attacks from quantum computers, future-proofing the network.
  - Smart Contract Functionality: The platform supports arbitrary logic, effectively making Neptune Cash a private smart contract platform.
- - [Two-Stage Mining](../mechanics-of-mining-rewards): a novel market dynamic for incentivizing miners to specialize in distinct economic roles – composers, who produce STARK proofs; and guessers, who contribute proof-of-work.
+ - [Two-Stage Mining](/articles/mechanics-of-mining-rewards): a novel market dynamic for incentivizing miners to specialize in distinct economic roles – composers, who produce STARK proofs; and guessers, who contribute proof-of-work.
 
-## [Tokenomics](../tokenomics) and Mining
+## [Tokenomics](/articles/tokenomics) and Mining
 
 The total supply of Neptune Coins is capped at 42,000,000, with a pre-mine of less than 1.98%. The protocol implements a halving mechanism every three years, and notably, half of each block reward is time-locked for three years. This structure is designed to create a balanced and sustainable economic model.
 
@@ -44,7 +44,7 @@ However, we must emphasize that Neptune Cash utilizes novel and untested cryptog
 
 While the overall launch was successful, we did encounter several unexpected issues:
 
- - *Last minute security enhancements.* On the day of launch we decided to harden security, in particular in relation to [MMR](../../learn/mmr)s. We remain unaware of exploits targeting the object of our concern, but at the same time, categorically ruling out an attack seems difficult, if at all possible. Given the stakes, we decided to modify the code to harden its security and admit a categorical rule eliminating attack vectors. This process, including the necessary recursive dependency upgrades, resulting in a 9 hour delay relative to what was [announced](https://bitcointalk.org/index.php?topic=5529759).
+ - *Last minute security enhancements.* On the day of launch we decided to harden security, in particular in relation to [MMR](/articles/mmr)s. We remain unaware of exploits targeting the object of our concern, but at the same time, categorically ruling out an attack seems difficult, if at all possible. Given the stakes, we decided to modify the code to harden its security and admit a categorical rule eliminating attack vectors. This process, including the necessary recursive dependency upgrades, resulting in a 9 hour delay relative to what was [announced](https://bitcointalk.org/index.php?topic=5529759).
  - *Default network: "beta".* Despite moving the `#[default]` directive on the enum, the value of the variable `network` remained on "beta" due to an oversight in the [command-line argument processor](https://docs.rs/clap/latest/clap/). Early users had to manually specify the correct network with the CLI argument `--network main`. This issue was resolved in v0.1.1.
  - *Connectivity issues.* In part because of the network mismatch, but also a bunch of other reasons including excessive demand, neither of the two bootstrapper nodes were accepting connections. The early adopters responded like proactive heroes do, by sharing their socket addresses and in some cases even running their own bootstrapper node. There was a point where the developers had isolated themselves from the network! Between the community efforts (thanks!) and the introduction of an IPv6-only bootstrapper nodes, the issues have subsided.
  - *Transaction Processing.* Despite rigorously testing this quintessential use case on all testnets, the first attempt to send funds on mainnet resulted in successful transfer but caused both sender and receiver nodes to crash. Upon reboot, wallets restored correctly with accurate balances, and no funds were lost. This issue is currently being investigated.
@@ -55,8 +55,8 @@ These unforeseen challenges highlight the complexity of launching a novel blockc
 
 While the mainnet launch is a crucial milestone, development continues. Future major upgrades will focus on:
  - *Transaction Chaining.* Transaction chaining refers to the ability to build transactions on top of other transactions that have not been confirmed yet. Presently, users can only initiate transactions that spend UTXOs that have been confirmed.
- - *[Lock-Free UTXOs](../data-availability).* Presently, all UTXOs circulate with a lock script, even if that lock script stipulates that anyone can spend. The complication arises from having to maintain and broadcast *sender randomnesses* and *receiver preimages*, two pieces of data that are instrumental in keeping UTXOs private. However, keeping UTXOs private defeats the point of having an anyone-can-spend UTXO, which is how one would build smart contracts that anyone can interact with.
- - *Succinctness.* Succinctness is the feature of a blockchain whose consensus requires negligible resources to verify. To this end, Neptune Cash will leverage [recursive validation](../habemus-verifier) for blocks, which will allow the entire blockchain history to be verified through a single block proof.
+ - *[Lock-Free UTXOs](/articles/data-availability).* Presently, all UTXOs circulate with a lock script, even if that lock script stipulates that anyone can spend. The complication arises from having to maintain and broadcast *sender randomnesses* and *receiver preimages*, two pieces of data that are instrumental in keeping UTXOs private. However, keeping UTXOs private defeats the point of having an anyone-can-spend UTXO, which is how one would build smart contracts that anyone can interact with.
+ - *Succinctness.* Succinctness is the feature of a blockchain whose consensus requires negligible resources to verify. To this end, Neptune Cash will leverage [recursive validation](/articles/habemus-verifier) for blocks, which will allow the entire blockchain history to be verified through a single block proof.
  - *Prover upgrades.* Upgrades to the STARK engine, Triton-VM, are planned post-launch, including the integration of novel cryptographic techniques such as [DEEP Commitments](https://eprint.iacr.org/2024/1752).
 
 ## Community Engagement

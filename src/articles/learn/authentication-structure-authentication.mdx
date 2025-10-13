@@ -12,6 +12,8 @@ caption = "Authentication Structure Authentication"
 +++
 
 
+## Fast Authentication Structure Authentication
+
 **TLDR.** Non-deterministic algorithms can efficiently verify two crucial
 aspects of Merkle trees:
 
@@ -159,7 +161,7 @@ linear-time and concretely efficient algorithm for the second task.
 In the context of Neptune, we decided to postpone the implementation of this
 algorithm for the time being. It is not clear that the performance benefits
 kick in early on in the blockchain's lifetime, relative to a more naïve
-approach; and since we plan to [soft-fork succinctness in](../blog/2024-10-14-launch-scope-and-hard-forks.md) at a time after launch
+approach; and since we plan to [soft-fork succinctness in](/articles/launch-scope-and-hard-forks) at a time after launch
 anyway, that might be the opportune moment to take another look at the
 complexity of this step. The main purpose of this note is to record this 
 algorithm so that we do not forget about it.

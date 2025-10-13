@@ -46,18 +46,18 @@ agreement about which set of metrics are adequate.) For instance:
  - *Confidential transactions* hides UTXOs behind cryptographic commitments and proves the
    integrity of transactions (*i.e.*, that the sum of all inputs equals the sum of all
    outputs) in zero knowledge. This construction benefits privacy.
- - *Transaction aggregation* using [Triton VM](../announcing-tvm/) replaces the signatures on a bunch of
+ - *Transaction aggregation* using [Triton VM](/articles/announcing-tvm) replaces the signatures on a bunch of
    transactions with a single proof authenticating the entire batch, and potentially
    increases the on-chain transaction throughput capacity.
  - *Post-quantum commitments and proofs* – the commitments to UTXOs, the signatures that 
    unlock them, and the proofs that replace the signatures, are all built using
    cryptography that promises to resist attacks on future quantum computers in addition to
    attacks deployed on present or future classical computers.
- - *Recursive block validation* also using [Triton VM](../announcing-tvm/) requires that new blocks prove
+ - *Recursive block validation* also using [Triton VM](/articles/announcing-tvm) requires that new blocks prove
    the correctness of the previous block, obviating the need for the costly initial block
    download (IBD) and verification tasks upon first connecting to the network or
    reconnecting after some time spent offline.
- - *Anonymous accumulation* using [Mutator Sets](../mutator-sets/) compresses the UTXO set to a short
+ - *Anonymous accumulation* using [Mutator Sets](/articles/mutator-sets/) compresses the UTXO set to a short
    cryptographic digest that can then be used to prove membership of UTXOs to nodes that
    do not store the whole UTXO set, thus reducing storage requirements. Moreover, in order
    obtain this cryptographic digest nodes do not need to compute it from scratch (which

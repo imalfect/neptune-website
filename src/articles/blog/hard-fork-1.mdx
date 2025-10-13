@@ -62,7 +62,7 @@ We have received both questions and comments about these proposed changes. They 
 
 >  What happens if you put even more, to have for example max 500 inputs? How do you plan to scale this?
 
-We would have to change the representation of transaction inputs to handle this. Specifically, we would want to implement some version of the algorithm outlined [here](../learn/authentication-structure-authentication.md).
+We would have to change the representation of transaction inputs to handle this. Specifically, we would want to implement some version of the algorithm outlined [here](/articles/authentication-structure-authentication).
 
 This "aggregation" of MMR authentication paths could take place on the block level, leaving it up to the composer to provide the node of the MMR and the proof that these digests are correct.
 
@@ -72,7 +72,7 @@ Current block target interval is 588 seconds. The fastest composer on the networ
 
 The author is (personally) open to a reduction in block time once we have good enough GPU composers that composition is faster than one minute though. But that's a discussion to be had then and there.
 
-> So if it were maxxed out, which is unlikely right away, 1 GB/day...  365 GB / Year...     That's really not a problem ... Nice straightforward fix, and like you say in your blog, long-term you've got [Fast Authentication Structure Authentication](../learn/authentication-structure-authentication.md), possibly L2, lots of options.
+> So if it were maxxed out, which is unlikely right away, 1 GB/day...  365 GB / Year...     That's really not a problem ... Nice straightforward fix, and like you say in your blog, long-term you've got [Fast Authentication Structure Authentication](/articles/authentication-structure-authentication), possibly L2, lots of options.
 >
 > — <cite>Anonymous</cite>
 
@@ -84,13 +84,13 @@ The author owes gratitude to Jan Ferdinand Sauer and Alan Szepieniec for valuabl
 
 [^2]: The old size limit was 250.000 B-field elements to be precise. It's being changed to 1.000.000. B-field elements are the words that the [Triton VM](https://triton-vm.org/) uses. Triton VM is how the Neptune protocol gets its ZK-STARK proofs.
 
-[^3]: To make a short story long, Neptune is based on the UTXO model that Bitcoin also uses, and in the UTXO model you have to reference all inputs to your transactions. Unlike in Bitcoin though, the inputs to a transaction cannot easily be linked to the outputs of previous transaction, as the connection between the two are hidden behind a zero-knowledge cryptographic proof. To prove that a particular input hasn't already been spent the transaction initiator provides authentication paths into an MMR which allows for a sparse representation of a [(sliding window) Bloom filter](../mutator-sets/). It's the size of these MMR authentication paths that was not sufficiently analyzed prior to main net launch. When an input is spent, 45 new elements are added to the Bloom filter. When these inputs are old, authentication paths for each Bloom filter element has to be provided in the transaction. So the size of an input is 45 times the height of the authentication paths, which grows with its age. So while the limit on the number of inputs is higher when those inputs are new, it is much lower when they are old — and in practice, people want to initiate transactions spending plenty of old inputs all the time.
+[^3]: To make a short story long, Neptune is based on the UTXO model that Bitcoin also uses, and in the UTXO model you have to reference all inputs to your transactions. Unlike in Bitcoin though, the inputs to a transaction cannot easily be linked to the outputs of previous transaction, as the connection between the two are hidden behind a zero-knowledge cryptographic proof. To prove that a particular input hasn't already been spent the transaction initiator provides authentication paths into an MMR which allows for a sparse representation of a [(sliding window) Bloom filter](/articles/mutator-sets/). It's the size of these MMR authentication paths that was not sufficiently analyzed prior to main net launch. When an input is spent, 45 new elements are added to the Bloom filter. When these inputs are old, authentication paths for each Bloom filter element has to be provided in the transaction. So the size of an input is 45 times the height of the authentication paths, which grows with its age. So while the limit on the number of inputs is higher when those inputs are new, it is much lower when they are old — and in practice, people want to initiate transactions spending plenty of old inputs all the time.
 
 The block size limit is currently 2 MB, or 250.000 B-field elements. The block proof is always around 1 MB, and the mutator set accumulator is upper-bounded in size by 374 KB. Assume for simplicity that there are no outputs or that they take up no space. That leaves 626 KB for inputs. Assuming the authentication paths have a height of 20, corresponding to the spending of old inputs from a set of 8.000.000 UTXOs, the size of each input is 20 × 45 × 5 × 8 + 45 × 16 = 36.720 bytes. With the current size limit, blocks can only contain approximately 626 / 37 = 17 of them. With the proposed size limit of 8 MB, blocks can contain approximately 7626 / 37 = 208 inputs.
 
 [^4]: Each block contains only one transaction, as all transactions included in a block is merged into one before being mined.
 
-[^5]: We're discussing three proposals to reduce the size of transaction inputs, all of them making use of ["Fast Authentication Structure Authentication"](../learn/authentication-structure-authentication.md). The least efficient of these suggestions decreases the size of transaction inputs by around 90 %.
+[^5]: We're discussing three proposals to reduce the size of transaction inputs, all of them making use of ["Fast Authentication Structure Authentication"](/articles/authentication-structure-authentication). The least efficient of these suggestions decreases the size of transaction inputs by around 90 %.
 
 [^6]: It goes without saying that we intend and hope for exactly zero rollbacks.
 

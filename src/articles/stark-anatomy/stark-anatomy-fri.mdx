@@ -11,6 +11,9 @@ src = "/article-images/learn/ai/reed-solomon.jpeg"
 caption = "Anatomy of a STARK"
 +++
 
+
+## FRI
+
 FRI is a protocol that establishes that a committed polynomial has a bounded degree. The acronym FRI stands for *Fast Reed-Solomon IOP of Proximity*, where IOP stands for *interactive oracle proof*. FRI is presented in the language of codewords: the prover sends codewords to the verifier who does not read them whole but who makes oracle-queries to read them in select locations. The codewords in this protocol are *Reed-Solomon codewords*, meaning that their values correspond to the evaluation of some low-degree polynomial in a list of points called the domain $D$. The length of this list is larger than the number of possibly nonzero coefficients in the polynomial by a factor called the *expansion factor* (also *blowup factor*), which is the reciprocal of the code's *rate* $\rho$.
 
 Since the codewords represent low-degree polynomials, and since the codewords are hidden behind Merkle trees in any real-world deployment, it is arguably more natural to present FRI from the point of view of a polynomial commitment scheme, with some caveats. There is scientific merit in separating the type of codewords from the IOP, and those two from the Merkle tree that simulates the oracles. However, from an accessibility point of view, it is beneficial to consider them as three components of one basic primitive that relates to polynomial commitment schemes. For the remainder of this tutorial, we will use the term FRI in this sense.
@@ -425,7 +428,7 @@ $$ g(X) = \alpha \cdot f(X) + \beta \cdot X^{2^k - d-1} \cdot f(X) $$
 
 When the random coefficients are present, the cancellation of high degree terms occurs with negligible probability.
 
-[0](../) - [1](../overview) - [2](../basic-tools) - **3** - [4](../stark) - [5](../rescue-prime) - [6](../faster)
+[0](/articles/stark-anatomy-index) - [1](/articles/stark-anatomy-overview) - [2](/articles/stark-anatomy-basic-tools) - **3** - [4](../stark) - [5](/articles/stark-anatomy-rescue-prime) - [6](/articles/stark-anatomy-faster)
 
 [^1]: The generality lost in this description has to do with when the codeword in question is compiled on the fly from applying arithmetic operations to other codewords.
 

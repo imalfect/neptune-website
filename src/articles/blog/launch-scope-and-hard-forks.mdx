@@ -15,7 +15,7 @@ caption = "Launch Scope and Hard Forks"
 
 # Launch Scope and Hard Forks
 
-The [Neptune Whitepaper](../../whitepaper) sketches in high level terms an architecture for next generation money built on top of twenty-first century cryptography. While we have deviated from that plan in select details[^1], by and large our development effort overall has been true to the ideas and ideals set forth therein. However, as we make more progress in developing this project, the full scope of the workload comes into view.
+The [Neptune Whitepaper](/whitepaper) sketches in high level terms an architecture for next generation money built on top of twenty-first century cryptography. While we have deviated from that plan in select details[^1], by and large our development effort overall has been true to the ideas and ideals set forth therein. However, as we make more progress in developing this project, the full scope of the workload comes into view.
 
 In light of that vantage point, we made the decision to focus on launching a minimum viable protocol as opposed to a feature-complete one. This pivot enables us to respond to market feedback quicker, and acts as a bulwark against premature feature creep.
 
@@ -62,7 +62,7 @@ The trick is to make the predecessor-is-valid claim into a claim about (among ot
 For instance, the program `PredecessorIsValid` could be a program that *a)* verifies
 
  - the validity and confirmability of the block's transaction
- - the correct update of the [mutator set](../mutator-sets), which is the data structure that stores UTXOs
+ - the correct update of the [mutator set](/articles/mutator-sets), which is the data structure that stores UTXOs
  - the correct update of the network control parameters, such as target difficulty
  - the block's predecessor is the genesis block *or* it came with a valid proof for `PredecessorIsValid`;
 
@@ -88,11 +88,11 @@ With that context, we can articulate a roadmap of features to be included in the
 
 #### Archival Nodes
 
-At launch, Neptune Cash will only support [archival nodes](../storage-node-types), meaning that nodes will download the entire blockchain instead of just the most recent few blocks if they wish to synchronize without making trust assumptions. Moreover, consensus will be defined relative to this historical data. In other words, Neptune Cash will not be succinct.
+At launch, Neptune Cash will only support [archival nodes](/articles/storage-node-types), meaning that nodes will download the entire blockchain instead of just the most recent few blocks if they wish to synchronize without making trust assumptions. Moreover, consensus will be defined relative to this historical data. In other words, Neptune Cash will not be succinct.
 
 #### Anonymity
 
-Transactions will be anonymous because the [mutator set](../mutator-sets) is already in place and active. Transactions are proven by their initiators. Transaction proofs can be updated when a block is published that does not confirm it and does not double-spend any of the UTXOs that were confirmed. Transactions can be merged, in which case their two proofs become one. Blocks contain only one transaction.
+Transactions will be anonymous because the [mutator set](/articles/mutator-sets) is already in place and active. Transactions are proven by their initiators. Transaction proofs can be updated when a block is published that does not confirm it and does not double-spend any of the UTXOs that were confirmed. Transactions can be merged, in which case their two proofs become one. Blocks contain only one transaction.
 
 That said, it is worthwhile pointing out that the standard address format ("generation address") enables linking of transactions to the same address. This linkability is a compromise to reduce the receiver's workload: instead of trial-decrypting all transactions to find transactions destined for him, the user of generation addresses looks for a fixed marker instead. This marker is the same for all transfers to the same generation address.
 
@@ -124,7 +124,7 @@ The important point to note is that the control parameter update is *local*, mea
 
 #### Post-Quantum Security
 
-At no point does any code anywhere in the code base rely on cryptographic hardness assumptions that are known to be broken in the presence of quantum computers. It follows that Neptune Cash is plausibly quantum-secure [at genesis](../post-quantum-security-at-genesis).
+At no point does any code anywhere in the code base rely on cryptographic hardness assumptions that are known to be broken in the presence of quantum computers. It follows that Neptune Cash is plausibly quantum-secure [at genesis](/articles/post-quantum-security-at-genesis).
 
 ### Features Requiring a Hard Fork
 
@@ -156,7 +156,7 @@ To give the public execution rights on a smart contract on Neptune, the creator 
 
 This construction works, but the down side is that all UTXOs are absorbed into the mutator set upon confirmation. At this point it becomes spendable by only the person(s) in possession of (generally secret) UTXO receiver data. As a result, in order to remain executable by anyone, this UTXO receiver information must be broadcasted somehow. Public announcements can be used to serve this purpose, but this workaround *a)* generates larger transactions and thus higher fees, and *b)* requires type scripts to verify that the necessary data is present in the transaction's public announcement – a potentially expensive task, since the correct execution of the type script is proven. Alternatively, an opt-in overlay protocol could be used for data dissemination without touching the blockchain, but in this case data availability becomes challenging.
 
-A much more elegant solution is for the protocol to natively support another type of UTXOs, *lock-free UTXOs* which, as the name suggests, do not have lock scripts. Since they have no owner, they are are anyone-can-spend by default. And since there is no ownership trace to be deleted, it makes no sense to absorb them into the mutator set – a plain [MMR](../../learn/mmr) will do. In this case there is no receiver data to be broadcasted.
+A much more elegant solution is for the protocol to natively support another type of UTXOs, *lock-free UTXOs* which, as the name suggests, do not have lock scripts. Since they have no owner, they are are anyone-can-spend by default. And since there is no ownership trace to be deleted, it makes no sense to absorb them into the mutator set – a plain [MMR](/articles/mmr) will do. In this case there is no receiver data to be broadcasted.
 
 #### Unconfirmed Transaction Chaining
 
@@ -168,7 +168,7 @@ To support transaction chaining, it must be possible to designate input UTXOs as
 
 Unconfirmed transactions live in users' mempools and are broadcasted with proofs. However, while those proofs take up a lot of bandwidth, they need not take up a lot of RAM or disk space. Integral mempools is the reason why.
 
-An integral mempool is a pair `(peaks, proof)` where `peaks` is the peaks list of an [MMR](../../learn/mmr) and where the `proof` establishes that the MMR was only ever updated by adding a valid transaction. With access to such a data structure, a proof of membership establishes transaction validity, and can be used instead of the original transaction proof.
+An integral mempool is a pair `(peaks, proof)` where `peaks` is the peaks list of an [MMR](/articles/mmr) and where the `proof` establishes that the MMR was only ever updated by adding a valid transaction. With access to such a data structure, a proof of membership establishes transaction validity, and can be used instead of the original transaction proof.
 
 Consequently, upon receiving a transaction, a user running an integral mempool can *a)* verify the proof and prove correct verification; *b)* add the transaction to the integral mempool; and *c)* drop the proof. The net result is that the marginal cost of storing one extra transaction in the mempool is the size of that transaction, without the proof.
 
@@ -214,7 +214,7 @@ In the end, code is not law – though that is the ideal to be strived for. The 
 
 > Everyone carries a part of society on his shoulders; no one is relieved of his share of responsibility by others. And no one can find a safe way for himself if society is sweeping towards de­struction. Therefore everyone, in his own interests, must thrust himself vigorously into the intellectual battle. No one can stand aside with unconcern: the interests of everyone hang on the result. Whether he chooses or not, every man is drawn into the great historical struggle, the decisive battle into which our epoch has plunged us.
 
-[^1]: Most notably, when the writepaper was written, [Mutator Sets](../mutator-sets) had not been invented yet. The whitepaper therefore outlines an inferior solution with the same effect.
+[^1]: Most notably, when the writepaper was written, [Mutator Sets](/articles/mutator-sets) had not been invented yet. The whitepaper therefore outlines an inferior solution with the same effect.
 
 [^2]: Present authorship notwithstanding, the credit for this ingenious solution goes entirely to Thorkil.
 
