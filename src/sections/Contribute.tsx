@@ -55,16 +55,16 @@ export default function Contribute() {
 					<p className="text-3xl font-bold">Core maintainers</p>
 					<div className="mx-auto grid w-fit grid-cols-2 grid-rows-2 gap-3 sm:gap-8">
 						<div className="w-fit rotate-3">
-							<ContributorCard imageSrc="/male-avatar.svg" imageAlt="Contribute illustration" />
+							<ContributorCard imageSrc="/core-maintainers/thorkil.jpeg" imageAlt="Throkil Schmidiger" />
 						</div>
 						<div className="w-fit -rotate-4">
-							<ContributorCard imageSrc="/male-avatar.svg" imageAlt="Contribute illustration" />
+							<ContributorCard imageSrc="/core-maintainers/alan.jpeg" imageAlt="Alan Szepieniec" />
 						</div>
 						<div className="w-fit -rotate-6">
-							<ContributorCard imageSrc="/male-avatar.svg" imageAlt="Contribute illustration" />
+							<ContributorCard imageSrc="/core-maintainers/dan.jpeg" imageAlt="Dan Da" />
 						</div>
 						<div className="w-fit rotate-1">
-							<ContributorCard imageSrc="/male-avatar.svg" imageAlt="Contribute illustration" />
+							<ContributorCard imageSrc="/core-maintainers/jan.jpeg" imageAlt="Jan Ferdinand" />
 						</div>
 					</div>
 				</div>
