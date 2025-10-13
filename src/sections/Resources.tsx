@@ -29,7 +29,7 @@ export default function Resources() {
 				/>
 				<ResourceCard
 					title="Triton VM"
-					description="Explore the STARK-based zero-knowledge proof system, that enables Neptune's scalable, post-quantum secure privacy for transactions."
+					description="Explore TritonVM, the zero-knowledge STARK engine tailored to the needs of Neptune Cash."
 					className="lg:col-span-4"
 					backgroundIcon={<LucideCpu />}
 					link={{ href: 'https://github.com/TritonVM/triton-vm', target: '_blank' }}
