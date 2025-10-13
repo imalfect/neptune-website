@@ -25,7 +25,7 @@ export default function Features() {
 							</p>
 						</>
 					}
-					imageSrc="/illustrations/quantum.svg"
+					imageSrc="/illustrations/doodles/zk-starks.svg"
 					className="lg:col-span-7"
 				/>
 
@@ -33,7 +33,7 @@ export default function Features() {
 					href="/articles/2023-08-10-mutator-sets"
 					title="Mutator Sets"
 					description={<p>Novel privacy primitive enabling privacy without sacrificing succinctness</p>}
-					imageSrc="/illustrations/quantum.svg"
+					imageSrc="/illustrations/doodles/privacy.svg"
 					className="lg:col-span-5"
 				/>
 
@@ -41,7 +41,7 @@ export default function Features() {
 					title="Post‑Quantum Security"
 					href="/articles/2022-07-01-post-quantum"
 					description={<p>Cryptography designed to resist quantum attacks while efficient today.</p>}
-					imageSrc="/illustrations/quantum.svg"
+					imageSrc="/illustrations/doodles/quantum.svg"
 					className="lg:col-span-6"
 				/>
 
@@ -54,7 +54,7 @@ export default function Features() {
 							<p>Private smart contract platform with strong money properties.</p>
 						</>
 					}
-					imageSrc="/illustrations/quantum.svg"
+					imageSrc="/illustrations/doodles/smart-contracts.svg"
 					className="lg:col-span-6"
 				/>
 			</div>
