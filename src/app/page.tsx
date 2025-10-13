@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 	description:
 		'Anonymous, succinct. Neptune Cash is a layer-1 peer-to-peer anonymou cash protocol featuring privacy, scalability and post-quantum security.',
 	openGraph: {
-		title: 'Neptune Cash',
+		title: 'Neptune Cash - Sea of Privacy',
 		description:
 			'Anonymous, succinct. Neptune Cash is a layer-1 peer-to-peer anonymous cash protocol featuring privacy, scalability and post-quantum security.',
-		siteName: 'Neptune Cash',
+		siteName: 'Neptune Cash - Sea of Privacy',
 		images: [
 			{
 				url: '/og-image.png', // TODO - replace with absolute URL in production
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: 'Neptune Cash',
+		title: 'Neptune Cash - Sea of Privacy',
 		description:
 			'Anonymous, succinct. Neptune Cash is a layer-1 peer-to-peer anonymous cash protocol featuring privacy, scalability and post-quantum security.',
 		images: ['/og-image.png'] // TODO - this will not work now!!, replace with absolute URL in production
