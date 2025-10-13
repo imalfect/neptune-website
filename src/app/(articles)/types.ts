@@ -11,6 +11,7 @@ export interface ArticleMetadata {
 	};
 	weight?: number;
 	pinned?: boolean;
+	hidden?: boolean;
 	type: ArticleType;
 	webMetadata?: Metadata;
 }

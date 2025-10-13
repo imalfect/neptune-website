@@ -7,6 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function sortArticles(articles: Awaited<ReturnType<typeof fetchArticlesMetadata>>) {
+	articles = articles.filter((article) => !article.hidden);
 	return articles.sort((a, b) => {
 		if (a.pinned && !b.pinned) return -1;
 		if (!a.pinned && b.pinned) return 1;
