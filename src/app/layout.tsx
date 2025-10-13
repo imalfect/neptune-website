@@ -2,6 +2,7 @@ import AestheticFluidBackground from '@/components/AestheticFluidBackground';
 import Footer from '@/components/layout/Footer';
 import { WebsiteNavbar } from '@/components/layout/Navbar';
 import * as motion from 'motion/react-client';
+import { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
 import React from 'react';
 import './globals.css';
@@ -10,7 +11,9 @@ const dmSans = DM_Sans({
 	subsets: ['latin'],
 	weight: ['400', '700', '900']
 });
-
+export const metadata: Metadata = {
+	metadataBase: new URL('https://neptune.imal.dev')
+};
 export default function RootLayout({
 	children
 }: Readonly<{
