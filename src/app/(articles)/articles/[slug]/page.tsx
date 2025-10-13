@@ -76,7 +76,7 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
 	const metadata: ArticleMetadata = article.metadata;
 	return (
 		<ThemeProvider>
-			<article className="focus-mode:bg-milk focus-mode:text-black mx-auto mt-36 max-w-5xl space-y-6 rounded-3xl bg-neutral-950/60 p-10">
+			<article className="focus-mode:bg-milk focus-mode:text-black mx-auto mt-36 max-w-[69rem] space-y-6 rounded-3xl bg-neutral-950/60 p-10">
 				<div className="flex items-center justify-between">
 					<Link href={`/${metadata.type}`} className="flex items-center gap-3 text-xl">
 						<LucideChevronLeft /> Back to{' '}
