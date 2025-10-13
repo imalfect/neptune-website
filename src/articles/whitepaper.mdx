@@ -216,9 +216,8 @@ A transaction is also valid if the `proof` field is a valid zk-SNARK for the fol
 
   - There are two transactions `t1` and `t2` and a UTXO set `cut_utxos` such that
     - `cut_utxos = t1.inputs` $\cap$ `t2.outputs` $\vee$ `t2.inputs` $\cap$ `t1.outputs`
-    - `inputs` $= \($ `t1.inputs` $\cup$ `t2.inputs` $\) \backslash$ `cut_utxos`
-    - `outputs` $= \($ `t1.outputs` $\cup$ `t2.outputs` $\) \backslash$ `cut_utxos`
-    - `fee` $=$ `t1.fee` $+$ `t2.fee`
+    - `inputs` = $t1.inputs \cup t2.inputs \setminus cut_utxos$ 
+    - `outputs` = $t1.outputs \cup t2.outputs \setminus cut_utxos$
     - `public_scripts` $=$ `t1.public_scripts` $\cup$ `t2.public_scripts`
     - `timestamp` $\geq$ `t1.timestamp` and `timestamp` $\geq$ `t2.timestamp`
     - `t1.proof` is valid, and `t2.proof` is valid
