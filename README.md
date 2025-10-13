@@ -23,15 +23,16 @@ matter their location can be accessed at `/article/:slug`
 
 Articles can be _configured_ with frontmatter, all fields are described below.
 
-| field name  | description                                                           | example data                                    |
-| ----------- | --------------------------------------------------------------------- | ----------------------------------------------- |
-| title       | article title                                                         | Intro to Neptune                                |
-| description | article description                                                   | Best source of info to get started with Neptune |
-| author      | article author(s)                                                     | John Doe & Jane Doe                             |
-| type        | article type                                                          | `learn` / `blog`                                |
-| weight      | article weight (optional, used for ordering)                          | 5                                               |
-| pinned      | article will be shown at the top if set to true (optional)            | true                                            |
-| imagegen    | internal unused field used when migrating articles to fill thumbnails | A Merkle tree diagram                           |
+| field name  | description                                                                  | example data                                    |
+| ----------- | ---------------------------------------------------------------------------- | ----------------------------------------------- |
+| title       | article title                                                                | Intro to Neptune                                |
+| description | article description                                                          | Best source of info to get started with Neptune |
+| author      | article author(s)                                                            | John Doe & Jane Doe                             |
+| type        | article type                                                                 | `learn` / `blog`                                |
+| weight      | article weight (optional, used for ordering)                                 | 5                                               |
+| pinned      | article will be shown at the top if set to true (optional)                   | true                                            |
+| hidden      | article will not be visible in `/learn` or `/blog` if set to true (optional) | false                                           |
+| imagegen    | internal unused field used when migrating articles to fill thumbnails        | A Merkle tree diagram                           |
 
 #### Thumbnail `[thumbnail]`
 
