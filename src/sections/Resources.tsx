@@ -2,12 +2,12 @@ import ResourceCard from '@/components/cards/ResourceCard';
 import {
 	LucideCpu,
 	LucideFileText,
-	LucideGithub,
 	LucideGraduationCap,
 	LucideMessageCircle,
 	LucideNewspaper,
 	LucideTrendingUp
 } from 'lucide-react';
+import { FaGithub } from 'react-icons/fa6';
 // !!! ready fully !!!
 export default function Resources() {
 	return (
@@ -47,9 +47,9 @@ export default function Resources() {
 					title="GitHub"
 					description="Explore Neptune's open-source codebase and contribute."
 					className="lg:col-span-4"
-					backgroundIcon={<LucideGithub />}
+					backgroundIcon={<FaGithub />}
 					link={{ href: 'https://github.com/Neptune-Crypto', target: '_blank' }}
-					button={{ content: 'View Code', icon: <LucideGithub /> }}
+					button={{ content: 'View Code', icon: <FaGithub /> }}
 				/>
 
 				<ResourceCard
