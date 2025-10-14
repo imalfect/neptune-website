@@ -11,6 +11,7 @@ import {
 	NavItems
 } from '@/components/ui/ResizableNavbar';
 import { LucideScroll } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 export function WebsiteNavbar() {
@@ -73,14 +74,14 @@ export function WebsiteNavbar() {
 			{/* Mobile Menu - Rendered outside Navbar */}
 			<MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
 				{navItems.map((item, idx) => (
-					<a
+					<Link
 						key={`mobile-link-${idx}`}
 						href={item.link}
 						onClick={() => setIsMobileMenuOpen(false)}
 						className="relative w-full rounded-lg px-4 py-3 text-lg font-medium text-white transition-colors hover:bg-white/10 dark:hover:bg-neutral-900/50"
 					>
 						<span className="block">{item.name}</span>
-					</a>
+					</Link>
 				))}
 				<Button
 					variant={'primary'}
@@ -89,7 +90,7 @@ export function WebsiteNavbar() {
 					target={'_blank'}
 					className="mt-2 w-full"
 				>
-					<LucideScroll className={'left-0 mr-auto'} />
+					<LucideScroll />
 					<span className={'mx-auto'}>Whitepaper</span>
 				</Button>
 			</MobileNavMenu>
