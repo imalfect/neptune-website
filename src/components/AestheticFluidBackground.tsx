@@ -7,8 +7,8 @@ import * as THREE from 'three';
 interface AestheticFluidBgProps {
 	colors?: string[];
 	dom?: string;
-	seed?: number;
 	loop?: boolean;
+	seed?: number;
 	resize_mode?: string;
 	radius_inner?: number;
 	radius_outer?: number;
@@ -176,7 +176,7 @@ const detectDevicePerformance = () => {
 
 const AestheticFluidBg: React.FC<AestheticFluidBgProps> = ({
 	colors = [],
-	seed = 1000,
+	seed = [162935, 204493, 990684, 208, 11110, 491235][Math.floor(Math.random() * 6)],
 	loop = false,
 	radius_inner = 0.1,
 	radius_outer = 0.3,
@@ -544,7 +544,7 @@ const AestheticFluidBg: React.FC<AestheticFluidBgProps> = ({
 
 				// Update plane geometry to match new size
 				const oldGeometry = plane.geometry;
-				
+
 				// Define segment count based on quality setting (same logic as initial creation)
 				let segmentCount;
 				if (effectiveQuality === 'low') {
@@ -557,7 +557,7 @@ const AestheticFluidBg: React.FC<AestheticFluidBgProps> = ({
 
 				const newGeometry = new THREE.PlaneGeometry(size, size, segmentCount, segmentCount);
 				applyMorphTargets(newGeometry);
-				
+
 				plane.geometry = newGeometry;
 				oldGeometry.dispose();
 

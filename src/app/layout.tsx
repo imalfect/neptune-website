@@ -45,7 +45,6 @@ export default function RootLayout({
 						loop={false}
 						radius_inner={0.1}
 						radius_outer={0.3}
-						seed={true ? 162935 : Math.floor(Math.random() * 1000000)}
 					/>
 				</motion.div>
 				{children}
