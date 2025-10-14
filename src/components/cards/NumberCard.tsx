@@ -28,7 +28,7 @@ export default function NumberCard(props: {
 						viewBox="0 0 24 24"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
-						className={clsx(!props.selected && 'opacity-0', 'transition-opacity')} // hide if not selected
+						className={clsx(!props.selected && 'hidden', 'animate-pulse transition-opacity')} // hide if not selected
 					>
 						<circle cx="12" cy="12" r="12" fill="#30bce6" />
 					</svg>
@@ -44,8 +44,6 @@ export default function NumberCard(props: {
 				</motion.button>
 			</div>
 			<div className="flex items-end justify-between">
-				{/* SVG dot */}
-
 				<p className="text-number-card-data text-right font-bold text-white">{props.value}</p>
 			</div>
 		</div>
