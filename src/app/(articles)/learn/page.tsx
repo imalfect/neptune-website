@@ -41,14 +41,14 @@ export const metadata: Metadata = {
 export default async function LearnPage() {
 	const articles = sortArticles(await fetchArticlesMetadata(ArticleType.Learn));
 	return (
-		<div className="mx-auto mt-36 flex max-w-[96rem] flex-col">
+		<div className="mx-auto mt-36 flex max-w-[96rem] flex-col px-6">
 			<div className="space-y-1.5">
 				<h1 className="text-page-title mb-1.5">Learn about Neptune</h1>
 				<p className="text-page-subtitle mb-10">
 					Educational materials and tutorials to expand your knowledge on how Neptune works.
 				</p>
 			</div>
-			<div className="flex flex-wrap gap-18">
+			<div className="grid grid-flow-row grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 2xl:gap-18">
 				{articles.map((article) => (
 					<ArticleCard key={article.slug} article={article} />
 				))}

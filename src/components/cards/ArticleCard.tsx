@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Button from '../buttons/Button';
 export default function ArticleCard(props: { article: ArticleMetadata & { slug: string } }) {
 	return (
-		<div className="flex w-md flex-col overflow-hidden rounded-3xl bg-neutral-950/60">
+		<div className="flex max-w-md flex-col overflow-hidden rounded-3xl bg-neutral-950/60">
 			<Image
 				src={props.article.thumbnail.src}
 				alt={props.article.thumbnail.caption || props.article.title}
