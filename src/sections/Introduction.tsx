@@ -1,7 +1,5 @@
 import Image from 'next/image';
 
-// !!! ready fully !!!
-// Kacper tu byl skibidi
 export default function Introduction() {
 	return (
 		<div
