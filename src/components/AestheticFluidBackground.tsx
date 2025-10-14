@@ -526,10 +526,11 @@ const AestheticFluidBg: React.FC<AestheticFluidBgProps> = ({
 		const handleResize = () => {
 			clearTimeout(resizeTimeout);
 			resizeTimeout = setTimeout(() => {
-				if (!container) return;
+				if (!container || !plane) return;
 
 				const width = container.clientWidth;
 				const height = container.clientHeight;
+				const size = width > height ? width : height;
 
 				// Update renderer size
 				renderer.setSize(width, height);
@@ -540,6 +541,26 @@ const AestheticFluidBg: React.FC<AestheticFluidBgProps> = ({
 				camera.top = height / 2;
 				camera.bottom = -height / 2;
 				camera.updateProjectionMatrix();
+
+				// Update plane geometry to match new size
+				const oldGeometry = plane.geometry;
+				
+				// Define segment count based on quality setting (same logic as initial creation)
+				let segmentCount;
+				if (effectiveQuality === 'low') {
+					segmentCount = width > 1000 ? 32 : 24;
+				} else if (effectiveQuality === 'medium') {
+					segmentCount = width > 1000 ? 48 : 32;
+				} else {
+					segmentCount = width > 1000 ? 64 : 48;
+				}
+
+				const newGeometry = new THREE.PlaneGeometry(size, size, segmentCount, segmentCount);
+				applyMorphTargets(newGeometry);
+				
+				plane.geometry = newGeometry;
+				oldGeometry.dispose();
+
 				// Re-render once after resize completes
 				renderOnce();
 			}, 250); // Debounce window resize events
