@@ -31,7 +31,7 @@ export default function ResourceCard(props: FeatureElementProps) {
 				<div className="text-content mt-4 space-y-1 text-left text-pretty text-neutral-200">
 					{props.description}
 				</div>
-				<Button size="sm" className="mt-auto w-fit">
+				<Button size="sm" className="mt-auto w-fit" href={props.link.href} target={props.link.target}>
 					{props.button.icon} {props.button.content}
 				</Button>
 			</div>
