@@ -5,6 +5,7 @@ import {
 	LucideGraduationCap,
 	LucideMessageCircle,
 	LucideNewspaper,
+	LucideScroll,
 	LucideTrendingUp,
 	LucideVenetianMask
 } from 'lucide-react';
@@ -21,17 +22,26 @@ export default function Resources() {
 				}
 			>
 				<ResourceCard
-					title="Whitepaper"
-					description="The complete technical foundation of Neptune Cash. Dive deep into the cryptographic protocols and consensus mechanisms."
-					className="lg:col-span-8"
-					backgroundIcon={<LucideFileText />}
-					link={{ href: '/whitepaper' }}
-					button={{ content: 'Read More', icon: <LucideFileText /> }}
+					title="Blog"
+					description="Latest updates and insights about Neptune."
+					className="lg:col-span-3"
+					backgroundIcon={<LucideNewspaper />}
+					link={{ href: '/blog' }}
+					button={{ content: 'Read Blog', icon: <LucideNewspaper /> }}
+				/>
+
+				<ResourceCard
+					title="Documentation"
+					description="Technical documentation on how Neptune works under the hood."
+					className="lg:col-span-4"
+					backgroundIcon={<LucideScroll />}
+					link={{ href: 'https://docs.neptune.cash/', target: '_blank' }}
+					button={{ content: 'Read Documentation', icon: <LucideScroll /> }}
 				/>
 				<ResourceCard
 					title="Triton VM"
 					description="Explore TritonVM, the zero-knowledge STARK engine tailored to the needs of Neptune Cash."
-					className="lg:col-span-4"
+					className="lg:col-span-5"
 					backgroundIcon={<LucideCpu />}
 					link={{ href: 'https://github.com/TritonVM/triton-vm', target: '_blank' }}
 					button={{ content: 'Learn More', icon: <LucideCpu /> }}
@@ -39,10 +49,18 @@ export default function Resources() {
 				<ResourceCard
 					title="Trade"
 					description="Check the current price and find exchanges to trade Neptune on CoinMarketCap."
-					className="lg:col-span-4"
+					className="lg:col-span-5"
 					backgroundIcon={<LucideTrendingUp />}
 					link={{ href: 'https://coinmarketcap.com/currencies/neptune-cash/', target: '_blank' }}
 					button={{ content: 'Trade Now', icon: <LucideTrendingUp /> }}
+				/>
+				<ResourceCard
+					title="Whitepaper"
+					description="The complete technical foundation of Neptune Cash. Dive deep into the cryptographic protocols and consensus mechanisms."
+					className="lg:col-span-4"
+					backgroundIcon={<LucideFileText />}
+					link={{ href: '/whitepaper' }}
+					button={{ content: 'Read More', icon: <LucideFileText /> }}
 				/>
 				<ResourceCard
 					title="GitHub"
@@ -53,14 +71,6 @@ export default function Resources() {
 					button={{ content: 'View Code', icon: <FaGithub /> }}
 				/>
 
-				<ResourceCard
-					title="Blog"
-					description="Latest updates and insights about Neptune."
-					className="lg:col-span-5"
-					backgroundIcon={<LucideNewspaper />}
-					link={{ href: '/blog' }}
-					button={{ content: 'Read Blog', icon: <LucideNewspaper /> }}
-				/>
 				<ResourceCard
 					title="Neptune Talk"
 					description="Neptune's official forum for community discussions, questions, and announcements."
@@ -82,7 +92,7 @@ export default function Resources() {
 					description="Novel privacy primitive enabling privacy without sacrificing succinctness"
 					className="lg:col-span-4"
 					backgroundIcon={<LucideVenetianMask />}
-					link={{ href: '/articles/2023-08-10-mutator-sets' }}
+					link={{ href: '/articles/mutator-sets' }}
 					button={{ content: 'Learn more', icon: <LucideVenetianMask /> }}
 				/>
 			</div>
