@@ -1,6 +1,6 @@
 'use client';
 import Button from '@/components/buttons/Button';
-import { LucideArrowDown, LucideLink } from 'lucide-react';
+import { LucideArrowDown, LucideScroll } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import Image from 'next/image';
 import { useRef } from 'react';
@@ -39,7 +39,7 @@ export default function Hero() {
 				}
 			>
 				<Button variant={'primary'} href="/whitepaper">
-					<LucideLink className={'left-0 mr-auto'} />
+					<LucideScroll className={'left-0 mr-auto'} />
 					<span className={'mx-auto'}>Whitepaper</span>
 				</Button>
 				<Button variant={'outline'} href="https://github.com/neptune-crypto" target="_blank">
