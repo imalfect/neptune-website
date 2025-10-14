@@ -46,7 +46,7 @@ export default function Tokenomics() {
 						selected={choice === TokenomicsAspect.SupplyLimit}
 					/>
 					<NumberCard
-						label="Pre-mine"
+						label="Premine"
 						value="831,488 NPT"
 						onSelect={setChoice}
 						id={TokenomicsAspect.Premine}

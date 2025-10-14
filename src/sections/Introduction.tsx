@@ -23,7 +23,7 @@ export default function Introduction() {
 					<p>
 						As the cherry on top, all cryptography used in the Neptune protocol is post-quantum secure,
 						meaning that it promises to resist attacks from future quantum computers. Together with
-						privacy and programmability this makes Neptune a competitor for the world&apos;s best money.
+						privacy and programmability, this makes Neptune a competitor for the world&apos;s best money.
 					</p>
 				</div>
 			</div>
