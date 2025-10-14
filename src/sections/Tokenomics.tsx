@@ -70,7 +70,7 @@ export default function Tokenomics() {
 			</div>
 			<p className="text-big-content text-center">
 				You can learn more about Neptune&apos;s tokenomics{' '}
-				<Link href="/articles/2023-09-25-mechanics-of-investing" className="underline">
+				<Link href="/articles/mechanics-of-investing" className="underline">
 					in this blog post
 				</Link>
 				.
