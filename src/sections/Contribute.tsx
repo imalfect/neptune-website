@@ -8,7 +8,7 @@ export default function Contribute() {
 		<section className={'home-section flex flex-col items-center gap-6'} id="contribute">
 			<h1 className={'text-section-title text-center font-bold'}>Contribute</h1>
 			<p className={'text-section-description text-center'}>Help build the future of digital cash.</p>
-			<div className="text-big-content flex flex-col gap-16 lg:justify-between xl:flex-row xl:gap-32">
+			<div className="text-big-content flex flex-col gap-16 lg:justify-between 2xl:flex-row 2xl:gap-32">
 				<div className="flex max-w-2xl flex-col gap-12">
 					<div className="space-y-1.5 text-pretty">
 						<p>
