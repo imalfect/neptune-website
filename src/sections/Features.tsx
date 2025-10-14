@@ -15,7 +15,7 @@ export default function Features() {
 				}
 			>
 				<FeatureElement
-					href="/articles/2022-08-03-announcing-tvm"
+					href="/articles/announcing-tvm"
 					title="zk-STARKs"
 					description={
 						<>
@@ -30,7 +30,7 @@ export default function Features() {
 				/>
 
 				<FeatureElement
-					href="/articles/2023-08-10-mutator-sets"
+					href="/articles/mutator-sets"
 					title="Mutator Sets"
 					description={<p>Novel privacy primitive enabling privacy without sacrificing succinctness</p>}
 					imageSrc="/illustrations/doodles/privacy.svg"
@@ -39,7 +39,7 @@ export default function Features() {
 
 				<FeatureElement
 					title="Post‑Quantum Security"
-					href="/articles/2022-07-01-post-quantum"
+					href="/articles/post-quantum"
 					description={<p>Cryptography designed to resist quantum attacks while efficient today.</p>}
 					imageSrc="/illustrations/doodles/quantum.svg"
 					className="lg:col-span-6"
@@ -47,7 +47,7 @@ export default function Features() {
 
 				<FeatureElement
 					title="Smart Contracts"
-					href="/articles/2023-12-14-how-neptune-fixes-ethereums-frontrunning-problem"
+					href="/articles/how-neptune-fixes-ethereums-frontrunning-problem"
 					description={
 						<>
 							<p>Arbitrary logic supported by the prover.</p>
