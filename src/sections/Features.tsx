@@ -20,7 +20,7 @@ export default function Features() {
 					description={
 						<>
 							<p>
-								First L1 implementing zk-STARKs. Client-side proving. Every block contains only one big
+								First Layer-1 implementing zk-STARKs. Client-side proving. Every block contains only one big
 								transaction and one proof.
 							</p>
 						</>

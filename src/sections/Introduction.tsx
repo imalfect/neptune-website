@@ -12,17 +12,17 @@ export default function Introduction() {
 				<h1 className={'text-hero-headline'}>Redefining The Cash</h1>
 				<div className={'text-big-content max-w-4xl space-y-3 break-normal'}>
 					<p>
-						Neptune Cash is more than a privacy coin. It’s the first blockchain to integrate zk-STARKs
-						directly at Layer-1 and to introduce Mutator Sets a breakthrough in private transactions that
-						scale without compromise.
+						Neptune Cash is more than a privacy coin. It&apos;s the first blockchain to integrate
+						zk-STARKs directly at Layer-1 and to introduce Mutator Sets, a breakthrough in private
+						transactions that scale without compromise.
 					</p>
 					<p>
-						With built-in smart contract support, Neptune is not only money it’s a platform for private
-						applications and the future of finance.
+						With built-in smart contract support, Neptune is not only money; it&apos;s a platform for
+						private applications and the future of finance.
 					</p>
 					<p>
-						As a cherry on top, all cryptography used in the Neptune protocol, is post-quantum secure.
-						Meaning that it promises to resist attacks from future quantum computers. Together with
+						As the cherry on top, all cryptography used in the Neptune protocol is post-quantum secure,
+						meaning that it promises to resist attacks from future quantum computers. Together with
 						privacy and programmability this makes Neptune a competitor for the world&apos;s best money.
 					</p>
 				</div>
