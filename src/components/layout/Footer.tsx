@@ -6,7 +6,7 @@ import { FaDiscord, FaGithub, FaTelegram, FaXTwitter } from 'react-icons/fa6';
 export default function Footer() {
 	return (
 		<footer className="mt-auto w-full">
-			<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+			<div className="mx-auto max-w-7xl space-y-1.5 px-4 py-8 sm:px-6 lg:px-8">
 				<div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
 					{/* Logo */}
 					<Link href="/" className="flex items-center gap-3">
@@ -56,6 +56,14 @@ export default function Footer() {
 						/>
 					</div>
 				</div>
+				<span>
+					&copy; {new Date().getFullYear()} Neptune Cash Developers. All rights reserved. Anonymous,
+					cookie-free{' '}
+					<Link href="https://www.rybbit.io" target="_blank" className="underline">
+						analytics
+					</Link>{' '}
+					are used to improve content.
+				</span>
 			</div>
 		</footer>
 	);

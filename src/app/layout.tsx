@@ -4,6 +4,7 @@ import { WebsiteNavbar } from '@/components/layout/Navbar';
 import * as motion from 'motion/react-client';
 import { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
+import Script from 'next/script';
 import React from 'react';
 import './globals.css';
 
@@ -51,6 +52,11 @@ export default function RootLayout({
 				<div className="mt-32">
 					<Footer />
 				</div>
+				<Script
+					src="https://rybbit.imal.dev/api/script.js"
+					data-site-id="3"
+					strategy="afterInteractive"
+				/>
 			</body>
 		</html>
 	);
