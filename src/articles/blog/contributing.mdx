@@ -13,7 +13,7 @@ caption = "Open source software is about collaboration: anyone can contribute to
 
 Neptune is a fully open sourced project, which means anyone can contribute.
 
-The [Neptune Core client](https://github.com/Neptune-Crypto/neptune-core/) is written in Rust, as is the [Triton virtual machine](https://triton-vm.org), and the [underlying cryptography library](https://github.com/Neptune-Crypto/twenty-first). Triton VM is a standalone repository since it [can be used outside of the context of a blockchain](https://neptune.cash/blog/announcing-tvm/).
+The [Neptune Core client](https://github.com/Neptune-Crypto/neptune-core/) is written in Rust, as is the [Triton virtual machine](https://triton-vm.org), and the [underlying cryptography library](https://github.com/Neptune-Crypto/twenty-first). Triton VM is a standalone repository since it [can be used outside of the context of a blockchain](/articles/announcing-tvm/).
 
 We are offering bounties to anyone who makes significant contributions that help Neptune reach mainnet.
 
@@ -33,7 +33,7 @@ If you want to start contributing to the client development, you can look for [G
 Also, if you're confused: try writing documentation. We can correct your understanding if necessary, and you can help shrink the learning curve for others.
 
 ### Towards Mainnet
-The main missing components are consensus logic that can run in the virtual machine: transaction logic, block logic, and recursive proof verification. We could use help with both the writing of this logic in a high-level language as well as its compilation to Triton VM assembly. We've written a large part of this logic directly in Triton VM assembly, TASM for short. This process is [slow and tedious](https://neptune.cash/blog/alphanet/#observations) though: writing the program for removal record integrity check, a part of transaction validity logic, took us half a day in Rust. Translating it manually to assembly took a month. A good compiler would be able to significantly speed up this process.
+The main missing components are consensus logic that can run in the virtual machine: transaction logic, block logic, and recursive proof verification. We could use help with both the writing of this logic in a high-level language as well as its compilation to Triton VM assembly. We've written a large part of this logic directly in Triton VM assembly, TASM for short. This process is [slow and tedious](/articles/alphanet/#observations) though: writing the program for removal record integrity check, a part of transaction validity logic, took us half a day in Rust. Translating it manually to assembly took a month. A good compiler would be able to significantly speed up this process.
 
 An overview of the remaining tasks to get to mainnet can be found [here](https://github.com/Neptune-Crypto/neptune-core/issues/10).
 
@@ -59,7 +59,7 @@ We want to reward contributions that take us closer to mainnet launch. For this 
 - 20.000 for consensus logic, bug discoveries, and client development
 - 20.000 for porting existing compilers like [gcc](https://gcc.gnu.org/) and [rustc](https://www.rust-lang.org/) to TASM, such that compilation can be done in Triton VM producing cryptographically verified binaries
 
-The reward is at the discretion of the Neptune founders. All significant contributions that are used by the Neptune team and that fall into any of the categories above will be eligible for a reward. The bounties can be awarded as long as coins still remain in the pot and can be allocated from the premine. If all bounties in a specific category are not rewarded prior to launch, they can be moved to other projects, such as developing layer-2 protocols like [Lightning](https://neptune.cash/blog/scalable-privacy-problem/#lightning) and [public smart contracts](https://neptune.cash/blog/data-availability/).
+The reward is at the discretion of the Neptune founders. All significant contributions that are used by the Neptune team and that fall into any of the categories above will be eligible for a reward. The bounties can be awarded as long as coins still remain in the pot and can be allocated from the premine. If all bounties in a specific category are not rewarded prior to launch, they can be moved to other projects, such as developing layer-2 protocols like [Lightning](/articles/scalable-privacy-problem/#lightning) and [public smart contracts](/articles/data-availability/).
 
 ## Take Initiatives!
 Open source projects are about collaboration. If you see something you think can be improved, go for it! We cannot predict or steer all the ways in which this project can grow, so it's up to the community to see things that we cannot.
