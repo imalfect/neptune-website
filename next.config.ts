@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
 			{
 				source: '/about',
 				destination: '/articles/about'
-			},
+			}
 		];
 	}
 };
@@ -40,3 +40,6 @@ const withMDX = createMDX({
 	// Add markdown plugins here, as desired
 });
 export default withMDX(nextConfig);
+
+import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';
+initOpenNextCloudflareForDev();

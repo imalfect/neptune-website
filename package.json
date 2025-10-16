@@ -6,13 +6,18 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+		"upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
 	},
 	"dependencies": {
 		"@catppuccin/highlightjs": "^1.0.1",
 		"@mdx-js/loader": "^3.1.1",
 		"@mdx-js/react": "^3.1.1",
 		"@next/mdx": "^15.5.4",
+		"@opennextjs/cloudflare": "^1.11.0",
 		"@radix-ui/react-accordion": "^1.2.12",
 		"@react-three/drei": "^10.7.6",
 		"@react-three/fiber": "^9.3.0",
@@ -31,7 +36,6 @@
 		"next": "15.2.1",
 		"next-themes": "^0.4.6",
 		"react": "^19.1.1",
-		"react-color4bg": "^0.1.5",
 		"react-dom": "^19.1.1",
 		"react-icons": "^5.5.0",
 		"reading-time": "^1.5.0",
@@ -61,7 +65,8 @@
 		"prettier-plugin-organize-imports": "^4.3.0",
 		"prettier-plugin-tailwindcss": "^0.6.14",
 		"tailwindcss": "^4.1.13",
-		"typescript": "^5.9.2"
+		"typescript": "^5.9.2",
+		"wrangler": "^4.43.0"
 	},
 	"packageManager": "pnpm@10.10.0+sha1.f657bc37aa5e08da2ecff3877fe3bbb4b13703ba"
 }
