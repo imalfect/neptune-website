@@ -59,7 +59,7 @@ are involved in the derivation of $\lbrace f^\star(\omega^{2i})\rbrace_{i=0}^{N/
 
 At this point it is possible to describe the mechanics for one round of the FRI protocol. The prover commits to $f(X)$ by sending the Merkle root of its codeword to the verifier. The verifier responds with the random challenge $\alpha$. The prover computes $f^\star(X)$ and commits to it by sending the Merkle root of $\lbrace f^\star(\omega^{2i})\rbrace_{i=0}^{N/2-1}$ to the verifier.
 
-The verifier now has two commitments to polynomials and his task is to verify that their correct relation holds. Specifically, the verifier should reject the proof if $f^\star(X) \neq 2^{-1} \cdot \left( (1 + \alpha X^{-1}) \cdot f(X) + (1 - \alpha X^{-1} ) \cdot f(-X) \right)$. (Ignore the values left and right hand sides take in 0.) To do this, the verifier randomly samples an index $i \xleftarrow{\$} \lbrace 0, \ldots, N/2-1\rbrace$, which defines 3 points:
+The verifier now has two commitments to polynomials and his task is to verify that their correct relation holds. Specifically, the verifier should reject the proof if $f^\star(X) \neq 2^{-1} \cdot \left( (1 + \alpha X^{-1}) \cdot f(X) + (1 - \alpha X^{-1} ) \cdot f(-X) \right)$. (Ignore the values left and right hand sides take in 0.) To do this, the verifier randomly samples an index $$ i \xleftarrow\$ \lbrace 0, \ldots, N/2-1\rbrace$$, which defines 3 points:
  - $A: (\omega^i, f(\omega^i))$,
  - $B: (\omega^{N/2+i}, f(\omega^{N/2+i}))$,
  - $C: (\alpha, f^\star(\omega^{2i}))$.
@@ -67,13 +67,15 @@ The verifier now has two commitments to polynomials and his task is to verify th
 Notice that the x-coordinates of $A$ and $B$ are the square roots of $\omega^{2i}$. Upon receiving the index $i$ from the verifier, the prover provides the y-coordinates along with their Merkle authentication paths. The verifier verifies these paths against their proper roots and follows up by verifying that $A$, $B$, and $C$ fall on a straight line. This test is known as the *colinearity check*.
 
 Why would $A$, $B$, and $C$ lie on a straight line? Let's find the line that passes through $A$ and $B$ and see what that means for $C$. An elementary Lagrange interpolation yields
-$$\begin{align*}
+$$
+\begin{align*}
 y
 &= \sum_i y_i \prod_{j \neq i} \frac{x - x_j}{x_i - x_j} \\\\
 &= f(\omega^i) \cdot \frac{x - \omega^{N/2+i}}{\omega^{i} - \omega^{N/2+i}} + f(\omega^{N/2+i}) \cdot \frac{x - \omega^{i}}{\omega^{N/2+i} - \omega^{i}} \\\\
 &=  f(\omega^i) \cdot 2^{-1} \cdot \omega^{-i} \cdot (x + \omega^i) - f(\omega^{N/2+i}) \cdot 2^{-1} \cdot \omega^{-i} (x - \omega^i) \\\\
 &= 2^{-1} \cdot \left( (1 + x \cdot \omega^{-i}) \cdot f(\omega^i) + (1 - x \cdot \omega^i) \cdot f(\omega^{N/2 + i}) \right) \enspace .
-\end{align*}$$
+\end{align*}
+$$
 By setting $x = \alpha$ we get exactly the y-coordinate of $C$.
 
 This description covers one round, at the end of which the prover and verifier are in the same position as they were at the start. The prover wishes to establish that a given Merkle root decommits to a codeword whose defining polynomial has a bounded degree. There is one important difference though: as a result of running one round of FRI, the length of the codeword as well as the number of possibly nonzero coefficients of the polynomial have halved. Prover and verifier can set $f = f^\star$, $D = d^\star$, and repeat the process. After running $\lceil \log_2 (d+1) \rceil - 1$ rounds of FRI, where $d$ is the degree of the original polynomial, prover and verifier end up with a constant polynomial whose codeword is also constant. At this point, the prover sends this constant[^3] instead of the codeword's Merkle root, making it abundantly clear that it corresponds to a polynomial of degree $0$.
@@ -428,7 +430,7 @@ $$ g(X) = \alpha \cdot f(X) + \beta \cdot X^{2^k - d-1} \cdot f(X) $$
 
 When the random coefficients are present, the cancellation of high degree terms occurs with negligible probability.
 
-[0](/articles/stark-anatomy-index) - [1](/articles/stark-anatomy-overview) - [2](/articles/stark-anatomy-basic-tools) - **3** - [4](../stark) - [5](/articles/stark-anatomy-rescue-prime) - [6](/articles/stark-anatomy-faster)
+[0](/articles/stark-anatomy-index) - [1](/articles/stark-anatomy-overview) - [2](/articles/stark-anatomy-basic-tools) - **3** - [4](/articles/stark-anatomy-stark) - [5](/articles/stark-anatomy-rescue-prime) - [6](/articles/stark-anatomy-faster)
 
 [^1]: The generality lost in this description has to do with when the codeword in question is compiled on the fly from applying arithmetic operations to other codewords.
 
