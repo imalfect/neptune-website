@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 		siteName: 'Neptune Cash - Sea of Privacy',
 		images: [
 			{
-				url: '/og-image.png', // TODO - replace with absolute URL in production
+				url: 'https://neptune.cash/og-image.png', // TODO - replace with absolute URL in production
 				width: 1200,
 				height: 630,
 				alt: 'Neptune Cash'
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 		title: 'Neptune Cash - Sea of Privacy',
 		description:
 			'Anonymous, succinct. Neptune Cash is a layer-1 peer-to-peer anonymous cash protocol featuring privacy, scalability and post-quantum security.',
-		images: ['/og-image.png'] // TODO - this will not work now!!, replace with absolute URL in production
+		images: ['https://neptune.cash/og-image.png'] // TODO - this will not work now!!, replace with absolute URL in production
 	},
 	alternates: {
 		canonical: 'https://neptune.cash/'
