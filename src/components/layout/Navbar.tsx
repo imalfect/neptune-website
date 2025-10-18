@@ -86,7 +86,7 @@ export function WebsiteNavbar() {
 				<Button
 					variant={'primary'}
 					size={'sm'}
-					href={'/whitepaper.pdf'}
+					href={'/whitepaper'}
 					target={'_blank'}
 					className="mt-2 w-full"
 				>
