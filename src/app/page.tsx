@@ -10,7 +10,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
 	title: 'Neptune Cash - Sea of Privacy',
 	description:
-		'Anonymous and succinct. Neptune Cash is a layer-1 peer-to-peer anonymou cash protocol featuring privacy, scalability and post-quantum security.',
+		'Anonymous and succinct. Neptune Cash is a layer-1 peer-to-peer anonymous cash protocol featuring privacy, scalability and post-quantum security.',
 	openGraph: {
 		title: 'Neptune Cash - Sea of Privacy',
 		description:
