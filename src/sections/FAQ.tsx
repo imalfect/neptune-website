@@ -41,8 +41,8 @@ export default function FAQ() {
 							<div className="space-y-3">
 								<p>
 									In Neptune, mining consists of three steps: The Upgrader upgrades transactions by merging
-									them, updating them, or raising their proof type, and in every case produces a single
-									proof of correct upgrade. The Composer produces a block proposal from an aggregate transaction
+									them, updating them, or raising their proof type, and in every case produces a single proof
+									of correct upgrade. The Composer produces a block proposal from an aggregate transaction
 									and likewise, proves the correctness of this step. Lastly, the Guesser samples the nonce
 									such that the block&apos;s hash is smaller than the target, and furthermore supplies other
 									information related to memory-hard proof-of-work.
@@ -58,26 +58,27 @@ export default function FAQ() {
 									The composer determines which transaction to turn into a block, and decides unilaterally
 									which fraction of the block subsidy to grant to the Guesser; the remainder goes to the
 									Composer. As a result, the faster Composer can earn a larger Composer fee because Guessers
-									may start Guessing on their proposal before the runner-up's proposal is ready. The runner-up,
-									in turn, must compensate for their slow proposal by leaving a greater reward to the Guessers.
-									To enable composing, start <code>neptune-core</code> with the flag <code>--compose</code>.
+									may start Guessing on their proposal before the runner-up&apos;s proposal is ready. The
+									runner-up, in turn, must compensate for their slow proposal by leaving a greater reward to
+									the Guessers. To enable composing, start <code>neptune-core</code> with the flag{' '}
+									<code>--compose</code>.
 								</p>
 								<p>
 									In contrast to the previous two steps, Guessing does not involve proving. Nevertheless,
-									this step is memory-hard, which concretely means that the Guesser must use around 40 GB
-									of RAM in order to guess efficiently. By default, all the available cores will be used.
-									Except for a relatively short preprocessing sub-step, the nonce-sampling phase of the Guessing
-									step is stateless, meaning that it doesn&apos;t	make any senseto buy half the number of
-									computers (or cores) that work at twice the speed. What matters is the total number of nonce
-									trials per second. To enable guessing, run <code>neptune-core</code> with the
+									this step is memory-hard, which concretely means that the Guesser must use around 40 GB of
+									RAM in order to guess efficiently. By default, all the available cores will be used. Except
+									for a relatively short preprocessing sub-step, the nonce-sampling phase of the Guessing
+									step is stateless, meaning that it doesn&apos;t make any senseto buy half the number of
+									computers (or cores) that work at twice the speed. What matters is the total number of
+									nonce trials per second. To enable guessing, run <code>neptune-core</code> with the
 									<code>--guess</code> flag.
 								</p>
 								<p>
-									Besides block subsidies, the producer of a new block is entitled to any transaction fees
-									of transactions confirmed in it. The Composer allocates to himself a proportion of this
-									reward at his discretion; the remainder goes to the Guesser. By default, Composers are
-									configured to broadcast their proposals but people who aren&apos;t afraid of digging into
-									the source code might change this configuration.
+									Besides block subsidies, the producer of a new block is entitled to any transaction fees of
+									transactions confirmed in it. The Composer allocates to himself a proportion of this reward
+									at his discretion; the remainder goes to the Guesser. By default, Composers are configured
+									to broadcast their proposals but people who aren&apos;t afraid of digging into the source
+									code might change this configuration.
 								</p>
 								<p>
 									One last point: all mining rewards are split into two parts. Half is liquid immediately.
