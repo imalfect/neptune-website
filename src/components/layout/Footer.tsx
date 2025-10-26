@@ -1,7 +1,7 @@
 import SocialLink from '@/components/buttons/SocialLink';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaDiscord, FaGithub, FaTelegram, FaXTwitter } from 'react-icons/fa6';
+import { FaDiscord, FaGithub, FaRedditAlien, FaTelegram, FaXTwitter } from 'react-icons/fa6';
 
 export default function Footer() {
 	return (
@@ -53,6 +53,11 @@ export default function Footer() {
 							icon={<FaGithub size={28} />}
 							href="https://github.com/Neptune-Crypto"
 							label="GitHub"
+						/>
+						<SocialLink
+							icon={<FaRedditAlien size={28} />}
+							href="https://www.reddit.com/r/neptunecash/"
+							label="Reddit"
 						/>
 					</div>
 				</div>

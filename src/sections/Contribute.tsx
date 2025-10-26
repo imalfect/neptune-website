@@ -1,6 +1,6 @@
 import SocialLink from '@/components/buttons/SocialLink';
 import ContributorCard from '@/components/cards/ContributorCard';
-import { FaDiscord, FaGithub, FaTelegram, FaXTwitter } from 'react-icons/fa6';
+import { FaDiscord, FaGithub, FaRedditAlien, FaTelegram, FaXTwitter } from 'react-icons/fa6';
 
 // !!! ready fully !!!
 export default function Contribute() {
@@ -27,7 +27,7 @@ export default function Contribute() {
 
 					<div className="mt-auto flex w-full flex-col gap-6 rounded-3xl bg-neutral-950/25 p-6 backdrop-blur-3xl">
 						<p className="text-3xl font-bold">Join our community</p>
-						<div className="grid grid-cols-4 gap-6 sm:mx-auto sm:gap-12">
+						<div className="grid grid-cols-5 gap-6 sm:mx-auto sm:gap-12">
 							<SocialLink
 								icon={<FaDiscord size={48} />}
 								href="https://discord.gg/e8gtNffG8R"
@@ -47,6 +47,11 @@ export default function Contribute() {
 								icon={<FaXTwitter size={48} />}
 								href="https://x.com/NeptuneCash"
 								label="Twitter"
+							/>
+							<SocialLink
+								icon={<FaRedditAlien size={48} />}
+								href="https://www.reddit.com/r/neptunecash/"
+								label="Reddit"
 							/>
 						</div>
 					</div>
